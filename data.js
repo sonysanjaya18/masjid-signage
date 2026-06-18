@@ -14,16 +14,16 @@ window.localMosqueData = {
     "pengeluaran": "Rp 4.200.000"
   },
   "geo": {
-    "lat": -7.1523,
-    "lng": 112.0543,
+    "lat": -6.897096952815149,
+    "lng": 112.09740785397312,
     "tz": 7
   },
   "correction": {
-    "subuh": 2,
-    "dzuhur": 2,
-    "ashar": 2,
-    "maghrib": 2,
-    "isya": 2
+    "subuh": null,
+    "dzuhur": null,
+    "ashar": null,
+    "maghrib": null,
+    "isya": null
   },
   "arusKas": [
     {
