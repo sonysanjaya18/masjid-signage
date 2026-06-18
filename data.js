@@ -48,7 +48,7 @@ window.localMosqueData = {
       "tgl": "Sabtu, 20 Juni 2026",
       "jam": "19.30 WIB - Selesai",
       "tempat": "Masjid Baiturrahman (Ruang Utama)",
-      "poster": "assets/poster1.jpg",
+      "poster": "poster_kajian1.jpeg",
       "desc": "Terbuka untuk jamaah umum muslimin dan muslimat."
     }
   ],
