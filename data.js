@@ -4,7 +4,7 @@ window.localMosqueData = {
     "tagline": "Mari merapat dan makmurkan masjid dengan Sholat Berjamaah Tepat Waktu."
   },
   "dashboard": {
-    "bgImage": "assets/masjid.jpg"
+    "bgImage": "foto_masjid1.jpeg"
   },
   "kas": {
     "tanggal": "18 Juni 2026",
@@ -14,16 +14,16 @@ window.localMosqueData = {
     "pengeluaran": "Rp 4.200.000"
   },
   "geo": {
-    "lat": -6.897096952815149,
-    "lng": 112.09740785397312,
+    "lat": -7.1523,
+    "lng": 112.0543,
     "tz": 7
   },
   "correction": {
-    "subuh": null,
-    "dzuhur": 1,
-    "ashar": 47,
-    "maghrib": null,
-    "isya": null
+    "subuh": 2,
+    "dzuhur": 2,
+    "ashar": 2,
+    "maghrib": 2,
+    "isya": 2
   },
   "arusKas": [
     {
@@ -32,48 +32,6 @@ window.localMosqueData = {
       "kat": "Umum",
       "masuk": "Rp 0",
       "keluar": "500.000"
-    },
-    {
-      "tgl": "",
-      "ket": "Bayar Listrik & Air",
-      "kat": "Umum",
-      "masuk": "Rp 0",
-      "keluar": "Rp 500.0000"
-    },
-    {
-      "tgl": "",
-      "ket": "Bayar Listrik & Air",
-      "kat": "Umum",
-      "masuk": "Rp 0",
-      "keluar": "Rp 0500.000"
-    },
-    {
-      "tgl": "",
-      "ket": "Bayar Listrik & Air",
-      "kat": "Umum",
-      "masuk": "Rp 0",
-      "keluar": "Rp 0500.000"
-    },
-    {
-      "tgl": "",
-      "ket": "Bayar Listrik & Air",
-      "kat": "Umum",
-      "masuk": "Rp 0",
-      "keluar": "Rp 0500.000"
-    },
-    {
-      "tgl": "",
-      "ket": "Bayar Listrik & Air",
-      "kat": "Umum",
-      "masuk": "Rp 0",
-      "keluar": "Rp 0500.000"
-    },
-    {
-      "tgl": "",
-      "ket": "Bayar Listrik & Air",
-      "kat": "Umum",
-      "masuk": "Rp 0",
-      "keluar": "Rp 0"
     }
   ],
   "donasi": [
@@ -81,46 +39,6 @@ window.localMosqueData = {
       "nama": "Hamba Allah",
       "jml": "Rp 500.000",
       "via": "Transfer Mandiri"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "TV Monitor",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
-    },
-    {
-      "nama": "Hamba Allah",
-      "jml": "Rp 500.000",
-      "via": "Tunai"
     }
   ],
   "events": [
@@ -132,19 +50,10 @@ window.localMosqueData = {
       "tempat": "Masjid Baiturrahman (Ruang Utama)",
       "poster": "assets/poster1.jpg",
       "desc": "Terbuka untuk jamaah umum muslimin dan muslimat."
-    },
-    {
-      "judul": "adasefwefwefd",
-      "ustadz": "",
-      "tgl": "",
-      "jam": "",
-      "tempat": "sadasdasdas",
-      "poster": "assets/poster1.jpg",
-      "desc": "asdasdas"
     }
   ],
   "dokumentasi": {
-    "show": false,
+    "show": true,
     "judul": "Dokumentasi Kegiatan Sosial Masjid",
     "images": [
       "assets/kegiatan1.jpg"
