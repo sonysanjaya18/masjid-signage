@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Admin Digital Signage Masjid</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f7f6; color: #2c3e50; padding: 30px; }
+    .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    h1 { color: #11422c; border-bottom: 3px solid #caa43d; padding-bottom: 10px; margin-bottom: 25px; }
+    h2 { color: #11422c; font-size: 1.3rem; margin-top: 30px; margin-bottom: 15px; background: #f0f4f1; padding: 8px 12px; border-left: 4px solid #caa43d; }
+    .form-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+    .form-control { flex: 1; min-width: 200px; display: flex; flex-direction: column; }
+    label { font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; color: #4a5a4e; }
+    input, textarea, select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+    input:focus, textarea:focus { border-color: #11422c; outline: none; }
+    .dynamic-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; background: #fafafa; padding: 10px; border-radius: 6px; }
+    .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: background 0.2s; }
+    .btn-primary { background: #11422c; color: white; }
+    .btn-primary:hover { background: #0b2b1d; }
+    .btn-danger { background: #e74c3c; color: white; padding: 10px; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-add { background: #caa43d; color: white; margin-top: 5px; }
+    .btn-add:hover { background: #b08d30; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>⚙️ Panel Kontrol Data Signage</h1>
+  <form id="adminForm">
+    
+    <!-- PROFILE MASJID -->
+    <h2>1. Profil Utama & Informasi Running Text</h2>
+    <div class="form-group">
+      <div class="form-control"><label>Nama Masjid</label><input type="text" id="prof_name" value="Masjid Baiturrahman"></div>
+      <div class="form-control"><label>Tagline / Pengumuman Berjalan</label><input type="text" id="prof_tagline" value="Mari merapat dan makmurkan masjid dengan Sholat Berjamaah Tepat Waktu."></div>
+    </div>
+    <div class="form-group">
+      <div class="form-control"><label>URL Background Foto Dashboard Utama</label><input type="text" id="dash_bg" value="assets/masjid.jpg"></div>
+    </div>
+
+    <!-- UPDATE KAS -->
+    <h2>2. Laporan Akumulasi Saldo Kas</h2>
+    <div class="form-group">
+      <div class="form-control"><label>Per Tanggal Laporan</label><input type="text" id="kas_tgl" value="18 Juni 2026"></div>
+      <div class="form-control"><label>Total Saldo Gabungan</label><input type="text" id="kas_total" value="Rp 24.500.000"></div>
+    </div>
+    <div class="form-group">
+      <div class="form-control"><label>Sisa Kas Umum</label><input type="text" id="kas_umum" value="Rp 14.000.000"></div>
+      <div class="form-control"><label>Sisa Kas Pembangunan</label><input type="text" id="kas_pemb" value="Rp 10.500.000"></div>
+      <div class="form-control"><label>Total Pengeluaran Bulan Ini</label><input type="text" id="kas_keluar" value="Rp 4.200.000"></div>
+    </div>
+
+    <!-- ARUS KAS MASUK KELUAR -->
+    <h2>3. Rincian Alur Kas Masuk & Keluar (Tabel Arus Kas)</h2>
+    <div id="wrapper-arus"></div>
+    <button type="button" class="btn btn-add" onclick="addArusRow()">➕ Tambah Baris Transaksi</button>
+
+    <!-- LIST DONATUR -->
+    <h2>4. Daftar Penerimaan Donasi Terbaru</h2>
+    <div id="wrapper-donasi"></div>
+    <button type="button" class="btn btn-add" onclick="addDonasiRow()">➕ Tambah Baris Donatur</button>
+
+    <!-- DYNAMIC EVENT SLIDES -->
+    <h2>5. Poster Pengumuman Acara (Internal / Titipan Luar)</h2>
+    <div id="wrapper-events"></div>
+    <button type="button" class="btn btn-add" onclick="addEventRow()">➕ Tambah Acara Baru</button>
+
+    <!-- DOKUMENTASI IMAGES -->
+    <h2>6. Galeri Dokumentasi Foto Kegiatan</h2>
+    <div class="form-group">
+      <div class="form-control" style="flex:0.2;"><label>Tampilkan Galeri?</label><select id="dok_show"><option value="true">YA</option><option value="false">TIDAK</option></select></div>
+      <div class="form-control"><label>Judul Slide Dokumentasi</label><input type="text" id="dok_judul" value="Dokumentasi Kegiatan Sosial Masjid"></div>
+    </div>
+    <div id="wrapper-gallery"></div>
+    <button type="button" class="btn btn-add" onclick="addGalleryRow()">➕ Tambah URL Foto Dokumentasi</button>
+
+    <!-- GEOLOCATION & CORRECTION JADWAL -->
+    <h2>7. Konfigurasi Astronomi & Koreksi Waktu Sholat (Menit)</h2>
+    <div class="form-group">
+      <div class="form-control"><label>Latitude</label><input type="text" id="geo_lat" value="-7.1523"></div>
+      <div class="form-control"><label>Longitude</label><input type="text" id="geo_lng" value="112.0543"></div>
+      <div class="form-control"><label>Timezone (GMT)</label><input type="number" id="geo_tz" value="7"></div>
+    </div>
+    <div class="form-group">
+      <div class="form-control"><label>Koreksi Subuh</label><input type="number" id="c_subuh" value="2"></div>
+      <div class="form-control"><label>Koreksi Dzuhur</label><input type="number" id="c_dzuhur" value="2"></div>
+      <div class="form-control"><label>Koreksi Ashar</label><input type="number" id="c_ashar" value="2"></div>
+      <div class="form-control"><label>Koreksi Maghrib</label><input type="number" id="c_maghrib" value="2"></div>
+      <div class="form-control"><label>Koreksi Isya</label><input type="number" id="c_isya" value="2"></div>
+    </div>
+
+    <div style="margin-top: 40px; text-align: right;">
+      <button type="button" class="btn btn-primary" onclick="downloadDataScript()">💾 Unduh File data.js</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Fungsi penambah baris form (tetap dipertahankan dari versi sebelumnya)
+  function addArusRow(tgl='', ket='', kat='Umum', masuk='Rp 0', keluar='Rp 0') {
+    const div = document.createElement('div'); div.className = 'dynamic-row';
+    div.innerHTML = `<input type="text" placeholder="Tgl (dd/mm)" value="${tgl}" style="width:100px;">
+                     <input type="text" placeholder="Keterangan Operasional" value="${ket}" style="flex:2;">
+                     <select style="width:120px;"><option value="Umum" ${kat==='Umum'?'selected':''}>Umum</option><option value="Pembangunan" ${kat==='Pembangunan'?'selected':''}>Pembangunan</option></select>
+                     <input type="text" placeholder="Masuk (Rp)" value="${masuk}">
+                     <input type="text" placeholder="Keluar (Rp)" value="${keluar}">
+                     <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Hapus</button>`;
+    document.getElementById('wrapper-arus').appendChild(div);
+  }
+
+  function addDonasiRow(nama='', jml='', via='Tunai') {
+    const div = document.createElement('div'); div.className = 'dynamic-row';
+    div.innerHTML = `<input type="text" placeholder="Nama Donatur / Keterangan" value="${nama}" style="flex:2;">
+                     <input type="text" placeholder="Jumlah (Rp)" value="${jml}">
+                     <input type="text" placeholder="Metode Penyerahan" value="${via}">
+                     <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Hapus</button>`;
+    document.getElementById('wrapper-donasi').appendChild(div);
+  }
+
+  function addEventRow(judul='', ustadz='', tgl='', jam='', tempat='', desc='', poster='assets/poster1.jpg') {
+    const div = document.createElement('div'); div.className = 'dynamic-row'; div.style.flexDirection = 'column'; div.style.alignItems = 'stretch';
+    div.innerHTML = `<div style="display:flex; gap:10px;">
+                       <input type="text" placeholder="Judul Acara / Pengumuman" value="${judul}" style="flex:2; font-weight:bold;">
+                       <input type="text" placeholder="Narasumber / Ustadz" value="${ustadz}" style="flex:1;">
+                     </div>
+                     <div style="display:flex; gap:10px; margin-top:5px;">
+                       <input type="text" placeholder="Tanggal" value="${tgl}">
+                       <input type="text" placeholder="Jam / Waktu" value="${jam}">
+                       <input type="text" placeholder="Tempat / Lokasi Acara" value="${tempat}" style="flex:1.5; background:#fffdf4; border:1px solid #caa43d;">
+                     </div>
+                     <div style="display:flex; gap:10px; margin-top:5px;">
+                       <input type="text" placeholder="URL File Poster Gambar" value="${poster}" style="flex:1;">
+                       <input type="text" placeholder="Deskripsi Tambahan Singkat" value="${desc}" style="flex:2;">
+                       <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Hapus Acara</button>
+                     </div>`;
+    document.getElementById('wrapper-events').appendChild(div);
+  }
+
+  function addGalleryRow(url='') {
+    const div = document.createElement('div'); div.className = 'dynamic-row';
+    div.innerHTML = `<input type="text" placeholder="URL Gambar Dokumentasi" value="${url}" style="flex:1;">
+                     <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Hapus</button>`;
+    document.getElementById('wrapper-gallery').appendChild(div);
+  }
+
+  window.onload = function() {
+    addArusRow('16/06', 'Bayar Listrik & Air', 'Umum', 'Rp 0', '500.000');
+    addDonasiRow('Hamba Allah', 'Rp 500.000', 'Transfer Mandiri');
+    addEventRow('Kajian Umum Spesial', 'Ustadz Wijayanto', 'Sabtu, 20 Juni 2026', '19.30 WIB - Selesai', 'Masjid Baiturrahman (Ruang Utama)', 'Terbuka untuk jamaah umum muslimin dan muslimat.');
+    addGalleryRow('assets/kegiatan1.jpg');
+  };
+
+  // MESIN UTAMA GENERATE & DOWNLOAD LANGSUNG SEBAGAI FILE DATA.JS
+  function downloadDataScript() {
+    let output = {};
+    
+    output.profile = { name: document.getElementById('prof_name').value, tagline: document.getElementById('prof_tagline').value };
+    output.dashboard = { bgImage: document.getElementById('dash_bg').value };
+    output.kas = {
+      tanggal: document.getElementById('kas_tgl').value,
+      total: document.getElementById('kas_total').value,
+      umum: document.getElementById('kas_umum').value,
+      pembangunan: document.getElementById('kas_pemb').value,
+      pengeluaran: document.getElementById('kas_keluar').value
+    };
+
+    output.geo = {
+      lat: parseFloat(document.getElementById('geo_lat').value),
+      lng: parseFloat(document.getElementById('geo_lng').value),
+      tz: parseInt(document.getElementById('geo_tz').value)
+    };
+
+    output.correction = {
+      subuh: parseInt(document.getElementById('c_subuh').value),
+      dzuhur: parseInt(document.getElementById('c_dzuhur').value),
+      ashar: parseInt(document.getElementById('c_ashar').value),
+      maghrib: parseInt(document.getElementById('c_maghrib').value),
+      isya: parseInt(document.getElementById('c_isya').value)
+    };
+
+    output.arusKas = [];
+    document.getElementById('wrapper-arus').querySelectorAll('.dynamic-row').forEach(row => {
+      const inputs = row.querySelectorAll('input, select');
+      output.arusKas.push({ tgl: inputs[0].value, ket: inputs[1].value, kat: inputs[2].value, masuk: inputs[3].value, keluar: inputs[4].value });
+    });
+
+    output.donasi = [];
+    document.getElementById('wrapper-donasi').querySelectorAll('.dynamic-row').forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      output.donasi.push({ nama: inputs[0].value, jml: inputs[1].value, via: inputs[2].value });
+    });
+
+    output.events = [];
+    document.getElementById('wrapper-events').querySelectorAll('.dynamic-row').forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      output.events.push({ judul: inputs[0].value, ustadz: inputs[1].value, tgl: inputs[2].value, jam: inputs[3].value, tempat: inputs[4].value, poster: inputs[5].value, desc: inputs[6].value });
+    });
+
+    let gallImages = [];
+    document.getElementById('wrapper-gallery').querySelectorAll('.dynamic-row').forEach(row => {
+      gallImages.push(row.querySelector('input').value);
+    });
+    output.dokumentasi = {
+      show: document.getElementById('dok_show').value === 'true',
+      judul: document.getElementById('dok_judul').value,
+      images: gallImages
+    };
+
+    // Membungkus JSON objek ke dalam variable global Javascript agar dibaca utuh oleh display.html
+    const finalContent = `window.localMosqueData = ${JSON.stringify(output, null, 2)};`;
+    
+    // Proses pembuatan file blob dan trigger download virtual browser
+    const blob = new Blob([finalContent], { type: 'application/javascript;charset=utf-8;' });
+    const link = document.createElement("a");
+    
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "data.js");
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Layar Utama Digital Signage Masjid</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #fcfbf7;
+      color: #1a3322;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* BAR HEADER ATAS */
+    header {
+      background: #ffffff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 12%;
+    }
+    .header-left h1 { font-size: 2.1rem; color: #11422c; font-weight: bold; }
+    .header-center { font-size: 3.8rem; font-weight: bold; color: #11422c; }
+    .header-right { text-align: right; font-size: 1.25rem; color: #11422c; font-weight: 600; }
+
+    /* MAIN CONTAINER */
+    .wrapper { display: flex; flex: 1; height: 80%; width: 100%; border-top: 2px solid #eeeeee; }
+    
+    /* LEFT CAROUSEL SLIDES */
+    .main-content { width: 75%; height: 100%; position: relative; padding: 30px 40px; background: #fcfbf7; }
+    .slide { display: none; width: 100%; height: 100%; animation: fadeEffect 0.5s ease-in-out; }
+    .slide.active { display: block; }
+    @keyframes fadeEffect { from { opacity: 0.2; } to { opacity: 1; } }
+
+    .section-title {
+      font-size: 2.6rem;
+      color: #11422c;
+      font-weight: bold;
+      margin-bottom: 5px;
+      border-bottom: 3px solid #caa43d;
+      padding-bottom: 10px;
+      display: inline-block;
+      width: 100%;
+    }
+    .sub-date-title { font-size: 1.2rem; color: #7f8c8d; font-weight: 500; margin-top: 4px; display: block; }
+
+    /* SLIDE 1: DASHBOARD AWAL */
+    .welcome-bg {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
+    }
+    .welcome-overlay {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      background: rgba(17, 66, 44, 0.9);
+      padding: 20px 30px;
+      border-radius: 8px;
+      border-left: 5px solid #caa43d;
+      color: white;
+    }
+    .welcome-overlay h2 { font-size: 2rem; margin-bottom: 5px; }
+
+    /* SLIDE 2: LAPORAN SALDO KAS */
+    .kas-center { text-align: center; margin-top: 15px; }
+    .kas-center p { font-size: 1rem; text-transform: uppercase; color: #7f8c8d; letter-spacing: 1px; }
+    .kas-center h2 { font-size: 4.8rem; color: #caa43d; font-weight: bold; margin-bottom: 25px; }
+    .kas-cards-row { display: flex; justify-content: space-between; gap: 20px; margin-top: 10px; }
+    .kas-card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px 15px;
+      flex: 1;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+    .monochrome-icon { width: 44px; height: 44px; fill: #caa43d; margin: 0 auto; margin-bottom: 12px; }
+    .kas-card label { font-size: 0.85rem; text-transform: uppercase; font-weight: bold; color: #7f8c8d; display: block; }
+    .kas-card span { font-size: 1.8rem; font-weight: bold; color: #11422c; margin-top: 8px; display: block; }
+
+    /* SLIDE 3 & 4: TABLES WITH DYNAMIC HEIGHT FOR AUTO-SCROLL */
+    .table-container { 
+      margin-top: 20px; 
+      background: white; 
+      border-radius: 12px; 
+      overflow: hidden; 
+      height: calc(100% - 95px); 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+    }
+    .app-table { width: 100%; border-collapse: collapse; font-size: 1.2rem; }
+    .app-table th { background: #11422c; color: white; padding: 16px; text-align: left; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+    .app-table td { padding: 16px; border-bottom: 1px solid #f1f1f1; font-weight: 500; }
+    .app-table tr:nth-child(even) { background: #fdfdfb; }
+
+    /* LAYOUT SLIDE EVENT */
+    .event-flex { display: flex; gap: 40px; margin-top: 25px; height: 82%; align-items: center; }
+    .event-poster { width: 38%; height: 100%; border-radius: 12px; overflow: hidden; background: #eae6db; }
+    .event-poster img { width: 100%; height: 100%; object-fit: cover; }
+    .event-card-details { width: 62%; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%; display: flex; flex-direction: column; justify-content: center; }
+    
+    .event-item { display: flex; margin-bottom: 15px; font-size: 1.25rem; align-items: center; }
+    .event-item strong { width: 140px; color: #7f8c8d; font-weight: bold; font-size: 1.1rem; text-transform: uppercase; }
+    .event-item span { color: #1a3322; font-weight: 500; margin-left: 5px; }
+    .monochrome-event-icon { width: 24px; height: 24px; fill: #caa43d; margin-right: 12px; flex-shrink: 0; }
+
+    /* DOKUMENTASI DENGAN GRID FLEKSIBEL */
+    .gallery-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+      gap: 20px; 
+      margin-top: 25px; 
+      height: 80%; 
+      width: 100%; 
+    }
+    .gallery-item { border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: #eae6db; height: 100%; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* SIDEBAR JADWAL SHOLAT */
+    .sidebar-sholat { width: 25%; background: #ffffff; border-left: 2px solid #f0edf0; display: flex; flex-direction: column; }
+    .sholat-row { display: flex; justify-content: space-between; align-items: center; padding: 24px 30px; background: #ffffff; transition: all 0.4s ease; border-bottom: 1px solid #f3eff3; flex: 1; }
+    .sholat-row:last-child { border-bottom: none; }
+    .sholat-row .label { font-size: 1.4rem; font-weight: bold; color: #333333; }
+    .sholat-row .val { font-size: 2.1rem; font-weight: bold; color: #333333; }
+    
+    .countdown-text { font-size: 0.95rem; font-weight: 600; color: #caa43d; margin-top: 4px; display: none; }
+    .sholat-row.next-active { background: #11422c; color: white; }
+    .sholat-row.next-active .label, .sholat-row.next-active .val { color: #ffffff; }
+    .sholat-row.next-active .countdown-text { display: block; color: #ffeaa7; }
+
+    /* FOOTER RUNNING TEXT */
+    footer { background: #11422c; height: 8%; display: flex; align-items: center; overflow: hidden; white-space: nowrap; border-top: 3px solid #caa43d; }
+    .marquee { display: inline-block; padding-left: 100%; animation: runText 30s linear infinite; font-size: 1.5rem; color: #ffffff; font-weight: 500; }
+    @keyframes runText { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-100%,0,0); } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left"><h1 id="top-mosque-name">-</h1></div>
+    <div class="header-center" id="live-time">00:00:00</div>
+    <div class="header-right"><div id="live-date">-</div></div>
+  </header>
+
+  <div class="wrapper">
+    <div class="main-content" id="slides-master-container">
+      
+      <div class="slide active" id="slide-dashboard">
+        <div class="welcome-bg" id="dash-bg-render">
+          <div class="welcome-overlay">
+            <h2 id="welcome-title">Selamat Datang</h2>
+            <p>Di Lingkungan Komunitas Masjid Kami</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-kas">
+        <h1 class="section-title">Laporan Saldo Kas <span class="sub-date-title" id="kas-title-tanggal">Per Tanggal: -</span></h1>
+        <div class="kas-center"><p>Total Sisa Saldo</p><h2 id="kas-total-val">Rp 0</h2></div>
+        <div class="kas-cards-row">
+          <div class="kas-card">
+            <svg class="monochrome-icon" viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h5v-6h4v6h5v-8h3L12 2zm0 4.75c1.24 0 2.25 1.01 2.25 2.25S13.24 11.25 12 11.25 9.75 10.24 9.75 9 10.76 6.75 12 6.75z"/></svg>
+            <label>Kas Umum</label><span id="card-kas-umum">Rp 0</span>
+          </div>
+          <div class="kas-card">
+            <svg class="monochrome-icon" viewBox="0 0 24 24"><path d="M22.7 19l-9.1-16c-.4-.7-1.1-.7-1.5 0L3 19c-.4.7 0 1.5.7 1.5h18.3c.8 0 1.1-.8.7-1.5zm-10.2-2h-1v-1h1v1zm0-3h-1v-4h1v4z"/></svg>
+            <label>Kas Pembangunan</label><span id="card-kas-pemb">Rp 0</span>
+          </div>
+          <div class="kas-card">
+            <svg class="monochrome-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+            <label>Total Pengeluaran Bln Ini</label><span id="card-kas-keluar">Rp 0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-arus">
+        <h1 class="section-title">Rincian Arus Kas</h1>
+        <div class="table-container" id="scroll-container-arus">
+          <table class="app-table" id="render-table-arus">
+            <thead><tr><th>Tgl</th><th>Keterangan</th><th>Kategori</th><th>Masuk</th><th>Keluar</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-donasi">
+        <h1 class="section-title">Daftar Donasi Diterima</h1>
+        <div class="table-container" id="scroll-container-donasi">
+          <table class="app-table" id="render-table-donasi">
+            <thead><tr><th>Nama Donatur / Keterangan</th><th>Jumlah Donasi</th><th>Metode Penyerahan</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sidebar-sholat">
+      <div class="sholat-row" id="row-subuh"><div><span class="label">Subuh</span><div class="countdown-text" id="cd-subuh">⏳ 00:00:00</div></div><span class="val" id="val-subuh">00:00</span></div>
+      <div class="sholat-row" id="row-dzuhur"><div><span class="label">Dzuhur</span><div class="countdown-text" id="cd-dzuhur">⏳ 00:00:00</div></div><span class="val" id="val-dzuhur">00:00</span></div>
+      <div class="sholat-row" id="row-ashar"><div><span class="label">Ashar</span><div class="countdown-text" id="cd-ashar">⏳ 00:00:00</div></div><span class="val" id="val-ashar">00:00</span></div>
+      <div class="sholat-row" id="row-maghrib"><div><span class="label">Maghrib</span><div class="countdown-text" id="cd-maghrib">⏳ 00:00:00</div></div><span class="val" id="val-maghrib">00:00</span></div>
+      <div class="sholat-row" id="row-isya"><div><span class="label">Isya</span><div class="countdown-text" id="cd-isya">⏳ 00:00:00</div></div><span class="val" id="val-isya">00:00</span></div>
+    </div>
+  </div>
+
+  <footer><div class="marquee" id="footer-marquee">-</div></footer>
+
+  <script src="data.js"></script>
+
+  <script>
+    let globalGeoConfig = { lat: -7.1523, lng: 112.0543, tz: 7 };
+    let globalCorrections = { subuh: 2, dzuhur: 2, ashar: 2, maghrib: 2, isya: 2 };
+    let calculatedPrayerMinutes = { subuh: 0, dzuhur: 0, ashar: 0, maghrib: 0, isya: 0 };
+    let slideTimerEngine = null;
+    let currentSlideIndex = 0;
+
+    function loadSystemConfig() {
+      if (typeof window.localMosqueData === 'undefined') return;
+      let core = window.localMosqueData;
+
+      document.getElementById('top-mosque-name').innerText = core.profile?.name || "Masjid";
+      document.getElementById('welcome-title').innerText = `Selamat Datang di ${core.profile?.name || "Masjid"}`;
+      document.getElementById('footer-marquee').innerText = core.profile?.tagline || "";
+      document.getElementById('dash-bg-render').style.backgroundImage = `url('${core.dashboard?.bgImage || "masjid.jpg"}')`;
+      
+      document.getElementById('kas-title-tanggal').innerText = `Per Tanggal: ${core.kas?.tanggal || '-'}`;
+      document.getElementById('kas-total-val').innerText = core.kas?.total || 'Rp 0';
+      document.getElementById('card-kas-umum').innerText = core.kas?.umum || 'Rp 0';
+      document.getElementById('card-kas-pemb').innerText = core.kas?.pembangunan || 'Rp 0';
+      document.getElementById('card-kas-keluar').innerText = core.kas?.pengeluaran || 'Rp 0';
+
+      globalGeoConfig = core.geo || globalGeoConfig;
+      globalCorrections = core.correction || globalCorrections;
+
+      // Render Tabel Arus Kas
+      const tbodyArus = document.querySelector('#render-table-arus tbody');
+      tbodyArus.innerHTML = "";
+      (core.arusKas || []).forEach(row => {
+        tbodyArus.innerHTML += `<tr><td>${row.tgl}</td><td>${row.ket}</td><td>${row.kat}</td><td>${row.masuk}</td><td>${row.keluar}</td></tr>`;
+      });
+
+      // Render Tabel Donasi
+      const tbodyDonasi = document.querySelector('#render-table-donasi tbody');
+      tbodyDonasi.innerHTML = "";
+      (core.donasi || []).forEach(row => {
+        tbodyDonasi.innerHTML += `<tr><td><strong>${row.nama}</strong></td><td>${row.jml}</td><td>${row.via}</td></tr>`;
+      });
+
+      // BERSIHKAN DAN GENERATE SLIDE DINAMIS
+      document.querySelectorAll('.dynamic-slide').forEach(el => el.remove());
+      const masterContainer = document.getElementById('slides-master-container');
+
+      // Generate Acara dengan Ikon Monokrom Baru & Kolom Tempat
+      (core.events || []).forEach((ev, idx) => {
+        if (ev.judul) {
+          masterContainer.insertAdjacentHTML('beforeend', `
+            <div class="slide dynamic-slide" id="slide-event-${idx}">
+              <h1 class="section-title">${ev.judul}</h1>
+              <div class="event-flex">
+                <div class="event-poster"><img src="${ev.poster || 'assets/poster1.jpg'}" onerror="this.src='assets/poster1.jpg'"></div>
+                <div class="event-card-details">
+                  <div class="event-item">
+                    <svg class="monochrome-event-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <strong>Pembicara:</strong> <span>${ev.ustadz || '-'}</span>
+                  </div>
+                  <div class="event-item">
+                    <svg class="monochrome-event-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                    <strong>Tanggal:</strong> <span>${ev.tgl || '-'}</span>
+                  </div>
+                  <div class="event-item">
+                    <svg class="monochrome-event-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+                    <strong>Waktu:</strong> <span>${ev.jam || '-'}</span>
+                  </div>
+                  <div class="event-item">
+                    <svg class="monochrome-event-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <strong>Tempat:</strong> <span>${ev.tempat || '-'}</span>
+                  </div>
+                  <div class="event-item" style="display:flex; align-items: flex-start; margin-top:15px; border-top:1px dashed #ddd; padding-top:15px;">
+                    <svg class="monochrome-event-icon" style="margin-top:2px;" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    <div>
+                      <strong style="display:block; margin-bottom:5px;">DESKRIPSI:</strong>
+                      <span style="line-height:1.5;">${ev.desc || '-'}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `);
+        }
+      });
+
+      // Generate Foto Dokumentasi
+      if (core.dokumentasi?.show) {
+        let imagesGridHtml = "";
+        (core.dokumentasi.images || []).forEach(imgUrl => {
+          if(imgUrl.trim() !== "") {
+            imagesGridHtml += `<div class="gallery-item"><img src="${imgUrl}"></div>`;
+          }
+        });
+        
+        masterContainer.insertAdjacentHTML('beforeend', `
+          <div class="slide dynamic-slide" id="slide-dokumentasi">
+            <h1 class="section-title">${core.dokumentasi.judul || 'Dokumentasi Kegiatan'}</h1>
+            <div class="gallery-grid">${imagesGridHtml || '<p style="padding:20px;">Belum ada foto.</p>'}</div>
+          </div>
+        `);
+      }
+    }
+
+    // HITUNG JADWAL SHOLAT ASTRONOMI
+    function computePrayerTimes() {
+      const today = new Date();
+      const lat = globalGeoConfig.lat;
+      const lng = globalGeoConfig.lng;
+      const tz = globalGeoConfig.tz;
+      const start = new Date(today.getFullYear(), 0, 0);
+      const diff = today - start;
+      const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const gamma = 2 * Math.PI * (dayOfYear - 1) / 365;
+      const eqTime = 229.18 * (0.000075 + 0.001868 * Math.cos(gamma) - 0.032077 * Math.sin(gamma) - 0.014615 * Math.cos(2 * gamma) - 0.040849 * Math.sin(2 * gamma));
+      const decl = 0.006918 - 0.399912 * Math.cos(gamma) + 0.070257 * Math.sin(gamma) - 0.006758 * Math.cos(2 * gamma) + 0.000907 * Math.sin(2 * gamma) - 0.002697 * Math.cos(3 * gamma) + 0.00148 * Math.sin(3 * gamma);
+      const degToRad = (d) => d * Math.PI / 180;
+      const radToDeg = (r) => r * 180 / Math.PI;
+      const zuhrBase = 12 + (15 * tz - lng) / 15 - eqTime / 60;
+
+      function hourAngle(angle, isBelow) {
+        const cosH = (Math.sin(degToRad(isBelow ? -angle : angle)) - Math.sin(degToRad(lat)) * Math.sin(decl)) / (Math.cos(degToRad(lat)) * Math.cos(decl));
+        return (cosH > 1 || cosH < -1) ? 0 : radToDeg(Math.acos(cosH)) / 15;
+      }
+
+      const formatTime = (decimalHours, correctionMinutes, key) => {
+        let totalMinutes = Math.round(decimalHours * 60) + correctionMinutes;
+        calculatedPrayerMinutes[key] = (totalMinutes + 1440) % 1440;
+        return `${String(Math.floor(totalMinutes / 60) % 24).padStart(2, '0')}:${String(totalMinutes % 60).padStart(2, '0')}`;
+      };
+
+      document.getElementById('val-subuh').innerText = formatTime(zuhrBase - hourAngle(20, true), globalCorrections.subuh, 'subuh');
+      document.getElementById('val-dzuhur').innerText = formatTime(zuhrBase, globalCorrections.dzuhur, 'dzuhur');
+      document.getElementById('val-ashar').innerText = formatTime(zuhrBase + hourAngle(radToDeg(Math.atan(1 / (1 + Math.tan(Math.abs(degToRad(lat - decl)))))), false), globalCorrections.ashar, 'ashar');
+      document.getElementById('val-maghrib').innerText = formatTime(zuhrBase + hourAngle(1, true), globalCorrections.maghrib, 'maghrib');
+      document.getElementById('val-isya').innerText = formatTime(zuhrBase + hourAngle(18, true), globalCorrections.isya, 'isya');
+    }
+
+    function updateNextPrayerHighlight() {
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      let nextKey = 'subuh';
+
+      if (currentMinutes <= calculatedPrayerMinutes.subuh) nextKey = 'subuh';
+      else if (currentMinutes <= calculatedPrayerMinutes.dzuhur) nextKey = 'dzuhur';
+      else if (currentMinutes <= calculatedPrayerMinutes.ashar) nextKey = 'ashar';
+      else if (currentMinutes <= calculatedPrayerMinutes.maghrib) nextKey = 'maghrib';
+      else if (currentMinutes <= calculatedPrayerMinutes.isya) nextKey = 'isya';
+
+      ['subuh', 'dzuhur', 'ashar', 'maghrib', 'isya'].forEach(k => document.getElementById(`row-${k}`).classList.remove('next-active'));
+      document.getElementById(`row-${nextKey}`).classList.add('next-active');
+      return nextKey;
+    }
+
+    function runPrayerCountdown(nextKey) {
+      const now = new Date();
+      let diff = (calculatedPrayerMinutes[nextKey] * 60) - (now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds());
+      if (diff < 0) diff += 24 * 3600;
+      document.getElementById(`cd-${nextKey}`).innerText = `⏳ -${String(Math.floor(diff / 3600)).padStart(2, '0')}:${String(Math.floor((diff % 3600) / 60)).padStart(2, '0')}:${String(diff % 60).padStart(2, '0')}`;
+    }
+
+    function handleTableAutoScrolling() {
+      [document.getElementById('scroll-container-arus'), document.getElementById('scroll-container-donasi')].forEach(c => {
+        if (!c) return;
+        if (c.scrollHeight > c.clientHeight && c.closest('.slide').classList.contains('active')) {
+          c.scrollTop += 1;
+          if (c.scrollTop + c.clientHeight >= c.scrollHeight - 1) {
+            if (!c.timeout) c.timeout = setTimeout(() => { c.scrollTop = 0; c.timeout = null; }, 2000);
+            c.scrollTop -= 1;
+          }
+        } else { c.scrollTop = 0; }
+      });
+    }
+
+    function startSlideshowLoop() {
+      if (slideTimerEngine) clearInterval(slideTimerEngine);
+      currentSlideIndex = 0;
+      
+      const slides = document.querySelectorAll('.slide');
+      slides.forEach((s, idx) => idx === 0 ? s.classList.add('active') : s.classList.remove('active'));
+      
+      slideTimerEngine = setInterval(() => {
+        const currentSlides = document.querySelectorAll('.slide');
+        if (currentSlides.length === 0) return;
+        currentSlides[currentSlideIndex].classList.remove('active');
+        currentSlideIndex = (currentSlideIndex + 1) % currentSlides.length;
+        currentSlides[currentSlideIndex].classList.add('active');
+      }, 10000);
+    }
+
+    window.onload = function() {
+      loadSystemConfig();
+      computePrayerTimes(); 
+      startSlideshowLoop();
+      setInterval(handleTableAutoScrolling, 40);
+      setInterval(() => {
+        const d = new Date();
+        document.getElementById('live-time').innerText = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:${String(d.getSeconds()).padStart(2, '0')}`;
+        document.getElementById('live-date').innerText = d.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        runPrayerCountdown(updateNextPrayerHighlight());
+      }, 1000);
+    };
+  </script>
+</body>
+</html>
