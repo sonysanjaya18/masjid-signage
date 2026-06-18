@@ -20,8 +20,8 @@ window.localMosqueData = {
   },
   "correction": {
     "subuh": null,
-    "dzuhur": null,
-    "ashar": null,
+    "dzuhur": 1,
+    "ashar": 47,
     "maghrib": null,
     "isya": null
   },
