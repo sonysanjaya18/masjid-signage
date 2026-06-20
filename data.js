@@ -45,7 +45,7 @@ var localMosqueData = {
             "foto": ""
           },
           {
-            "nama": "Ust. M Heri WahyudiWahyudi",
+            "nama": "Ust. M Heri Wahyudi",
             "foto": ""
           }
         ]
