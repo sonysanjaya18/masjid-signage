@@ -129,6 +129,7 @@
     <a href="#sec-arus">📊 Arus Kas</a>
     <a href="#sec-donasi">🤝 Donasi</a>
     <div class="sidebar-section">Konten Lain</div>
+    <a href="#sec-timer">⏱️ Timer Adzan</a>
     <a href="#sec-khatib">🕌 Khatib Jum'at</a>
     <a href="#sec-events">📣 Acara & Pengumuman</a>
     <a href="#sec-galeri">🖼️ Galeri Dokumentasi</a>
@@ -251,6 +252,36 @@
     </div>
 
     <!-- ─── KHATIB ─── -->
+    <!-- ─── TIMER ADZAN ─── -->
+    <div class="card" id="sec-timer">
+      <div class="card-header"><h2>⏱️ Timer Adzan & Pasca Adzan</h2></div>
+      <div class="card-body">
+        <p style="font-size:.85rem; color:#4a5a4e; margin-bottom:16px;">
+          Layar akan <strong>fullscreen</strong> otomatis saat mendekati adzan, lalu lanjut ke timer-timer di bawah ini secara berurutan.
+        </p>
+
+        <!-- Pre-adzan -->
+        <div style="background:#f0f7f3; border-radius:10px; padding:16px 18px; margin-bottom:20px; border-left:4px solid #caa43d;">
+          <div style="font-weight:700; color:#11422c; margin-bottom:10px;">🕌 Timer Pra-Adzan (Countdown menuju waktu sholat)</div>
+          <div class="row">
+            <div class="field">
+              <label>Judul yang Ditampilkan</label>
+              <input type="text" id="timer_adzan_judul" placeholder="Bersiap untuk Adzan..." value="Bersiap untuk Adzan">
+            </div>
+            <div class="field" style="max-width:180px;">
+              <label>Mulai berapa menit sebelum adzan?</label>
+              <input type="number" id="timer_adzan_menit" min="1" max="30" value="1">
+            </div>
+          </div>
+        </div>
+
+        <!-- Post-adzan timers -->
+        <div style="font-weight:700; color:#11422c; margin-bottom:10px;">🤲 Timer Setelah Adzan (urutan berurutan)</div>
+        <div id="wrapper-post-timers"></div>
+        <button type="button" class="btn btn-add" onclick="addPostTimer()" style="margin-top:8px;">➕ Tambah Timer</button>
+      </div>
+    </div>
+
     <div class="card" id="sec-khatib">
       <div class="card-header"><h2>🕌 Jadwal Khatib Jum'at</h2></div>
       <div class="card-body">
@@ -449,6 +480,33 @@ function selectKota(id, lokasi, kabkota) {
   // Tandai sudah tersimpan
   document.getElementById('save-dot').className = 'save-dot';
   document.getElementById('save-label').textContent = 'Ada perubahan belum disimpan';
+}
+
+// ── TIMER ADZAN ──
+function addPostTimer(judul = '', durasi = 10, bg = '') {
+  const wrap = document.getElementById('wrapper-post-timers');
+  const idx  = wrap.children.length + 1;
+  const d    = document.createElement('div');
+  d.className = 'post-timer-block';
+  d.style.cssText = 'background:#fff; border:1.5px solid #e4ede8; border-radius:10px; padding:14px 16px; margin-bottom:10px;';
+  d.innerHTML = `
+    <div style="font-size:.8rem; font-weight:700; color:#caa43d; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">Timer ke-${idx}</div>
+    <div class="row">
+      <div class="field" style="flex:2;">
+        <label>Judul Timer</label>
+        <input type="text" class="pt-judul" placeholder="Contoh: Sholat Berjamaah" value="${judul}">
+      </div>
+      <div class="field" style="max-width:150px;">
+        <label>Durasi (menit)</label>
+        <input type="number" class="pt-durasi" min="1" value="${durasi}">
+      </div>
+      <div class="field" style="flex:2;">
+        <label>Background (URL gambar, opsional)</label>
+        <input type="text" class="pt-bg" placeholder="assets/bg-sholat.jpg" value="${bg}">
+      </div>
+    </div>
+    <button type="button" class="btn btn-del" style="margin-top:4px;" onclick="this.parentElement.remove()">✕ Hapus Timer ini</button>`;
+  wrap.appendChild(d);
 }
 
 // ── TOGGLE PENGURUS ──
@@ -670,6 +728,17 @@ function collectAllData() {
     out.donasi.push({ nama: ins[0].value, jml: ins[1].value, via: ins[2].value });
   });
 
+  // TIMER ADZAN
+  out.timerAdzan = {
+    adzanJudul: v('timer_adzan_judul'),
+    adzanMenit: parseInt(document.getElementById('timer_adzan_menit')?.value) || 1,
+    postTimers: Array.from(document.querySelectorAll('#wrapper-post-timers .post-timer-block')).map(b => ({
+      judul:  b.querySelector('.pt-judul')?.value.trim() || '',
+      durasi: parseInt(b.querySelector('.pt-durasi')?.value) || 10,
+      bg:     b.querySelector('.pt-bg')?.value.trim() || '',
+    }))
+  };
+
   // KHATIB — ambil dari date-picker, konversi ke format Indonesia
   out.khatib = { show: v('khatib_show') === 'true', featuredImage: v('khatib_featuredImage'), list: [] };
   document.querySelectorAll('#wrapper-khatib .dynamic-row').forEach(row => {
@@ -778,6 +847,13 @@ function populateForm(d) {
   // Donasi
   (d.donasi || []).forEach(r => addDonasiRow(r.nama, r.jml, r.via));
 
+  // Timer Adzan
+  if (d.timerAdzan) {
+    sv('timer_adzan_judul', d.timerAdzan.adzanJudul || 'Bersiap untuk Adzan');
+    const minEl = document.getElementById('timer_adzan_menit');
+    if (minEl) minEl.value = d.timerAdzan.adzanMenit || 1;
+    (d.timerAdzan.postTimers || []).forEach(pt => addPostTimer(pt.judul, pt.durasi, pt.bg));
+  }
   // Khatib
   if (d.khatib?.show === false) sv('khatib_show', 'false');
   sv('khatib_featuredImage', d.khatib?.featuredImage || '');

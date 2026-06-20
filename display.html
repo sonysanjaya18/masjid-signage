@@ -59,22 +59,21 @@
     }
 
     .pengurus-jabatan-title {
-      font-size: 2rem;
-      font-weight: 800;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 900;
       color: #11422c;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      border-bottom: 3px solid #caa43d;
-      padding-bottom: 10px;
+      letter-spacing: 4px;
       width: 100%;
+      /* Tidak ada garis bawah */
     }
 
     .pengurus-members-row {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 28px;
+      gap: 32px 40px;
       width: 100%;
     }
 
@@ -83,26 +82,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      min-width: 140px;
-      max-width: 200px;
+      gap: 12px;
+      min-width: 150px;
+      max-width: 210px;
     }
 
     .member-avatar {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #caa43d;
+      border: 4px solid #caa43d;
       background: #11422c;
       display: block;
     }
 
     .member-avatar-placeholder {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      border: 3px solid #caa43d;
+      border: 4px solid #caa43d;
       background: #11422c;
       display: flex;
       align-items: center;
@@ -111,28 +110,39 @@
     }
 
     .member-avatar-placeholder svg {
-      width: 44px;
-      height: 44px;
+      width: 54px;
+      height: 54px;
       fill: rgba(202,164,61,0.8);
     }
 
     .member-name {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 1.2rem;
+      font-weight: 800;
       color: #11422c;
       text-align: center;
       line-height: 1.3;
     }
 
+    .member-jabatan {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #7f8c8d;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: -6px;
+    }
+
     /* Untuk seksi yang banyak anggotanya, avatar lebih kecil */
     .pengurus-members-row.compact .member-avatar,
     .pengurus-members-row.compact .member-avatar-placeholder {
-      width: 60px;
-      height: 60px;
+      width: 75px;
+      height: 75px;
     }
-    .pengurus-members-row.compact .member-avatar-placeholder svg { width: 32px; height: 32px; }
-    .pengurus-members-row.compact .member-name { font-size: 0.92rem; }
-    .pengurus-members-row.compact .pengurus-member-card { min-width: 100px; max-width: 150px; gap: 7px; }
+    .pengurus-members-row.compact .member-avatar-placeholder svg { width: 38px; height: 38px; }
+    .pengurus-members-row.compact .member-name { font-size: 1rem; }
+    .pengurus-members-row.compact .member-jabatan { font-size: 0.72rem; }
+    .pengurus-members-row.compact .pengurus-member-card { min-width: 110px; max-width: 160px; gap: 8px; }
 
     /* ── KHATIB JUM'AT ── */
     .khatib-layout { flex: 1; display: flex; gap: 28px; min-height: 0; }
@@ -277,16 +287,54 @@
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
     /* ── SIDEBAR SHOLAT ── */
-    .sidebar-sholat { width: 25%; background: #ffffff; border-left: 2px solid #f0edf0; display: flex; flex-direction: column; }
-    .sholat-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 28px; background: #ffffff; transition: all 0.4s ease; border-bottom: 1px solid #f3eff3; flex: 1; }
+    .sidebar-sholat { width: 25%; background: #0d3320; border-left: 2px solid #0a2818; display: flex; flex-direction: column; }
+    .sholat-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: transparent; transition: all 0.5s ease; border-bottom: 1px solid rgba(255,255,255,0.07); flex: 1; }
     .sholat-row:last-child { border-bottom: none; }
-    .sholat-row .label { font-size: 1.35rem; font-weight: bold; color: #333; }
-    .sholat-row .val   { font-size: 2rem;   font-weight: bold; color: #333; }
-    .countdown-text { font-size: 0.9rem; font-weight: 600; color: #caa43d; margin-top: 4px; display: none; }
-    .sholat-row.next-active { background: #11422c; }
-    .sholat-row.next-active .label,
-    .sholat-row.next-active .val { color: #fff; }
-    .sholat-row.next-active .countdown-text { display: block; color: #ffeaa7; }
+    .sholat-row .label { font-size: 1.15rem; font-weight: 600; color: rgba(255,255,255,0.55); transition: all 0.5s; }
+    .sholat-row .val-wrap { text-align: right; }
+    .sholat-row .val   { font-size: 1.6rem; font-weight: 700; color: rgba(255,255,255,0.55); display: block; transition: all 0.5s; }
+    /* countdown fade toggle */
+    .sholat-row .val.hidden   { opacity: 0; }
+    .sholat-row .val.visible  { opacity: 1; }
+    .countdown-badge { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.4); margin-top: 3px; display: none; text-align: right; }
+    /* next prayer highlight */
+    .sholat-row.next-active { background: rgba(202,164,61,0.12); border-left: 4px solid #caa43d; }
+    .sholat-row.next-active .label { color: #caa43d; font-size: 1.3rem; font-weight: 800; }
+    .sholat-row.next-active .val   { color: #ffffff; font-size: 2.2rem; font-weight: 900; }
+    .sholat-row.next-active .countdown-badge { display: block; color: #ffd97d; font-size: 0.9rem; }
+
+    /* ── FULLSCREEN TIMER OVERLAY ── */
+    #fs-timer-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      flex-direction: column; align-items: center; justify-content: center;
+      background: #0d3320;
+    }
+    #fs-timer-overlay.active { display: flex; }
+    #fs-timer-bg-img {
+      position: absolute; inset: 0; object-fit: cover; width: 100%; height: 100%;
+      opacity: 0.25; display: none;
+    }
+    #fs-timer-bg-img.visible { display: block; }
+    .fs-timer-content { position: relative; z-index: 2; text-align: center; padding: 40px; }
+    .fs-timer-judul {
+      font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 900; color: #ffffff;
+      text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    .fs-timer-countdown {
+      font-size: clamp(4rem, 12vw, 10rem); font-weight: 900; color: #caa43d;
+      font-variant-numeric: tabular-nums; letter-spacing: 6px;
+      text-shadow: 0 4px 30px rgba(202,164,61,0.4);
+      animation: pulseTimer 1s ease-in-out infinite;
+    }
+    @keyframes pulseTimer { 0%,100% { opacity:1; } 50% { opacity:0.75; } }
+    .fs-timer-sub {
+      font-size: 1.3rem; color: rgba(255,255,255,0.6); margin-top: 20px; font-weight: 500;
+    }
+    .fs-adzan-icon {
+      font-size: 5rem; margin-bottom: 16px; animation: swingIcon 1.2s ease-in-out infinite;
+    }
+    @keyframes swingIcon { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
 
     /* ── FOOTER MARQUEE ── */
     footer { background: #11422c; height: 8%; display: flex; align-items: center; overflow: hidden; white-space: nowrap; border-top: 3px solid #caa43d; }
@@ -365,25 +413,51 @@
     <!-- SIDEBAR WAKTU SHOLAT -->
     <div class="sidebar-sholat">
       <div class="sholat-row" id="row-subuh">
-        <div><span class="label">Subuh</span><div class="countdown-text" id="cd-subuh">⏳ 00:00:00</div></div>
-        <span class="val" id="val-subuh">00:00</span>
+        <span class="label">Subuh</span>
+        <div class="val-wrap">
+          <span class="val visible" id="val-subuh">00:00</span>
+          <div class="countdown-badge" id="cd-subuh">00:00:00</div>
+        </div>
       </div>
       <div class="sholat-row" id="row-dzuhur">
-        <div><span class="label">Dzuhur</span><div class="countdown-text" id="cd-dzuhur">⏳ 00:00:00</div></div>
-        <span class="val" id="val-dzuhur">00:00</span>
+        <span class="label">Dzuhur</span>
+        <div class="val-wrap">
+          <span class="val visible" id="val-dzuhur">00:00</span>
+          <div class="countdown-badge" id="cd-dzuhur">00:00:00</div>
+        </div>
       </div>
       <div class="sholat-row" id="row-ashar">
-        <div><span class="label">Ashar</span><div class="countdown-text" id="cd-ashar">⏳ 00:00:00</div></div>
-        <span class="val" id="val-ashar">00:00</span>
+        <span class="label">Ashar</span>
+        <div class="val-wrap">
+          <span class="val visible" id="val-ashar">00:00</span>
+          <div class="countdown-badge" id="cd-ashar">00:00:00</div>
+        </div>
       </div>
       <div class="sholat-row" id="row-maghrib">
-        <div><span class="label">Maghrib</span><div class="countdown-text" id="cd-maghrib">⏳ 00:00:00</div></div>
-        <span class="val" id="val-maghrib">00:00</span>
+        <span class="label">Maghrib</span>
+        <div class="val-wrap">
+          <span class="val visible" id="val-maghrib">00:00</span>
+          <div class="countdown-badge" id="cd-maghrib">00:00:00</div>
+        </div>
       </div>
       <div class="sholat-row" id="row-isya">
-        <div><span class="label">Isya</span><div class="countdown-text" id="cd-isya">⏳ 00:00:00</div></div>
-        <span class="val" id="val-isya">00:00</span>
+        <span class="label">Isya</span>
+        <div class="val-wrap">
+          <span class="val visible" id="val-isya">00:00</span>
+          <div class="countdown-badge" id="cd-isya">00:00:00</div>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN TIMER OVERLAY -->
+  <div id="fs-timer-overlay">
+    <img id="fs-timer-bg-img" src="" alt="">
+    <div class="fs-timer-content">
+      <div class="fs-adzan-icon" id="fs-icon">🕌</div>
+      <div class="fs-timer-judul" id="fs-judul">Bersiap untuk Adzan</div>
+      <div class="fs-timer-countdown" id="fs-countdown">00:00</div>
+      <div class="fs-timer-sub" id="fs-sub"></div>
     </div>
   </div>
 
@@ -416,14 +490,16 @@
     }
 
     // Buat kartu anggota (dengan foto jika ada, placeholder jika tidak)
-    function makeMemberCard(nama, foto) {
+    function makeMemberCard(nama, foto, jabatan = '') {
       const avatarHtml = (foto && foto.trim())
         ? `<img class="member-avatar" src="${foto}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
            <div class="member-avatar-placeholder" style="display:none;">${avatarIcon()}</div>`
         : `<div class="member-avatar-placeholder">${avatarIcon()}</div>`;
+      const jabatanHtml = jabatan ? `<div class="member-jabatan">${jabatan}</div>` : '';
       return `<div class="pengurus-member-card">
         ${avatarHtml}
         <div class="member-name">${nama}</div>
+        ${jabatanHtml}
       </div>`;
     }
 
@@ -456,10 +532,10 @@
 
       // Helper sisipkan slide sebelum slide-kas
       function insertPengurusSlide(jabatanLabel, members) {
-        // members = array of { nama, foto }
+        // members = array of { nama, foto, jabatan }
         if (!members || members.length === 0) return;
         const compactClass = members.length > 5 ? ' compact' : '';
-        const cardsHtml = members.map(m => makeMemberCard(m.nama, m.foto)).join('');
+        const cardsHtml = members.map(m => makeMemberCard(m.nama, m.foto, m.jabatan || '')).join('');
         const slide = document.createElement('div');
         slide.className = 'slide';
         slide.innerHTML = `
@@ -475,21 +551,21 @@
 
       // Slide Penasehat
       if (st.penasehat && st.penasehat.length > 0) {
-        insertPengurusSlide('Penasehat', st.penasehat.map(p => ({ nama: p.nama, foto: p.foto || '' })));
+        insertPengurusSlide('Penasehat', st.penasehat.map(p => ({ nama: p.nama, foto: p.foto || '', jabatan: p.jabatan || 'Penasehat' })));
       }
 
       // Slide Ketua & Wakil Ketua
       const intiMembers = [];
-      if (st.ketua)      intiMembers.push({ nama: st.ketua,      foto: st.ketuaFoto || '' });
-      if (st.wakilKetua) intiMembers.push({ nama: st.wakilKetua, foto: st.wakilKetuaFoto || '' });
+      if (st.ketua)      intiMembers.push({ nama: st.ketua,      foto: st.ketuaFoto || '',      jabatan: 'Ketua' });
+      if (st.wakilKetua) intiMembers.push({ nama: st.wakilKetua, foto: st.wakilKetuaFoto || '', jabatan: 'Wakil Ketua' });
       if (intiMembers.length > 0) insertPengurusSlide('Ketua & Wakil Ketua', intiMembers);
 
       // Slide Sekretaris & Bendahara
       const sekBenMembers = [];
-      if (st.sekretaris1) sekBenMembers.push({ nama: st.sekretaris1, foto: st.sekretaris1Foto || '' });
-      if (st.sekretaris2) sekBenMembers.push({ nama: st.sekretaris2, foto: st.sekretaris2Foto || '' });
-      if (st.bendahara1)  sekBenMembers.push({ nama: st.bendahara1,  foto: st.bendahara1Foto  || '' });
-      if (st.bendahara2)  sekBenMembers.push({ nama: st.bendahara2,  foto: st.bendahara2Foto  || '' });
+      if (st.sekretaris1) sekBenMembers.push({ nama: st.sekretaris1, foto: st.sekretaris1Foto || '', jabatan: 'Sekretaris 1' });
+      if (st.sekretaris2) sekBenMembers.push({ nama: st.sekretaris2, foto: st.sekretaris2Foto || '', jabatan: 'Sekretaris 2' });
+      if (st.bendahara1)  sekBenMembers.push({ nama: st.bendahara1,  foto: st.bendahara1Foto  || '', jabatan: 'Bendahara 1' });
+      if (st.bendahara2)  sekBenMembers.push({ nama: st.bendahara2,  foto: st.bendahara2Foto  || '', jabatan: 'Bendahara 2' });
       if (sekBenMembers.length > 0) insertPengurusSlide('Sekretaris & Bendahara', sekBenMembers);
 
       // Slide tiap Seksi
@@ -500,7 +576,7 @@
             const nm = typeof a === 'object' ? a.nama : a;
             return nm && nm.trim();
           })
-          .map(a => typeof a === 'object' ? { nama: a.nama, foto: a.foto || '' } : { nama: a, foto: '' });
+          .map(a => typeof a === 'object' ? { nama: a.nama, foto: a.foto || '', jabatan: a.jabatan || '' } : { nama: a, foto: '', jabatan: '' });
         if (members.length > 0) insertPengurusSlide(`Seksi ${s.nama}`, members);
       });
 
@@ -644,6 +720,8 @@
       // ─── Simpan konfigurasi geo & koreksi ───
       globalGeoConfig   = core.geo        || globalGeoConfig;
       globalCorrections = core.correction || globalCorrections;
+      // ─── Timer Adzan ───
+      fsTimerConfig = core.timerAdzan || null;
     }
 
     // ─────────────────────────────────────────────
@@ -686,7 +764,7 @@
           return `${String(Math.floor(m / 60)).padStart(2,'0')}:${String(Math.round(m % 60)).padStart(2,'0')}`;
         };
         ['subuh','dzuhur','ashar','maghrib','isya'].forEach(k =>
-          document.getElementById('val-' + k).innerText = fmt(calculatedPrayerMinutes[k])
+          document.getElementById('val-' + k).innerText = fmt(calculatedPrayerMinutes[k]) + ' WIB'
         );
         return true;
       } catch(e) {
@@ -695,17 +773,96 @@
       }
     }
 
+    // ─────────────────────────────────────────────
+    //  FULLSCREEN TIMER ENGINE
+    // ─────────────────────────────────────────────
+    let fsTimerConfig  = null;
+    let fsTimerActive  = false;
+    let fsTimerPhase   = 'idle';
+    let fsTimerPostIdx = 0;
+    let fsTimerEnd     = 0;
+    let fsTimerTick    = null;
+    let fsSlidesPaused = false;
+
+    function showFsTimer(judul, icon, sub, bgUrl, endMs) {
+      const overlay = document.getElementById('fs-timer-overlay');
+      document.getElementById('fs-judul').innerText = judul;
+      document.getElementById('fs-icon').innerText  = icon;
+      document.getElementById('fs-sub').innerText   = sub;
+      const bgEl = document.getElementById('fs-timer-bg-img');
+      if (bgUrl) { bgEl.src = bgUrl; bgEl.classList.add('visible'); }
+      else        { bgEl.classList.remove('visible'); bgEl.src = ''; }
+      overlay.classList.add('active');
+      fsTimerActive = true;
+      fsTimerEnd    = endMs;
+      if (!fsSlidesPaused) { clearInterval(slideTimerEngine); fsSlidesPaused = true; }
+      clearTimeout(fsTimerTick);
+      tickFsTimer();
+    }
+
+    function tickFsTimer() {
+      const rem = Math.max(0, fsTimerEnd - Date.now());
+      const m   = Math.floor(rem / 60000);
+      const s   = Math.floor((rem % 60000) / 1000);
+      document.getElementById('fs-countdown').innerText =
+        `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      if (rem <= 0) { advanceFsTimer(); return; }
+      fsTimerTick = setTimeout(tickFsTimer, 250);
+    }
+
+    function advanceFsTimer() {
+      const cfg = fsTimerConfig;
+      if (fsTimerPhase === 'pre') {
+        if (cfg?.postTimers?.length > 0) {
+          fsTimerPostIdx = 0;
+          startPostTimer(0);
+        } else { endFsTimer(); }
+      } else {
+        fsTimerPostIdx++;
+        if (fsTimerPostIdx < (fsTimerConfig?.postTimers?.length || 0)) {
+          startPostTimer(fsTimerPostIdx);
+        } else { endFsTimer(); }
+      }
+    }
+
+    function startPostTimer(idx) {
+      const pt = fsTimerConfig?.postTimers?.[idx];
+      if (!pt) { endFsTimer(); return; }
+      fsTimerPhase = 'post-' + idx;
+      const durMs  = (parseInt(pt.durasi) || 0) * 60 * 1000;
+      if (durMs <= 0) { advanceFsTimer(); return; }
+      showFsTimer(pt.judul || 'Silakan Beribadah', '🤲', '', pt.bg || '', Date.now() + durMs);
+    }
+
+    function endFsTimer() {
+      clearTimeout(fsTimerTick);
+      fsTimerActive = false;
+      fsTimerPhase  = 'idle';
+      document.getElementById('fs-timer-overlay').classList.remove('active');
+      if (fsSlidesPaused) { startSlideshowLoop(); fsSlidesPaused = false; }
+    }
+
+    // ─────────────────────────────────────────────
+    //  PRAYER HIGHLIGHT + FADE COUNTDOWN (sidebar)
+    // ─────────────────────────────────────────────
+    let prevNextKey = null;
+    const KEYS = ['subuh','dzuhur','ashar','maghrib','isya'];
+
+    function fmtMin(m) {
+      m = ((m % 1440) + 1440) % 1440;
+      return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(Math.round(m%60)).padStart(2,'0')}`;
+    }
+
     function updateNextPrayerHighlight() {
       const now = new Date();
       const cur = now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
-      const keys = ['subuh','dzuhur','ashar','maghrib','isya'];
-      let nextKey = keys[0], best = Infinity;
-      keys.forEach(k => {
+      let nextKey = KEYS[0], best = Infinity;
+      KEYS.forEach(k => {
         let d = ((calculatedPrayerMinutes[k] % 1440 + 1440) % 1440) - cur;
         if (d < 0) d += 1440;
         if (d < best) { best = d; nextKey = k; }
       });
-      keys.forEach(k => document.getElementById('row-' + k).classList.toggle('next-active', k === nextKey));
+      KEYS.forEach(k => document.getElementById('row-' + k).classList.toggle('next-active', k === nextKey));
       return nextKey;
     }
 
@@ -716,16 +873,34 @@
       let diff  = ((calculatedPrayerMinutes[nextKey] % 1440 + 1440) % 1440) * 60 - cur;
       if (diff < 0) diff += 86400;
       const h = Math.floor(diff / 3600), m = Math.floor(diff % 3600 / 60), s = Math.floor(diff % 60);
-      const el = document.getElementById('cd-' + nextKey);
-      if (el) el.innerText = `⏳ ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const cdStr = `-${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      const cdEl  = document.getElementById('cd-' + nextKey);
+      if (cdEl) cdEl.innerText = cdStr;
+
+      // Fade val: ganti antara jam sholat ↔ countdown tiap 4 detik
+      const showCd = Math.floor(now.getSeconds() / 4) % 2 === 1;
+      const valEl  = document.getElementById('val-' + nextKey);
+      if (valEl) valEl.innerText = showCd ? cdStr : fmtMin(calculatedPrayerMinutes[nextKey]) + ' WIB';
+
+      // ── CEK TRIGGER FULLSCREEN PRE-ADZAN ──
+      if (fsTimerConfig && !fsTimerActive && fsTimerPhase === 'idle') {
+        const preMin = parseInt(fsTimerConfig.adzanMenit) || 1;
+        if (diff <= preMin * 60 && diff > 0) {
+          fsTimerPhase = 'pre';
+          const label  = nextKey.charAt(0).toUpperCase() + nextKey.slice(1);
+          showFsTimer(
+            fsTimerConfig.adzanJudul || 'Bersiap untuk Adzan',
+            '🕌', label, '', Date.now() + diff * 1000
+          );
+        }
+      }
     }
 
-    // Refresh jadwal tiap ganti hari (midnight)
+    // Refresh jadwal tiap ganti hari
     function scheduleNextDayRefresh() {
       const now  = new Date();
       const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 1, 0);
-      const ms   = next - now;
-      setTimeout(() => { fetchPrayerTimesFromAPI(); scheduleNextDayRefresh(); }, ms);
+      setTimeout(() => { fetchPrayerTimesFromAPI(); scheduleNextDayRefresh(); }, next - now);
     }
 
     // ─────────────────────────────────────────────
@@ -759,6 +934,8 @@
         document.getElementById('live-date').innerText = d.toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
         runPrayerCountdown(updateNextPrayerHighlight());
       }, 1000);
+      await checkForUpdate();
+      setInterval(checkForUpdate, 30000);
     };
   </script>
 </body>

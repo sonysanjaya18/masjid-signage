@@ -206,6 +206,22 @@ var localMosqueData = {
       "via": "Barang"
     }
   ],
+  "timerAdzan": {
+    "adzanJudul": "Bersiap untuk Adzan",
+    "adzanMenit": 1,
+    "postTimers": [
+      {
+        "judul": "Iqomah",
+        "durasi": 2,
+        "bg": ""
+      },
+      {
+        "judul": "Sholat Berjamaah",
+        "durasi": 4,
+        "bg": ""
+      }
+    ]
+  },
   "khatib": {
     "show": true,
     "featuredImage": "jumat.png",
