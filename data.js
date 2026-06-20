@@ -217,6 +217,10 @@ var localMosqueData = {
       {
         "tgl": "3 Juli 2026",
         "nama": "Ust. Kambali Jab"
+      },
+      {
+        "tgl": "10 Juli 2026",
+        "nama": "Ust. Ali Usman"
       }
     ]
   },
