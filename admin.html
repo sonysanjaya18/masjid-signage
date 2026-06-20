@@ -4,226 +4,871 @@
   <meta charset="UTF-8">
   <title>Panel Admin Digital Signage Masjid</title>
   <style>
-    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f5f7f6; color: #2c3e50; padding: 30px; }
-    .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-    h1 { color: #11422c; border-bottom: 3px solid #caa43d; padding-bottom: 10px; margin-bottom: 25px; }
-    h2 { color: #11422c; font-size: 1.3rem; margin-top: 30px; margin-bottom: 15px; background: #f0f4f1; padding: 8px 12px; border-left: 4px solid #caa43d; }
-    .form-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-    .form-control { flex: 1; min-width: 200px; display: flex; flex-direction: column; }
-    label { font-weight: 600; font-size: 0.9rem; margin-bottom: 5px; color: #4a5a4e; }
-    input, textarea, select { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-    input:focus, textarea:focus { border-color: #11422c; outline: none; }
-    .dynamic-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; background: #fafafa; padding: 10px; border-radius: 6px; }
-    .btn { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: background 0.2s; }
-    .btn-primary { background: #11422c; color: white; }
-    .btn-primary:hover { background: #0b2b1d; }
-    .btn-danger { background: #e74c3c; color: white; padding: 10px; }
-    .btn-danger:hover { background: #c0392b; }
-    .btn-add { background: #caa43d; color: white; margin-top: 5px; }
-    .btn-add:hover { background: #b08d30; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f2; color: #2c3e50; }
+
+    /* ── TOP NAV ── */
+    .topbar { background: #11422c; color: #fff; padding: 14px 40px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
+    .topbar h1 { font-size: 1.3rem; font-weight: 700; flex: 1; }
+    .save-status { font-size: 0.82rem; color: #a8d5bc; display: flex; align-items: center; gap: 6px; transition: opacity .3s; }
+    .save-dot { width: 8px; height: 8px; border-radius: 50%; background: #a8d5bc; flex-shrink: 0; }
+    .save-dot.saved { background: #4ade80; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 230px; background: #fff; border-right: 1px solid #e0e8e4; padding: 20px 0; position: sticky; top: 50px; height: calc(100vh - 50px); overflow-y: auto; flex-shrink: 0; }
+    .sidebar a { display: block; padding: 10px 22px; font-size: 0.88rem; color: #4a5a4e; font-weight: 600; text-decoration: none; border-left: 3px solid transparent; }
+    .sidebar a:hover { background: #f0f7f3; color: #11422c; border-left-color: #caa43d; }
+    .sidebar-section { font-size: 0.68rem; font-weight: 800; color: #9aaa9e; text-transform: uppercase; letter-spacing: 1.5px; padding: 16px 22px 5px; }
+
+    .content { flex: 1; padding: 28px 36px; max-width: 980px; }
+
+    /* ── CARDS ── */
+    .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,.05); margin-bottom: 24px; overflow: hidden; }
+    .card-header { background: #f5f9f6; padding: 12px 22px; border-bottom: 1px solid #e4ede8; display: flex; align-items: center; gap: 10px; }
+    .card-header h2 { font-size: 1rem; color: #11422c; font-weight: 700; }
+    .badge { background: #caa43d; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; }
+    .card-body { padding: 18px 22px; }
+
+    /* ── FORM ELEMENTS ── */
+    .row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+    .field { display: flex; flex-direction: column; flex: 1; min-width: 170px; }
+    .field label { font-size: 0.78rem; font-weight: 700; color: #4a5a4e; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .4px; }
+    .field input, .field select { padding: 8px 11px; border: 1.5px solid #d4ddd8; border-radius: 7px; font-size: 0.95rem; color: #2c3e50; background: #fafcfb; }
+    .field input:focus, .field select:focus { border-color: #11422c; outline: none; background: #fff; }
+
+    /* ── DYNAMIC ROWS ── */
+    .dynamic-row { display: flex; gap: 9px; align-items: flex-start; background: #f8fbf9; border: 1.5px solid #e4ede8; border-radius: 8px; padding: 11px 13px; margin-bottom: 9px; }
+    .dynamic-row .fields { display: flex; gap: 9px; flex: 1; flex-wrap: wrap; }
+    .dynamic-row .fields input, .dynamic-row .fields select { flex: 1; min-width: 120px; padding: 8px 10px; border: 1.5px solid #d4ddd8; border-radius: 6px; font-size: 0.91rem; background: #fff; }
+    .dynamic-row .fields input:focus, .dynamic-row .fields select:focus { border-color: #11422c; outline: none; }
+
+    /* ── KHATIB DATE PICKER ── */
+    .khatib-date-wrap { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 170px; }
+    .khatib-date-wrap label { font-size: 0.72rem; font-weight: 700; color: #9aaa9e; text-transform: uppercase; letter-spacing: .4px; }
+    .khatib-date-wrap input[type="date"] { padding: 8px 10px; border: 1.5px solid #d4ddd8; border-radius: 6px; font-size: 0.91rem; background: #fff; }
+    .khatib-date-wrap input[type="date"]:focus { border-color: #11422c; outline: none; }
+    .khatib-date-preview { font-size: 0.78rem; color: #caa43d; font-weight: 600; margin-top: 2px; min-height: 16px; }
+
+    /* ── SEKSI BLOCKS ── */
+    .seksi-block { border: 1.5px solid #d4ddd8; border-radius: 10px; margin-bottom: 13px; overflow: hidden; }
+    .seksi-block-header { background: #11422c; color: #fff; padding: 9px 14px; display: flex; align-items: center; gap: 9px; }
+    .seksi-block-header input { flex: 1; background: transparent; border: none; color: #fff; font-size: 0.97rem; font-weight: 700; outline: none; }
+    .seksi-block-header input::placeholder { color: rgba(255,255,255,.45); }
+    .seksi-block-body { padding: 11px 13px; background: #fafcfb; }
+    .anggota-row { display: flex; gap: 8px; margin-bottom: 7px; align-items: center; }
+    .anggota-row input { flex: 1; padding: 7px 9px; border: 1.5px solid #d4ddd8; border-radius: 6px; font-size: 0.88rem; }
+    .anggota-row input:focus { border-color: #11422c; outline: none; }
+
+    /* ── EVENT BLOCK ── */
+    .event-block { border: 1.5px solid #d4ddd8; border-radius: 9px; margin-bottom: 13px; overflow: hidden; }
+    .event-block-header { background: #1a5235; color: #fff; padding: 9px 14px; display: flex; align-items: center; gap: 9px; }
+    .event-block-header input { flex: 1; background: transparent; border: none; color: #fff; font-size: 0.97rem; font-weight: 700; outline: none; }
+    .event-block-header input::placeholder { color: rgba(255,255,255,.45); }
+    .event-block-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; background: #fafcfb; }
+    .event-row { display: flex; gap: 9px; flex-wrap: wrap; }
+    .event-row input { flex: 1; min-width: 130px; padding: 7px 10px; border: 1.5px solid #d4ddd8; border-radius: 6px; font-size: 0.9rem; }
+    .event-row input:focus { border-color: #11422c; outline: none; }
+    .event-row input.highlight { border-color: #caa43d; background: #fffdf4; }
+
+    /* ── FIXED GRID ── */
+    .fixed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    /* ── BUTTONS ── */
+    .btn { padding: 8px 16px; border: none; border-radius: 7px; cursor: pointer; font-weight: 700; font-size: 0.88rem; }
+    .btn-add { background: #e8f4ed; color: #11422c; border: 1.5px solid #a8d5bc; margin-top: 6px; }
+    .btn-add:hover { background: #cfe8d8; }
+    .btn-del { background: #fdf0ee; color: #c0392b; border: 1.5px solid #f5c6c0; padding: 7px 11px; flex-shrink: 0; }
+    .btn-del:hover { background: #f8d7d4; }
+    .btn-block-del { background: rgba(255,255,255,.18); color: #fff; border: 1px solid rgba(255,255,255,.35); padding: 5px 10px; font-size: 0.78rem; }
+    .btn-block-del:hover { background: rgba(255,255,255,.32); }
+    .btn-anggota-add { background: #f0f4f2; color: #11422c; border: 1.5px dashed #a8d5bc; width: 100%; padding: 6px; margin-top: 3px; font-size: 0.82rem; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-anggota-add:hover { background: #e0ece6; }
+    .btn-generate { background: #11422c; color: #fff; width: 100%; padding: 15px; font-size: 1.05rem; border-radius: 10px; letter-spacing: .5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-generate:hover { background: #0b2b1d; }
+
+    /* ── STICKY FOOTER ── */
+    .sticky-footer { position: sticky; bottom: 0; background: #fff; border-top: 2px solid #e4ede8; padding: 14px 36px; margin: 0 -36px; box-shadow: 0 -4px 16px rgba(0,0,0,.06); }
+
+    /* ── TOGGLE SWITCH ── */
+    .toggle-switch { position: relative; display: inline-block; width: 56px; height: 30px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #ccc; border-radius: 30px; transition: .3s; }
+    .toggle-slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: .3s; }
+    .toggle-switch input:checked + .toggle-slider { background: #11422c; }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(26px); }
+
+    /* ── TOAST NOTIF ── */
+    #toast { position: fixed; bottom: 80px; right: 30px; background: #11422c; color: #fff; padding: 12px 22px; border-radius: 10px; font-size: 0.92rem; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all .3s; pointer-events: none; z-index: 999; border-left: 4px solid #caa43d; }
+    #toast.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>⚙️ Panel Kontrol Data Signage</h1>
-  <form id="adminForm">
-    
-    <!-- PROFILE MASJID -->
-    <h2>1. Profil Utama & Informasi Running Text</h2>
-    <div class="form-group">
-      <div class="form-control"><label>Nama Masjid</label><input type="text" id="prof_name" value="Masjid Baiturrahman"></div>
-      <div class="form-control"><label>Tagline / Pengumuman Berjalan</label><input type="text" id="prof_tagline" value="Mari merapat dan makmurkan masjid dengan Sholat Berjamaah Tepat Waktu."></div>
-    </div>
-    <div class="form-group">
-      <div class="form-control"><label>URL Background Foto Dashboard Utama</label><input type="text" id="dash_bg" value="assets/masjid.jpg"></div>
+<div id="toast">✅ Data disimpan & data.js diunduh</div>
+
+<div class="topbar">
+  <h1>⚙️ Panel Admin — Digital Signage Masjid</h1>
+  <div class="save-status" id="save-status">
+    <div class="save-dot" id="save-dot"></div>
+    <span id="save-label">Belum ada data tersimpan</span>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">Tampilan</div>
+    <a href="#sec-profil">🕌 Profil & Running Text</a>
+    <div class="sidebar-section">Susunan Pengurus</div>
+    <a href="#sec-penasehat">👴 Penasehat</a>
+    <a href="#sec-inti">👑 Ketua & Wakil</a>
+    <a href="#sec-sekben">📋 Sekretaris & Bendahara</a>
+    <a href="#sec-seksi">🗂️ Seksi-Seksi</a>
+    <div class="sidebar-section">Keuangan</div>
+    <a href="#sec-kas">💰 Saldo Kas</a>
+    <a href="#sec-arus">📊 Arus Kas</a>
+    <a href="#sec-donasi">🤝 Donasi</a>
+    <div class="sidebar-section">Konten Lain</div>
+    <a href="#sec-khatib">🕌 Khatib Jum'at</a>
+    <a href="#sec-events">📣 Acara & Pengumuman</a>
+    <a href="#sec-galeri">🖼️ Galeri Dokumentasi</a>
+    <a href="#sec-geo">🌐 Lokasi & Waktu Sholat</a>
+  </nav>
+
+  <div class="content">
+
+    <!-- ─── PROFIL ─── -->
+    <div class="card" id="sec-profil">
+      <div class="card-header"><h2>🕌 Profil Masjid & Running Text</h2></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="field"><label>Nama Masjid</label><input type="text" id="prof_name" placeholder="Nama resmi masjid"></div>
+          <div class="field"><label>URL Background Dashboard</label><input type="text" id="dash_bg" placeholder="assets/masjid.jpg"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Sub Headline (di bawah nama masjid)</label><input type="text" id="prof_subHeadline" placeholder="Contoh: Masjid Besar Kecamatan Tuban"></div>
+          <div class="field"><label>Teks Running (footer marquee)</label><input type="text" id="prof_tagline" placeholder="Pesan berjalan di footer layar..."></div>
+        </div>
+      </div>
     </div>
 
-    <!-- UPDATE KAS -->
-    <h2>2. Laporan Akumulasi Saldo Kas</h2>
-    <div class="form-group">
-      <div class="form-control"><label>Per Tanggal Laporan</label><input type="text" id="kas_tgl" value="18 Juni 2026"></div>
-      <div class="form-control"><label>Total Saldo Gabungan</label><input type="text" id="kas_total" value="Rp 24.500.000"></div>
-    </div>
-    <div class="form-group">
-      <div class="form-control"><label>Sisa Kas Umum</label><input type="text" id="kas_umum" value="Rp 14.000.000"></div>
-      <div class="form-control"><label>Sisa Kas Pembangunan</label><input type="text" id="kas_pemb" value="Rp 10.500.000"></div>
-      <div class="form-control"><label>Total Pengeluaran Bulan Ini</label><input type="text" id="kas_keluar" value="Rp 4.200.000"></div>
-    </div>
-
-    <!-- ARUS KAS MASUK KELUAR -->
-    <h2>3. Rincian Alur Kas Masuk & Keluar (Tabel Arus Kas)</h2>
-    <div id="wrapper-arus"></div>
-    <button type="button" class="btn btn-add" onclick="addArusRow()">➕ Tambah Baris Transaksi</button>
-
-    <!-- LIST DONATUR -->
-    <h2>4. Daftar Penerimaan Donasi Terbaru</h2>
-    <div id="wrapper-donasi"></div>
-    <button type="button" class="btn btn-add" onclick="addDonasiRow()">➕ Tambah Baris Donatur</button>
-
-    <!-- DYNAMIC EVENT SLIDES -->
-    <h2>5. Poster Pengumuman Acara (Internal / Titipan Luar)</h2>
-    <div id="wrapper-events"></div>
-    <button type="button" class="btn btn-add" onclick="addEventRow()">➕ Tambah Acara Baru</button>
-
-    <!-- DOKUMENTASI IMAGES -->
-    <h2>6. Galeri Dokumentasi Foto Kegiatan</h2>
-    <div class="form-group">
-      <div class="form-control" style="flex:0.2;"><label>Tampilkan Galeri?</label><select id="dok_show"><option value="true">YA</option><option value="false">TIDAK</option></select></div>
-      <div class="form-control"><label>Judul Slide Dokumentasi</label><input type="text" id="dok_judul" value="Dokumentasi Kegiatan Sosial Masjid"></div>
-    </div>
-    <div id="wrapper-gallery"></div>
-    <button type="button" class="btn btn-add" onclick="addGalleryRow()">➕ Tambah URL Foto Dokumentasi</button>
-
-    <!-- GEOLOCATION & CORRECTION JADWAL -->
-    <h2>7. Konfigurasi Astronomi & Koreksi Waktu Sholat (Menit)</h2>
-    <div class="form-group">
-      <div class="form-control"><label>Latitude</label><input type="text" id="geo_lat" value="-7.1523"></div>
-      <div class="form-control"><label>Longitude</label><input type="text" id="geo_lng" value="112.0543"></div>
-      <div class="form-control"><label>Timezone (GMT)</label><input type="number" id="geo_tz" value="7"></div>
-    </div>
-    <div class="form-group">
-      <div class="form-control"><label>Koreksi Subuh</label><input type="number" id="c_subuh" value="2"></div>
-      <div class="form-control"><label>Koreksi Dzuhur</label><input type="number" id="c_dzuhur" value="2"></div>
-      <div class="form-control"><label>Koreksi Ashar</label><input type="number" id="c_ashar" value="2"></div>
-      <div class="form-control"><label>Koreksi Maghrib</label><input type="number" id="c_maghrib" value="2"></div>
-      <div class="form-control"><label>Koreksi Isya</label><input type="number" id="c_isya" value="2"></div>
+    <!-- ─── TOGGLE PENGURUS ─── -->
+    <div class="card" id="sec-toggle-pengurus">
+      <div class="card-header"><h2>🗂️ Susunan Pengurus</h2></div>
+      <div class="card-body" style="display:flex; align-items:center; gap:18px;">
+        <label class="toggle-switch">
+          <input type="checkbox" id="struktur_show" checked onchange="togglePengurusCards(this.checked)">
+          <span class="toggle-slider"></span>
+        </label>
+        <div>
+          <div style="font-weight:700; color:#11422c; font-size:1rem;" id="toggle-pengurus-label">✅ Slide Susunan Pengurus <strong>Aktif</strong></div>
+          <div style="font-size:.8rem; color:#7f8c8d; margin-top:2px;">Matikan untuk menyembunyikan semua slide pengurus di layar display</div>
+        </div>
+      </div>
     </div>
 
-    <div style="margin-top: 40px; text-align: right;">
-      <button type="button" class="btn btn-primary" onclick="downloadDataScript()">💾 Unduh File data.js</button>
+    <!-- ─── PENASEHAT ─── -->
+    <div class="card" id="sec-penasehat">
+      <div class="card-header"><h2>👴 Penasehat</h2><span class="badge">Fleksibel</span></div>
+      <div class="card-body">
+        <div id="wrapper-penasehat"></div>
+        <button type="button" class="btn btn-add" onclick="addPenasehatRow()">➕ Tambah Penasehat</button>
+      </div>
     </div>
-  </form>
+
+    <!-- ─── KETUA & WAKIL ─── -->
+    <div class="card" id="sec-inti">
+      <div class="card-header"><h2>👑 Ketua & Wakil Ketua</h2><span class="badge">Fixed 2 orang</span></div>
+      <div class="card-body">
+        <div class="fixed-grid">
+          <div class="field"><label>Ketua</label><input type="text" id="inti_ketua" placeholder="Nama Ketua Takmir"></div>
+          <div class="field"><label>Foto Ketua (URL)</label><input type="text" id="inti_ketuaFoto" placeholder="assets/ketua.jpg"></div>
+          <div class="field"><label>Wakil Ketua</label><input type="text" id="inti_wakilKetua" placeholder="Nama Wakil Ketua"></div>
+          <div class="field"><label>Foto Wakil Ketua (URL)</label><input type="text" id="inti_wakilKetuaFoto" placeholder="assets/wakil.jpg"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SEKRETARIS & BENDAHARA ─── -->
+    <div class="card" id="sec-sekben">
+      <div class="card-header"><h2>📋 Sekretaris & Bendahara</h2><span class="badge">Fixed 4 orang</span></div>
+      <div class="card-body">
+        <div class="fixed-grid">
+          <div class="field"><label>Sekretaris 1</label><input type="text" id="sekben_sek1" placeholder="Nama Sekretaris 1"></div>
+          <div class="field"><label>Foto Sekretaris 1 (URL)</label><input type="text" id="sekben_sek1Foto" placeholder="assets/sek1.jpg"></div>
+          <div class="field"><label>Sekretaris 2</label><input type="text" id="sekben_sek2" placeholder="Nama Sekretaris 2"></div>
+          <div class="field"><label>Foto Sekretaris 2 (URL)</label><input type="text" id="sekben_sek2Foto" placeholder="assets/sek2.jpg"></div>
+          <div class="field"><label>Bendahara 1</label><input type="text" id="sekben_ben1" placeholder="Nama Bendahara 1"></div>
+          <div class="field"><label>Foto Bendahara 1 (URL)</label><input type="text" id="sekben_ben1Foto" placeholder="assets/ben1.jpg"></div>
+          <div class="field"><label>Bendahara 2</label><input type="text" id="sekben_ben2" placeholder="Nama Bendahara 2"></div>
+          <div class="field"><label>Foto Bendahara 2 (URL)</label><input type="text" id="sekben_ben2Foto" placeholder="assets/ben2.jpg"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SEKSI-SEKSI ─── -->
+    <div class="card" id="sec-seksi">
+      <div class="card-header"><h2>🗂️ Seksi-Seksi</h2><span class="badge">Fleksibel</span></div>
+      <div class="card-body">
+        <div id="wrapper-seksi"></div>
+        <button type="button" class="btn btn-add" onclick="addSeksiBlock()">➕ Tambah Seksi Baru</button>
+      </div>
+    </div>
+
+    <!-- ─── KAS ─── -->
+    <div class="card" id="sec-kas">
+      <div class="card-header"><h2>💰 Laporan Saldo Kas</h2></div>
+      <div class="card-body">
+        <div class="row">
+          <div class="field" style="max-width:210px;"><label>Per Tanggal Laporan</label><input type="text" id="kas_tgl" placeholder="18 Juni 2026"></div>
+          <div class="field"><label>Total Saldo (otomatis)</label><input type="text" id="kas_total" placeholder="Dihitung otomatis" readonly style="background:#f0f7f3; color:#11422c; font-weight:700; cursor:default;"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Sisa Kas Umum</label><input type="text" id="kas_umum" oninput="recalcTotal()"></div>
+          <div class="field"><label>Sisa Kas Pembangunan</label><input type="text" id="kas_pemb" oninput="recalcTotal()"></div>
+          <div class="field"><label>Total Pengeluaran Bulan Ini</label><input type="text" id="kas_keluar"></div>
+        </div>
+        <p style="font-size:.8rem; color:#9aaa9e; margin-top:-4px;">💡 Total Saldo dihitung otomatis dari Kas Umum + Kas Pembangunan.</p>
+      </div>
+    </div>
+
+    <!-- ─── ARUS KAS ─── -->
+    <div class="card" id="sec-arus">
+      <div class="card-header"><h2>📊 Rincian Arus Kas</h2><span class="badge">Fleksibel</span></div>
+      <div class="card-body">
+        <div id="wrapper-arus"></div>
+        <button type="button" class="btn btn-add" onclick="addArusRow()">➕ Tambah Baris Transaksi</button>
+      </div>
+    </div>
+
+    <!-- ─── DONASI ─── -->
+    <div class="card" id="sec-donasi">
+      <div class="card-header"><h2>🤝 Daftar Donasi Diterima</h2><span class="badge">Fleksibel</span></div>
+      <div class="card-body">
+        <div id="wrapper-donasi"></div>
+        <button type="button" class="btn btn-add" onclick="addDonasiRow()">➕ Tambah Donatur</button>
+      </div>
+    </div>
+
+    <!-- ─── KHATIB ─── -->
+    <div class="card" id="sec-khatib">
+      <div class="card-header"><h2>🕌 Jadwal Khatib Jum'at</h2></div>
+      <div class="card-body">
+        <div class="row" style="margin-bottom:14px;">
+          <div class="field" style="max-width:240px;">
+            <label>Tampilkan Slide Khatib?</label>
+            <select id="khatib_show">
+              <option value="true">✅ Ya, tampilkan</option>
+              <option value="false">❌ Tidak, sembunyikan</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Gambar Panel Kiri Khatib (URL)</label>
+            <input type="text" id="khatib_featuredImage" placeholder="assets/khatib-banner.jpg">
+          </div>
+        </div>
+        <p style="font-size:.83rem; color:#7f8c8d; margin-bottom:12px;">
+          💡 Pilih tanggal dengan date-picker — sistem otomatis mendeteksi khatib minggu ini vs mendatang di layar display.
+        </p>
+        <div id="wrapper-khatib"></div>
+        <button type="button" class="btn btn-add" onclick="addKhatibRow()">➕ Tambah Jadwal Khatib</button>
+      </div>
+    </div>
+
+    <!-- ─── EVENTS ─── -->
+    <div class="card" id="sec-events">
+      <div class="card-header"><h2>📣 Poster Acara & Pengumuman</h2><span class="badge">Fleksibel</span></div>
+      <div class="card-body">
+        <div id="wrapper-events"></div>
+        <button type="button" class="btn btn-add" onclick="addEventRow()">➕ Tambah Acara Baru</button>
+      </div>
+    </div>
+
+    <!-- ─── GALERI ─── -->
+    <div class="card" id="sec-galeri">
+      <div class="card-header"><h2>🖼️ Galeri Dokumentasi Kegiatan</h2></div>
+      <div class="card-body">
+        <div class="row" style="margin-bottom:14px;">
+          <div class="field" style="max-width:210px;">
+            <label>Tampilkan Slide Galeri?</label>
+            <select id="dok_show"><option value="true">✅ Ya</option><option value="false">❌ Tidak</option></select>
+          </div>
+          <div class="field">
+            <label>Judul Slide Dokumentasi</label>
+            <input type="text" id="dok_judul">
+          </div>
+        </div>
+        <div id="wrapper-gallery"></div>
+        <button type="button" class="btn btn-add" onclick="addGalleryRow()">➕ Tambah URL Foto</button>
+      </div>
+    </div>
+
+    <!-- ─── GEO ─── -->
+    <div class="card" id="sec-geo">
+      <div class="card-header"><h2>🌐 Lokasi & Waktu Sholat</h2></div>
+      <div class="card-body">
+        <p style="font-size:.85rem; color:#4a5a4e; margin-bottom:12px;">
+          Jadwal sholat diambil otomatis dari <strong>API Kemenag (MyQuran)</strong> — sama dengan yang muncul di Google. Cukup pilih kota kamu.
+        </p>
+
+        <!-- Pencarian kota -->
+        <div class="row" style="align-items:flex-end; margin-bottom:10px;">
+          <div class="field" style="flex:2;">
+            <label>Cari Kota / Kabupaten</label>
+            <input type="text" id="geo_kota_search" placeholder="Ketik nama kota... (mis: Tuban)" oninput="searchKota(this.value)">
+          </div>
+          <button type="button" class="btn" style="background:#11422c; color:#fff; height:38px; margin-bottom:0;" onclick="searchKota(document.getElementById('geo_kota_search').value)">🔍 Cari</button>
+        </div>
+
+        <!-- Hasil pencarian -->
+        <div id="geo_kota_results" style="display:none; border:1.5px solid #d4ddd8; border-radius:8px; max-height:180px; overflow-y:auto; margin-bottom:12px; background:#fff;"></div>
+
+        <!-- Kota terpilih -->
+        <div id="geo_kota_selected" style="display:none; background:#e8f4ed; border:1.5px solid #a8d5bc; border-radius:8px; padding:11px 14px; margin-bottom:14px; display:flex; align-items:center; gap:10px;">
+          <span style="font-size:1.3rem;">📍</span>
+          <div>
+            <div style="font-weight:700; color:#11422c;" id="geo_kota_nama_display">-</div>
+            <div style="font-size:0.78rem; color:#4a5a4e;">ID Kota: <span id="geo_kota_id_display">-</span></div>
+          </div>
+        </div>
+
+        <!-- Hidden fields untuk simpan nilai -->
+        <input type="hidden" id="geo_kota_id" value="">
+        <input type="hidden" id="geo_kota_nama" value="">
+
+        <p style="font-size:.8rem; color:#9aaa9e; margin-bottom:16px;">💡 Tidak menemukan kota? Cek daftar lengkap di <a href="https://api.myquran.com/v2/sholat/kota/semua" target="_blank" style="color:#11422c;">api.myquran.com</a></p>
+
+        <p style="font-size:.82rem; color:#7f8c8d; margin: 6px 0 12px; border-top:1px solid #e4ede8; padding-top:12px;">Koreksi menit jika perlu (+ = mundurkan, - = majukan):</p>
+        <div class="row">
+          <div class="field"><label>Subuh</label><input type="number" id="c_subuh" value="0"></div>
+          <div class="field"><label>Dzuhur</label><input type="number" id="c_dzuhur" value="0"></div>
+          <div class="field"><label>Ashar</label><input type="number" id="c_ashar" value="0"></div>
+          <div class="field"><label>Maghrib</label><input type="number" id="c_maghrib" value="0"></div>
+          <div class="field"><label>Isya</label><input type="number" id="c_isya" value="0"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky-footer">
+      <button type="button" class="btn btn-generate" onclick="saveAndDownload()">
+        💾 GENERATE & UNDUH data.js
+      </button>
+    </div>
+
+  </div>
 </div>
 
 <script>
-  // Fungsi penambah baris form (tetap dipertahankan dari versi sebelumnya)
-  function addArusRow(tgl='', ket='', kat='Umum', masuk='Rp 0', keluar='Rp 0') {
-    const div = document.createElement('div'); div.className = 'dynamic-row';
-    div.innerHTML = `<input type="text" placeholder="Tgl (dd/mm)" value="${tgl}" style="width:100px;">
-                     <input type="text" placeholder="Keterangan Operasional" value="${ket}" style="flex:2;">
-                     <select style="width:120px;"><option value="Umum" ${kat==='Umum'?'selected':''}>Umum</option><option value="Pembangunan" ${kat==='Pembangunan'?'selected':''}>Pembangunan</option></select>
-                     <input type="text" placeholder="Masuk (Rp)" value="${masuk}">
-                     <input type="text" placeholder="Keluar (Rp)" value="${keluar}">
-                     <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Hapus</button>`;
-    document.getElementById('wrapper-arus').appendChild(div);
-  }
+// ════════════════════════════════════════════════
+//  KONSTANTA & HELPERS
+// ════════════════════════════════════════════════
+const STORAGE_KEY = 'masjidSignageAdminData_v2';
+const BULAN_NAMA  = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
-  function addDonasiRow(nama='', jml='', via='Tunai') {
-    const div = document.createElement('div'); div.className = 'dynamic-row';
-    div.innerHTML = `<input type="text" placeholder="Nama Donatur / Keterangan" value="${nama}" style="flex:2;">
-                     <input type="text" placeholder="Jumlah (Rp)" value="${jml}">
-                     <input type="text" placeholder="Metode Penyerahan" value="${via}">
-                     <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Hapus</button>`;
-    document.getElementById('wrapper-donasi').appendChild(div);
-  }
+// Konversi "YYYY-MM-DD" (nilai dari <input type="date">) → "20 Juni 2026"
+function isoToIndo(isoStr) {
+  if (!isoStr) return '';
+  const [y, m, d] = isoStr.split('-').map(Number);
+  if (!y || !m || !d) return isoStr;
+  return `${d} ${BULAN_NAMA[m - 1]} ${y}`;
+}
 
-  function addEventRow(judul='', ustadz='', tgl='', jam='', tempat='', desc='', poster='assets/poster1.jpg') {
-    const div = document.createElement('div'); div.className = 'dynamic-row'; div.style.flexDirection = 'column'; div.style.alignItems = 'stretch';
-    div.innerHTML = `<div style="display:flex; gap:10px;">
-                       <input type="text" placeholder="Judul Acara / Pengumuman" value="${judul}" style="flex:2; font-weight:bold;">
-                       <input type="text" placeholder="Narasumber / Ustadz" value="${ustadz}" style="flex:1;">
-                     </div>
-                     <div style="display:flex; gap:10px; margin-top:5px;">
-                       <input type="text" placeholder="Tanggal" value="${tgl}">
-                       <input type="text" placeholder="Jam / Waktu" value="${jam}">
-                       <input type="text" placeholder="Tempat / Lokasi Acara" value="${tempat}" style="flex:1.5; background:#fffdf4; border:1px solid #caa43d;">
-                     </div>
-                     <div style="display:flex; gap:10px; margin-top:5px;">
-                       <input type="text" placeholder="URL File Poster Gambar" value="${poster}" style="flex:1;">
-                       <input type="text" placeholder="Deskripsi Tambahan Singkat" value="${desc}" style="flex:2;">
-                       <button type="button" class="btn btn-danger" onclick="this.parentElement.parentElement.remove()">Hapus Acara</button>
-                     </div>`;
-    document.getElementById('wrapper-events').appendChild(div);
-  }
+// Konversi "20 Juni 2026" → "YYYY-MM-DD" (untuk mengisi date-picker)
+function indoToIso(indoStr) {
+  if (!indoStr) return '';
+  const BULAN_MAP = {januari:'01',februari:'02',maret:'03',april:'04',mei:'05',juni:'06',juli:'07',agustus:'08',september:'09',oktober:'10',november:'11',desember:'12'};
+  // Buang nama hari jika ada
+  const clean = indoStr.replace(/^[^,]+,\s*/, '').trim();
+  const parts = clean.split(/\s+/);
+  if (parts.length < 3) return '';
+  const d   = parts[0].padStart(2, '0');
+  const m   = BULAN_MAP[parts[1].toLowerCase()] || '';
+  const y   = parts[2];
+  if (!d || !m || !y) return '';
+  return `${y}-${m}-${d}`;
+}
 
-  function addGalleryRow(url='') {
-    const div = document.createElement('div'); div.className = 'dynamic-row';
-    div.innerHTML = `<input type="text" placeholder="URL Gambar Dokumentasi" value="${url}" style="flex:1;">
-                     <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">Hapus</button>`;
-    document.getElementById('wrapper-gallery').appendChild(div);
-  }
+function v(id)   { return document.getElementById(id)?.value?.trim() || ''; }
+function sv(id, val) { const el = document.getElementById(id); if (el) el.value = val ?? ''; }
+function int(id) { return parseInt(document.getElementById(id)?.value) || 0; }
 
-  window.onload = function() {
-    addArusRow('16/06', 'Bayar Listrik & Air', 'Umum', 'Rp 0', '500.000');
-    addDonasiRow('Hamba Allah', 'Rp 500.000', 'Transfer Mandiri');
-    addEventRow('Kajian Umum Spesial', 'Ustadz Wijayanto', 'Sabtu, 20 Juni 2026', '19.30 WIB - Selesai', 'Masjid Baiturrahman (Ruang Utama)', 'Terbuka untuk jamaah umum muslimin dan muslimat.');
-    addGalleryRow('assets/kegiatan1.jpg');
+// ════════════════════════════════════════════════
+//  ROW / BLOCK BUILDERS
+// ════════════════════════════════════════════════
+
+// ════════════════════════════════════════════════
+//  PENCARIAN KOTA SHOLAT (MyQuran API)
+// ════════════════════════════════════════════════
+let allKotaList = [];
+
+async function loadKotaList() {
+  if (allKotaList.length > 0) return;
+  try {
+    const res = await fetch('https://api.myquran.com/v2/sholat/kota/semua');
+    const json = await res.json();
+    allKotaList = json.data || [];
+  } catch(e) {
+    console.warn('Gagal memuat daftar kota:', e);
+  }
+}
+
+function searchKota(keyword) {
+  loadKotaList().then(() => {
+    const q = (keyword || '').toLowerCase().trim();
+    const resultsEl = document.getElementById('geo_kota_results');
+    if (!q || q.length < 2) { resultsEl.style.display = 'none'; return; }
+    const found = allKotaList.filter(k =>
+      k.lokasi.toLowerCase().includes(q) || (k.id && String(k.id).includes(q))
+    ).slice(0, 20);
+    if (!found.length) {
+      resultsEl.innerHTML = '<div style="padding:12px 14px; color:#7f8c8d; font-size:.88rem;">Tidak ditemukan. Coba kata kunci lain.</div>';
+    } else {
+      resultsEl.innerHTML = found.map(k =>
+        `<div onclick="selectKota('${k.id}', '${k.lokasi.replace(/'/g,"\\'")}', '${(k.kabkota||'').replace(/'/g,"\\'")}' )"
+              style="padding:10px 14px; cursor:pointer; border-bottom:1px solid #f0f0f0; font-size:.9rem; hover:background:#f5f9f6;"
+              onmouseover="this.style.background='#f0f7f3'" onmouseout="this.style.background=''"
+         >
+          <strong style="color:#11422c;">${k.lokasi}</strong>
+          <span style="color:#9aaa9e; font-size:.78rem; margin-left:8px;">${k.kabkota||''}</span>
+        </div>`
+      ).join('');
+    }
+    resultsEl.style.display = 'block';
+  });
+}
+
+function selectKota(id, lokasi, kabkota) {
+  document.getElementById('geo_kota_id').value    = id;
+  document.getElementById('geo_kota_nama').value  = lokasi;
+  document.getElementById('geo_kota_id_display').innerText   = id;
+  document.getElementById('geo_kota_nama_display').innerText = lokasi + (kabkota ? ' — ' + kabkota : '');
+  const sel = document.getElementById('geo_kota_selected');
+  sel.style.display = 'flex';
+  document.getElementById('geo_kota_results').style.display = 'none';
+  document.getElementById('geo_kota_search').value = lokasi;
+  // Tandai sudah tersimpan
+  document.getElementById('save-dot').className = 'save-dot';
+  document.getElementById('save-label').textContent = 'Ada perubahan belum disimpan';
+}
+
+// ── TOGGLE PENGURUS ──
+function togglePengurusCards(show) {
+  const ids = ['sec-penasehat','sec-inti','sec-sekben','sec-seksi'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = show ? '' : 'none';
+  });
+  const label = document.getElementById('toggle-pengurus-label');
+  if (label) label.innerHTML = show
+    ? '✅ Slide Susunan Pengurus <strong>Aktif</strong>'
+    : '🚫 Slide Susunan Pengurus <strong>Dinonaktifkan</strong>';
+}
+
+// ── AUTO HITUNG TOTAL SALDO ──
+function parseRp(str) {
+  if (!str) return 0;
+  return parseFloat(String(str).replace(/[Rp\s]/gi,'').replace(/\./g,'').replace(',','.')) || 0;
+}
+function formatRp(num) {
+  return 'Rp ' + Math.round(num).toLocaleString('id-ID');
+}
+function recalcTotal() {
+  const umum = parseRp(document.getElementById('kas_umum')?.value);
+  const pemb = parseRp(document.getElementById('kas_pemb')?.value);
+  const total = umum + pemb;
+  const el = document.getElementById('kas_total');
+  if (el) el.value = total > 0 ? formatRp(total) : '';
+}
+
+function addPenasehatRow(nama = '', jabatan = '', foto = '') {
+  const d = document.createElement('div'); d.className = 'dynamic-row';
+  d.innerHTML = `<div class="fields">
+    <input type="text" placeholder="Nama Lengkap Penasehat" value="${esc(nama)}" style="flex:2;">
+    <input type="text" placeholder="Jabatan (mis: Penasehat / Pembina)" value="${esc(jabatan)}" style="flex:1;">
+    <input type="text" placeholder="URL Foto (opsional)" value="${esc(foto)}" style="flex:1.5;">
+  </div>
+  <button type="button" class="btn btn-del" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('wrapper-penasehat').appendChild(d);
+}
+
+let seksiCount = 0;
+function addSeksiBlock(nama = '', anggota = []) {
+  const id = `seksi_${++seksiCount}`;
+  const block = document.createElement('div');
+  block.className = 'seksi-block'; block.id = id;
+  block.innerHTML = `
+    <div class="seksi-block-header">
+      <input type="text" placeholder="Nama Seksi (mis: Ibadah)" value="${esc(nama)}" class="seksi-nama-input">
+      <button type="button" class="btn btn-block-del" onclick="document.getElementById('${id}').remove()">✕ Hapus</button>
+    </div>
+    <div class="seksi-block-body">
+      <div class="anggota-list"></div>
+      <button type="button" class="btn-anggota-add" onclick="addAnggotaRow('${id}')">+ Tambah Anggota</button>
+    </div>`;
+  document.getElementById('wrapper-seksi').appendChild(block);
+  anggota.forEach(a => addAnggotaRow(id, a));
+}
+
+function addAnggotaRow(seksiId, anggota = '') {
+  const list = document.querySelector(`#${seksiId} .anggota-list`);
+  const nama = typeof anggota === 'object' ? (anggota.nama || '') : anggota;
+  const foto = typeof anggota === 'object' ? (anggota.foto || '') : '';
+  const row = document.createElement('div'); row.className = 'anggota-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Nama Anggota" value="${esc(nama)}" style="flex:2;">
+    <input type="text" placeholder="URL Foto (opsional)" value="${esc(foto)}" style="flex:2;">
+    <button type="button" class="btn btn-del" style="padding:6px 10px;" onclick="this.parentElement.remove()">✕</button>`;
+  list.appendChild(row);
+}
+
+function addArusRow(tgl = '', ket = '', kat = 'Umum', masuk = '', keluar = '') {
+  const d = document.createElement('div'); d.className = 'dynamic-row';
+  d.innerHTML = `<div class="fields">
+    <input type="text" placeholder="Tgl (dd/mm)" value="${esc(tgl)}" style="max-width:80px;">
+    <input type="text" placeholder="Keterangan transaksi" value="${esc(ket)}" style="flex:2;">
+    <select style="min-width:120px; padding:8px 10px; border:1.5px solid #d4ddd8; border-radius:6px; font-size:.91rem; background:#fff;">
+      <option value="Umum" ${kat==='Umum'?'selected':''}>Umum</option>
+      <option value="Pembangunan" ${kat==='Pembangunan'?'selected':''}>Pembangunan</option>
+    </select>
+    <input type="text" placeholder="Masuk (Rp)" value="${esc(masuk)}" style="max-width:125px;">
+    <input type="text" placeholder="Keluar (Rp)" value="${esc(keluar)}" style="max-width:125px;">
+  </div>
+  <button type="button" class="btn btn-del" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('wrapper-arus').appendChild(d);
+}
+
+function addDonasiRow(nama = '', jml = '', via = '') {
+  const d = document.createElement('div'); d.className = 'dynamic-row';
+  d.innerHTML = `<div class="fields">
+    <input type="text" placeholder="Nama Donatur / Keterangan" value="${esc(nama)}" style="flex:2;">
+    <input type="text" placeholder="Jumlah (Rp)" value="${esc(jml)}" style="flex:1;">
+    <input type="text" placeholder="Metode (Tunai / Transfer)" value="${esc(via)}" style="flex:1;">
+  </div>
+  <button type="button" class="btn btn-del" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('wrapper-donasi').appendChild(d);
+}
+
+// Khatib: pakai date-picker + preview format Indonesia
+function addKhatibRow(tglIndo = '', nama = '') {
+  const isoVal = indoToIso(tglIndo);
+  const previewText = tglIndo ? tglIndo : '';
+  const uid = 'khatib_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+
+  const d = document.createElement('div'); d.className = 'dynamic-row';
+  d.innerHTML = `
+    <div class="fields">
+      <div class="khatib-date-wrap">
+        <label>Tanggal Jum'at</label>
+        <input type="date" id="${uid}" value="${isoVal}" onchange="updateKhatibPreview('${uid}')">
+        <div class="khatib-date-preview" id="${uid}_preview">${previewText}</div>
+      </div>
+      <input type="text" placeholder="Nama Khatib / Ustadz" value="${esc(nama)}" style="flex:2; align-self:center; margin-top:18px;">
+    </div>
+    <button type="button" class="btn btn-del" style="align-self:center; margin-top:18px;" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('wrapper-khatib').appendChild(d);
+}
+
+function updateKhatibPreview(uid) {
+  const iso = document.getElementById(uid)?.value;
+  const preview = document.getElementById(uid + '_preview');
+  if (preview) preview.textContent = isoToIndo(iso);
+}
+
+// Event block
+let eventCount = 0;
+function addEventRow(judul='', ustadz='', tgl='', jam='', tempat='', desc='', poster='') {
+  const id = `ev_${++eventCount}`;
+  const block = document.createElement('div');
+  block.className = 'event-block'; block.id = id;
+  block.innerHTML = `
+    <div class="event-block-header">
+      <input type="text" placeholder="Judul Acara / Pengumuman" value="${esc(judul)}" class="ev-judul">
+      <button type="button" class="btn btn-block-del" onclick="document.getElementById('${id}').remove()">✕ Hapus</button>
+    </div>
+    <div class="event-block-body">
+      <div class="event-row">
+        <input type="text" placeholder="Narasumber / Ustadz" value="${esc(ustadz)}" class="ev-ustadz">
+        <input type="text" placeholder="Tanggal Acara" value="${esc(tgl)}" class="ev-tgl">
+        <input type="text" placeholder="Jam / Waktu" value="${esc(jam)}" class="ev-jam">
+      </div>
+      <div class="event-row">
+        <input type="text" placeholder="Tempat / Lokasi" value="${esc(tempat)}" class="ev-tempat highlight">
+        <input type="text" placeholder="URL File Poster (assets/poster.jpg)" value="${esc(poster || 'assets/poster1.jpg')}" class="ev-poster">
+      </div>
+      <div class="event-row">
+        <input type="text" placeholder="Deskripsi singkat tambahan" value="${esc(desc)}" class="ev-desc" style="flex:1;">
+      </div>
+    </div>`;
+  document.getElementById('wrapper-events').appendChild(block);
+}
+
+function addGalleryRow(url = '') {
+  const d = document.createElement('div'); d.className = 'dynamic-row';
+  d.innerHTML = `<div class="fields">
+    <input type="text" placeholder="URL foto (assets/foto.jpg atau https://...)" value="${esc(url)}" style="flex:1;">
+  </div>
+  <button type="button" class="btn btn-del" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('wrapper-gallery').appendChild(d);
+}
+
+// Escape HTML untuk value attribute
+function esc(s) { return String(s||'').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+// ════════════════════════════════════════════════
+//  COLLECT DATA (shared antara save & download)
+// ════════════════════════════════════════════════
+function collectAllData() {
+  const out = {};
+
+  out.profile   = { name: v('prof_name'), tagline: v('prof_tagline'), subHeadline: v('prof_subHeadline') };
+  out.dashboard = { bgImage: v('dash_bg') };
+
+  // Struktur pengurus
+  const st = {};
+  st.penasehat = [];
+  document.querySelectorAll('#wrapper-penasehat .dynamic-row').forEach(row => {
+    const ins = row.querySelectorAll('input');
+    if (ins[0].value.trim()) st.penasehat.push({ nama: ins[0].value.trim(), jabatan: ins[1].value.trim(), foto: ins[2]?.value.trim() || '' });
+  });
+  st.ketua           = v('inti_ketua');
+  st.ketuaFoto       = v('inti_ketuaFoto');
+  st.wakilKetua      = v('inti_wakilKetua');
+  st.wakilKetuaFoto  = v('inti_wakilKetuaFoto');
+  st.sekretaris1     = v('sekben_sek1');
+  st.sekretaris1Foto = v('sekben_sek1Foto');
+  st.sekretaris2     = v('sekben_sek2');
+  st.sekretaris2Foto = v('sekben_sek2Foto');
+  st.bendahara1      = v('sekben_ben1');
+  st.bendahara1Foto  = v('sekben_ben1Foto');
+  st.bendahara2      = v('sekben_ben2');
+  st.bendahara2Foto  = v('sekben_ben2Foto');
+  st.seksi = [];
+  document.querySelectorAll('#wrapper-seksi .seksi-block').forEach(block => {
+    const nama = block.querySelector('.seksi-nama-input').value.trim();
+    const anggota = [];
+    block.querySelectorAll('.anggota-row').forEach(row => {
+      const ins = row.querySelectorAll('input');
+      const nm = ins[0]?.value.trim();
+      if (nm) anggota.push({ nama: nm, foto: ins[1]?.value.trim() || '' });
+    });
+    if (nama) st.seksi.push({ nama, anggota });
+  });
+  st.show = document.getElementById('struktur_show')?.checked !== false;
+  out.struktur = st;
+
+  out.kas = { tanggal: v('kas_tgl'), umum: v('kas_umum'), pembangunan: v('kas_pemb'), pengeluaran: v('kas_keluar') };
+
+  out.arusKas = [];
+  document.querySelectorAll('#wrapper-arus .dynamic-row').forEach(row => {
+    const ins = row.querySelectorAll('input, select');
+    out.arusKas.push({ tgl: ins[0].value, ket: ins[1].value, kat: ins[2].value, masuk: ins[3].value, keluar: ins[4].value });
+  });
+
+  out.donasi = [];
+  document.querySelectorAll('#wrapper-donasi .dynamic-row').forEach(row => {
+    const ins = row.querySelectorAll('input');
+    out.donasi.push({ nama: ins[0].value, jml: ins[1].value, via: ins[2].value });
+  });
+
+  // KHATIB — ambil dari date-picker, konversi ke format Indonesia
+  out.khatib = { show: v('khatib_show') === 'true', featuredImage: v('khatib_featuredImage'), list: [] };
+  document.querySelectorAll('#wrapper-khatib .dynamic-row').forEach(row => {
+    const dateInput = row.querySelector('input[type="date"]');
+    const namaInput = row.querySelector('input[type="text"]');
+    if (!dateInput || !namaInput) return;
+    const tglIndo = isoToIndo(dateInput.value);
+    const nama    = namaInput.value.trim();
+    if (tglIndo && nama) out.khatib.list.push({ tgl: tglIndo, nama });
+  });
+
+  out.events = [];
+  document.querySelectorAll('#wrapper-events .event-block').forEach(block => {
+    out.events.push({
+      judul:  block.querySelector('.ev-judul')?.value  || '',
+      ustadz: block.querySelector('.ev-ustadz')?.value || '',
+      tgl:    block.querySelector('.ev-tgl')?.value    || '',
+      jam:    block.querySelector('.ev-jam')?.value    || '',
+      tempat: block.querySelector('.ev-tempat')?.value || '',
+      poster: block.querySelector('.ev-poster')?.value || 'assets/poster1.jpg',
+      desc:   block.querySelector('.ev-desc')?.value   || '',
+    });
+  });
+
+  out.dokumentasi = {
+    show:   v('dok_show') === 'true',
+    judul:  v('dok_judul'),
+    images: Array.from(document.querySelectorAll('#wrapper-gallery .dynamic-row input')).map(i => i.value.trim()).filter(Boolean)
   };
 
-  // MESIN UTAMA GENERATE & DOWNLOAD LANGSUNG SEBAGAI FILE DATA.JS
-  function downloadDataScript() {
-    let output = {};
-    
-    output.profile = { name: document.getElementById('prof_name').value, tagline: document.getElementById('prof_tagline').value };
-    output.dashboard = { bgImage: document.getElementById('dash_bg').value };
-    output.kas = {
-      tanggal: document.getElementById('kas_tgl').value,
-      total: document.getElementById('kas_total').value,
-      umum: document.getElementById('kas_umum').value,
-      pembangunan: document.getElementById('kas_pemb').value,
-      pengeluaran: document.getElementById('kas_keluar').value
-    };
+  out.geo        = { kotaId: v('geo_kota_id'), kotaNama: v('geo_kota_nama') };
+  out.correction = { subuh: int('c_subuh'), dzuhur: int('c_dzuhur'), ashar: int('c_ashar'), maghrib: int('c_maghrib'), isya: int('c_isya') };
 
-    output.geo = {
-      lat: parseFloat(document.getElementById('geo_lat').value),
-      lng: parseFloat(document.getElementById('geo_lng').value),
-      tz: parseInt(document.getElementById('geo_tz').value)
-    };
+  return out;
+}
 
-    output.correction = {
-      subuh: parseInt(document.getElementById('c_subuh').value),
-      dzuhur: parseInt(document.getElementById('c_dzuhur').value),
-      ashar: parseInt(document.getElementById('c_ashar').value),
-      maghrib: parseInt(document.getElementById('c_maghrib').value),
-      isya: parseInt(document.getElementById('c_isya').value)
-    };
-
-    output.arusKas = [];
-    document.getElementById('wrapper-arus').querySelectorAll('.dynamic-row').forEach(row => {
-      const inputs = row.querySelectorAll('input, select');
-      output.arusKas.push({ tgl: inputs[0].value, ket: inputs[1].value, kat: inputs[2].value, masuk: inputs[3].value, keluar: inputs[4].value });
-    });
-
-    output.donasi = [];
-    document.getElementById('wrapper-donasi').querySelectorAll('.dynamic-row').forEach(row => {
-      const inputs = row.querySelectorAll('input');
-      output.donasi.push({ nama: inputs[0].value, jml: inputs[1].value, via: inputs[2].value });
-    });
-
-    output.events = [];
-    document.getElementById('wrapper-events').querySelectorAll('.dynamic-row').forEach(row => {
-      const inputs = row.querySelectorAll('input');
-      output.events.push({ judul: inputs[0].value, ustadz: inputs[1].value, tgl: inputs[2].value, jam: inputs[3].value, tempat: inputs[4].value, poster: inputs[5].value, desc: inputs[6].value });
-    });
-
-    let gallImages = [];
-    document.getElementById('wrapper-gallery').querySelectorAll('.dynamic-row').forEach(row => {
-      gallImages.push(row.querySelector('input').value);
-    });
-    output.dokumentasi = {
-      show: document.getElementById('dok_show').value === 'true',
-      judul: document.getElementById('dok_judul').value,
-      images: gallImages
-    };
-
-    // Membungkus JSON objek ke dalam variable global Javascript agar dibaca utuh oleh display.html
-    const finalContent = `window.localMosqueData = ${JSON.stringify(output, null, 2)};`;
-    
-    // Proses pembuatan file blob dan trigger download virtual browser
-    const blob = new Blob([finalContent], { type: 'application/javascript;charset=utf-8;' });
-    const link = document.createElement("a");
-    
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute("download", "data.js");
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+// ════════════════════════════════════════════════
+//  SAVE TO LOCALSTORAGE
+// ════════════════════════════════════════════════
+function saveToLocalStorage(data) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const now = new Date().toLocaleString('id-ID');
+    document.getElementById('save-label').textContent = `Tersimpan ${now}`;
+    document.getElementById('save-dot').className = 'save-dot saved';
+  } catch(e) {
+    console.warn('localStorage tidak tersedia:', e);
   }
+}
+
+// ════════════════════════════════════════════════
+//  LOAD FROM LOCALSTORAGE & POPULATE FORM
+// ════════════════════════════════════════════════
+function loadFromLocalStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const d = JSON.parse(raw);
+    populateForm(d);
+    document.getElementById('save-label').textContent = 'Data dimuat dari penyimpanan lokal';
+    document.getElementById('save-dot').className = 'save-dot saved';
+    return true;
+  } catch(e) {
+    console.warn('Gagal memuat localStorage:', e);
+    return false;
+  }
+}
+
+function populateForm(d) {
+  // Profil
+  sv('prof_name',        d.profile?.name        || '');
+  sv('prof_tagline',     d.profile?.tagline      || '');
+  sv('prof_subHeadline', d.profile?.subHeadline  || '');
+  sv('dash_bg',          d.dashboard?.bgImage    || '');
+
+  // Pengurus — toggle
+  const showPengurus = d.struktur?.show !== false;
+  const toggleEl = document.getElementById('struktur_show');
+  if (toggleEl) { toggleEl.checked = showPengurus; togglePengurusCards(showPengurus); }
+  // Pengurus
+  (d.struktur?.penasehat || []).forEach(p => addPenasehatRow(p.nama, p.jabatan, p.foto || ''));
+  sv('inti_ketua',           d.struktur?.ketua           || '');
+  sv('inti_ketuaFoto',       d.struktur?.ketuaFoto       || '');
+  sv('inti_wakilKetua',      d.struktur?.wakilKetua      || '');
+  sv('inti_wakilKetuaFoto',  d.struktur?.wakilKetuaFoto  || '');
+  sv('sekben_sek1',          d.struktur?.sekretaris1     || '');
+  sv('sekben_sek1Foto',      d.struktur?.sekretaris1Foto || '');
+  sv('sekben_sek2',          d.struktur?.sekretaris2     || '');
+  sv('sekben_sek2Foto',      d.struktur?.sekretaris2Foto || '');
+  sv('sekben_ben1',          d.struktur?.bendahara1      || '');
+  sv('sekben_ben1Foto',      d.struktur?.bendahara1Foto  || '');
+  sv('sekben_ben2',          d.struktur?.bendahara2      || '');
+  sv('sekben_ben2Foto',      d.struktur?.bendahara2Foto  || '');
+  (d.struktur?.seksi || []).forEach(s => addSeksiBlock(s.nama, s.anggota || []));
+
+  // Kas
+  sv('kas_tgl',    d.kas?.tanggal     || '');
+  sv('kas_umum',   d.kas?.umum        || '');
+  sv('kas_pemb',   d.kas?.pembangunan || '');
+  sv('kas_keluar', d.kas?.pengeluaran || '');
+  recalcTotal();
+
+  // Arus kas
+  (d.arusKas || []).forEach(r => addArusRow(r.tgl, r.ket, r.kat, r.masuk, r.keluar));
+
+  // Donasi
+  (d.donasi || []).forEach(r => addDonasiRow(r.nama, r.jml, r.via));
+
+  // Khatib
+  if (d.khatib?.show === false) sv('khatib_show', 'false');
+  sv('khatib_featuredImage', d.khatib?.featuredImage || '');
+  (d.khatib?.list || []).forEach(k => addKhatibRow(k.tgl, k.nama));
+
+  // Events
+  (d.events || []).forEach(e => addEventRow(e.judul, e.ustadz, e.tgl, e.jam, e.tempat, e.desc, e.poster));
+
+  // Galeri
+  if (d.dokumentasi?.show === false) sv('dok_show', 'false');
+  sv('dok_judul', d.dokumentasi?.judul || '');
+  (d.dokumentasi?.images || []).forEach(u => addGalleryRow(u));
+
+  // Geo (kota API)
+  if (d.geo?.kotaId) {
+    document.getElementById('geo_kota_id').value   = d.geo.kotaId;
+    document.getElementById('geo_kota_nama').value = d.geo.kotaNama || '';
+    document.getElementById('geo_kota_id_display').innerText   = d.geo.kotaId;
+    document.getElementById('geo_kota_nama_display').innerText = d.geo.kotaNama || d.geo.kotaId;
+    document.getElementById('geo_kota_search').value           = d.geo.kotaNama || '';
+    document.getElementById('geo_kota_selected').style.display = 'flex';
+  }
+  sv('c_subuh',   d.correction?.subuh   ?? 0);
+  sv('c_dzuhur',  d.correction?.dzuhur  ?? 0);
+  sv('c_ashar',   d.correction?.ashar   ?? 0);
+  sv('c_maghrib', d.correction?.maghrib ?? 0);
+  sv('c_isya',    d.correction?.isya    ?? 0);
+}
+
+// ════════════════════════════════════════════════
+//  SAVE + DOWNLOAD (tombol utama)
+// ════════════════════════════════════════════════
+function saveAndDownload() {
+  const data = collectAllData();
+
+  // 1. Simpan ke localStorage
+  saveToLocalStorage(data);
+
+  // 2. Generate & unduh data.js
+  const content = `var localMosqueData = ${JSON.stringify(data, null, 2)};`;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type: 'application/javascript;charset=utf-8;' }));
+  a.download = 'data.js';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  // 3. Toast notifikasi
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ════════════════════════════════════════════════
+//  DEFAULT DATA (jika localStorage kosong)
+// ════════════════════════════════════════════════
+function loadDefaults() {
+  addPenasehatRow('KH. Ahmad Mujib', 'Penasehat Syariah');
+  addPenasehatRow('Bp. H. Suyono', 'Pembina');
+  sv('inti_ketua', 'H. Abdullah Faqih');
+  sv('inti_wakilKetua', 'H. Mahfud Sidiq');
+  sv('sekben_sek1', 'Ahmad Rifai, S.Pd'); sv('sekben_sek2', 'Mukhlis Wahyudi');
+  sv('sekben_ben1', 'Hj. Siti Khodijah'); sv('sekben_ben2', 'Agus Santoso');
+  addSeksiBlock('Ibadah',         ['Fulan bin Fulan', 'Budi Rahardjo']);
+  addSeksiBlock('Pendidikan',     ['Umi Kalsum', 'Hendra Kusuma']);
+  addSeksiBlock('Sosial & Dakwah',['Nur Hidayat', 'Sri Wahyuni']);
+  addSeksiBlock('Pembangunan',    ['Teguh Wiyono', 'Paimin']);
+  addSeksiBlock('Keamanan',       ['Joko Purnomo', 'Wahyu Prasetyo']);
+  sv('kas_tgl', '18 Juni 2026');
+  sv('kas_umum','Rp 14.000.000'); sv('kas_pemb','Rp 10.500.000'); sv('kas_keluar','Rp 4.200.000');
+  recalcTotal();
+  addArusRow('16/06', "Infak Jum'at", 'Umum', 'Rp 1.250.000', 'Rp 0');
+  addArusRow('16/06', 'Bayar Listrik & Air', 'Umum', 'Rp 0', 'Rp 500.000');
+  addDonasiRow('Hamba Allah', 'Rp 500.000', 'Transfer BRI');
+  addKhatibRow('27 Juni 2026', 'Ust. Budi Santoso');
+  addKhatibRow('4 Juli 2026',  'Ust. Candra Wijaya');
+  addEventRow('Kajian Rutin Sabtu', 'Ustadz Wijayanto', 'Sabtu, 21 Juni 2026', '19.30 WIB', 'Masjid Baiturrahman', 'Terbuka untuk jamaah umum.', 'assets/poster1.jpg');
+  addGalleryRow('assets/kegiatan1.jpg');
+  sv('dok_judul', 'Dokumentasi Kegiatan Sosial Masjid');
+  // Default kota: Tuban (ID 1309 di API MyQuran)
+  selectKota('1309', 'KABUPATEN TUBAN', 'Jawa Timur');
+  sv('c_subuh',0); sv('c_dzuhur',0); sv('c_ashar',0); sv('c_maghrib',0); sv('c_isya',0);
+}
+
+// ════════════════════════════════════════════════
+//  BOOT
+// ════════════════════════════════════════════════
+window.onload = function () {
+  const loaded = loadFromLocalStorage();
+  if (!loaded) loadDefaults();
+};
 </script>
 </body>
 </html>
