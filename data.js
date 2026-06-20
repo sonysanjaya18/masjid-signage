@@ -15,7 +15,7 @@ var localMosqueData = {
         "foto": ""
       },
       {
-        "nama": "Bpk. Salahudin",
+        "nama": "Bpk. Salahuddin",
         "jabatan": "Penasehat II",
         "foto": ""
       }
@@ -30,7 +30,7 @@ var localMosqueData = {
     "sekretaris2Foto": "",
     "bendahara1": "Bpk. Abd. Rozaq",
     "bendahara1Foto": "",
-    "bendahara2": "Bpk. Nadhifan",
+    "bendahara2": "Bpk. M. Nadhifan",
     "bendahara2Foto": "",
     "seksi": [
       {
@@ -45,7 +45,7 @@ var localMosqueData = {
             "foto": ""
           },
           {
-            "nama": "Ust. Wahyudi",
+            "nama": "Ust. M Heri WahyudiWahyudi",
             "foto": ""
           }
         ]
@@ -54,7 +54,7 @@ var localMosqueData = {
         "nama": "Pembangunan",
         "anggota": [
           {
-            "nama": "Bpk. Zainuri",
+            "nama": "Bpk. Mochamad Zaenuri",
             "foto": ""
           },
           {
@@ -62,7 +62,11 @@ var localMosqueData = {
             "foto": ""
           },
           {
-            "nama": "Bpk. Umar",
+            "nama": "Bpk. Mohamad Umar",
+            "foto": ""
+          },
+          {
+            "nama": "Bpk. Sutrisno",
             "foto": ""
           }
         ]
@@ -71,7 +75,7 @@ var localMosqueData = {
         "nama": "Humas & Kemasyarakatan",
         "anggota": [
           {
-            "nama": "Bpk. Budi",
+            "nama": "Bpk. M Budiyanto",
             "foto": ""
           },
           {
@@ -92,15 +96,15 @@ var localMosqueData = {
             "foto": ""
           },
           {
-            "nama": "Bpk. Malik",
+            "nama": "Bpk. Muhammad Maliq",
             "foto": ""
           },
           {
-            "nama": "Bpk. Sugeng Priyanto",
+            "nama": "Bpk. M Sugeng Priyanto",
             "foto": ""
           },
           {
-            "nama": "Sdr. Ragil",
+            "nama": "Sdr. Ragil Bagas W",
             "foto": ""
           }
         ]
@@ -109,7 +113,7 @@ var localMosqueData = {
         "nama": "Sarana & Prasarana",
         "anggota": [
           {
-            "nama": "Bpk. Rouf",
+            "nama": "Bpk. Ahmad Rouf",
             "foto": ""
           },
           {
@@ -134,7 +138,7 @@ var localMosqueData = {
             "foto": ""
           },
           {
-            "nama": "Bpk. Juwaini",
+            "nama": "Bpk. Djuwaeni",
             "foto": ""
           }
         ]
@@ -143,11 +147,11 @@ var localMosqueData = {
         "nama": "Keamanan",
         "anggota": [
           {
-            "nama": "Bpk. Hadi",
+            "nama": "Bpk. Kasrohadi",
             "foto": ""
           },
           {
-            "nama": "Bpk. Yanto",
+            "nama": "Bpk. Suyanto",
             "foto": ""
           },
           {
@@ -160,7 +164,7 @@ var localMosqueData = {
         "nama": "PHBI",
         "anggota": [
           {
-            "nama": "Ust. Musa",
+            "nama": "Ust. Moh. Musa",
             "foto": ""
           },
           {
@@ -168,7 +172,7 @@ var localMosqueData = {
             "foto": ""
           },
           {
-            "nama": "Bpk. Romli",
+            "nama": "Bpk. Muhammad Romli",
             "foto": ""
           },
           {
