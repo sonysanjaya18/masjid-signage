@@ -1,7 +1,7 @@
 var localMosqueData = {
   "profile": {
     "name": "Masjid Baiturrahman Panjunan",
-    "tagline": "Selamat datang di Masjid Baiturrahman Pajunan, desa tasikmadu kecamatan palang kabupaten tuban | Harap Matikan/Silent Telepon Seluler Untuk Kekhusyukan Ibadah",
+    "tagline": "Selamat datang di Masjid Baiturrahman Panjunan, Desa Tasikmadu Kecamatan Palang, Kabupaten Tuban | Harap Matikan/Silent Telepon Seluler Untuk Kekhusyukan Ibadah",
     "subHeadline": "Dusun Panjunan Desa Tasikmadu Kec. Palang - Tuban"
   },
   "dashboard": {
