@@ -211,13 +211,13 @@ var localMosqueData = {
     "adzanMenit": 1,
     "postTimers": [
       {
-        "judul": "Iqomah",
-        "durasi": 2,
+        "judul": "Adzan",
+        "durasi": 4,
         "bg": ""
       },
       {
-        "judul": "Sholat Berjamaah",
-        "durasi": 4,
+        "judul": "Iqomah",
+        "durasi": 2,
         "bg": ""
       }
     ]
