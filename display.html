@@ -1,345 +1,286 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" style="background:#fcfbf7; color-scheme:light;">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
   <title>Layar Utama Digital Signage Masjid</title>
   <style>
+    /* ── FORCE LIGHT MODE — override dark mode TV/browser ── */
+    :root { color-scheme: light only; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #fcfbf7; color: #1a3322; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
 
-    header { background: #ffffff; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; height: 12%; border-bottom: 2px solid #eeeeee; }
-    .header-left h1 { font-size: 2.1rem; color: #11422c; font-weight: bold; }
-    .header-left .sub-headline { font-size: 1.0rem; color: #7f8c8d; font-weight: 500; margin-top: 2px; }
-    .header-center { font-size: 3.8rem; font-weight: bold; color: #11422c; }
-    .header-right { text-align: right; font-size: 1.25rem; color: #11422c; font-weight: 600; }
+    html {
+      background: #fcfbf7 !important;
+      color: #1a3322 !important;
+    }
 
-    .wrapper { display: flex; flex: 1; height: 80%; width: 100%; }
-    .main-content { width: 75%; height: 100%; position: relative; padding: 22px 32px; background: #fcfbf7; overflow: hidden; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #fcfbf7 !important;
+      color: #1a3322 !important;
+      overflow: hidden;
+      /* Pakai 100dvh agar aman di semua layar TV */
+      height: 100dvh;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-    .slide { display: none; width: 100%; height: 100%; animation: fadeEffect 0.5s ease-in-out; }
-    .slide.active { display: flex; flex-direction: column; }
-    @keyframes fadeEffect { from { opacity: 0.2; } to { opacity: 1; } }
+    /* ── HEADER — tinggi fixed px bukan % ── */
+    header {
+      background: #ffffff !important;
+      padding: clamp(10px,1.5vh,20px) clamp(20px,3vw,48px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: clamp(70px, 11vh, 120px);
+      flex-shrink: 0;
+      border-bottom: 2px solid #eeeeee;
+    }
+    .header-left h1 { font-size: clamp(1.4rem,2.8vw,3rem); color: #11422c !important; font-weight: bold; line-height:1.2; }
+    .header-left .sub-headline { font-size: clamp(0.9rem,1.4vw,1.4rem); color: #7f8c8d !important; font-weight: 500; margin-top: 2px; }
+    .header-center { font-size: clamp(2.4rem,5.5vw,5.5rem); font-weight: bold; color: #11422c !important; white-space:nowrap; }
+    .header-right { text-align: right; font-size: clamp(1rem,1.6vw,1.8rem); color: #11422c !important; font-weight: 600; }
 
-    .section-title { font-size: 2.2rem; color: #11422c; font-weight: bold; border-bottom: 3px solid #caa43d; padding-bottom: 8px; margin-bottom: 14px; flex-shrink: 0; }
-    .sub-date-title { font-size: 1.1rem; color: #7f8c8d; font-weight: 500; margin-top: 3px; display: block; }
-
-    /* ── DASHBOARD ── */
-    .welcome-bg { width: 100%; flex: 1; border-radius: 12px; background-size: cover; background-position: center; position: relative; box-shadow: inset 0 0 100px rgba(0,0,0,0.4); }
-    .welcome-overlay { position: absolute; bottom: 30px; left: 30px; background: rgba(17,66,44,0.9); padding: 20px 30px; border-radius: 8px; border-left: 5px solid #caa43d; color: white; }
-    .welcome-overlay h2 { font-size: 2rem; margin-bottom: 5px; }
-    .welcome-overlay p { font-size: 1.1rem; opacity: 0.85; }
-
-    /* ── KAS ── */
-    .kas-center { text-align: center; margin-bottom: 18px; }
-    .kas-center p { font-size: 1rem; text-transform: uppercase; color: #7f8c8d; letter-spacing: 1px; }
-    .kas-center h2 { font-size: 4.2rem; color: #caa43d; font-weight: bold; }
-    .kas-cards-row { display: flex; gap: 20px; }
-    .kas-card { background: white; border-radius: 12px; padding: 22px 15px; flex: 1; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
-    .monochrome-icon { width: 40px; height: 40px; fill: #caa43d; margin: 0 auto 10px; display: block; }
-    .kas-card label { font-size: 0.82rem; text-transform: uppercase; font-weight: bold; color: #7f8c8d; display: block; }
-    .kas-card span { font-size: 1.7rem; font-weight: bold; color: #11422c; margin-top: 6px; display: block; }
-
-    /* ── TABLES ── */
-    .table-container { flex: 1; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-    .app-table { width: 100%; border-collapse: collapse; font-size: 1.15rem; }
-    .app-table th { background: #11422c; color: white; padding: 14px 16px; text-align: left; font-weight: 600; position: sticky; top: 0; z-index: 10; }
-    .app-table td { padding: 14px 16px; border-bottom: 1px solid #f1f1f1; font-weight: 500; }
-    .app-table tr:nth-child(even) { background: #fdfdfb; }
-
-    /* ══════════════════════════════════════════
-       STRUKTUR PENGURUS — Slide Per Seksi
-    ══════════════════════════════════════════ */
-    .pengurus-slide-wrap {
+    /* ── WRAPPER — isi sisa tinggi, tidak overflow ── */
+    .wrapper {
+      display: flex;
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 28px;
-    }
-
-    .pengurus-jabatan-title {
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 900;
-      color: #11422c;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      width: 100%;
-      /* Tidak ada garis bawah */
-    }
-
-    .pengurus-members-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 32px 40px;
-      width: 100%;
-    }
-
-    /* Kartu anggota pengurus */
-    .pengurus-member-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      min-width: 150px;
-      max-width: 210px;
-    }
-
-    .member-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #caa43d;
-      background: #11422c;
-      display: block;
-    }
-
-    .member-avatar-placeholder {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 4px solid #caa43d;
-      background: #11422c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .member-avatar-placeholder svg {
-      width: 54px;
-      height: 54px;
-      fill: rgba(202,164,61,0.8);
-    }
-
-    .member-name {
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #11422c;
-      text-align: center;
-      line-height: 1.3;
-    }
-
-    .member-jabatan {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #7f8c8d;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: -6px;
-    }
-
-    /* Untuk seksi yang banyak anggotanya, avatar lebih kecil */
-    .pengurus-members-row.compact .member-avatar,
-    .pengurus-members-row.compact .member-avatar-placeholder {
-      width: 75px;
-      height: 75px;
-    }
-    .pengurus-members-row.compact .member-avatar-placeholder svg { width: 38px; height: 38px; }
-    .pengurus-members-row.compact .member-name { font-size: 1rem; }
-    .pengurus-members-row.compact .member-jabatan { font-size: 0.72rem; }
-    .pengurus-members-row.compact .pengurus-member-card { min-width: 110px; max-width: 160px; gap: 8px; }
-
-    /* ── KHATIB JUM'AT ── */
-    .khatib-layout { flex: 1; display: flex; gap: 28px; min-height: 0; }
-
-    /* Panel kiri — Khatib minggu ini */
-    .khatib-featured {
-      width: 280px;
-      flex-shrink: 0;
-      background: #11422c;
-      border-radius: 18px;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 6px 24px rgba(17,66,44,0.25);
-      position: relative;
+      min-height: 0;        /* penting! agar flex child bisa shrink */
       overflow: hidden;
     }
 
-    /* Area gambar di atas panel kiri khatib */
-    .khatib-featured-image {
-      width: 100%;
-      height: 45%;
-      flex-shrink: 0;
-      object-fit: cover;
-      display: block;
-      border-radius: 18px 18px 0 0;
-    }
-
-    .khatib-featured-image-placeholder {
-      width: 100%;
-      height: 45%;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(202,164,61,0.10);
-      border-radius: 18px 18px 0 0;
-      border-bottom: 1px solid rgba(202,164,61,0.2);
-    }
-
-    .khatib-featured-image-placeholder svg {
-      width: 60px; height: 60px; fill: rgba(202,164,61,0.3);
-    }
-
-    .khatib-featured-info {
+    /* ── MAIN CONTENT ── */
+    .main-content {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 20px 24px 28px;
-      position: relative;
-    }
-
-    .khatib-featured-info::before {
-      content: '';
-      position: absolute;
-      top: -40px; right: -40px;
-      width: 160px; height: 160px;
-      border-radius: 50%;
-      background: rgba(202,164,61,0.12);
-      pointer-events: none;
-    }
-
-    .khatib-this-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #caa43d;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-    .khatib-this-name {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-    .khatib-this-date {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: rgba(255,255,255,0.65);
-    }
-    .khatib-no-data {
-      font-size: 1rem;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      margin: auto;
-      line-height: 1.6;
-    }
-
-    /* Panel kanan — Tabel jadwal mendatang */
-    .khatib-list-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+      min-width: 0;
       min-height: 0;
-    }
-    .khatib-list-header {
+      position: relative;
+      padding: clamp(12px,1.8vh,28px) clamp(16px,2.5vw,38px);
+      background: #fcfbf7 !important;
+      overflow: hidden;
       display: flex;
-      padding: 0 4px 10px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #9aaa9e;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      border-bottom: 1px solid #e4ede8;
-      margin-bottom: 10px;
+      flex-direction: column;
     }
-    .khatib-list-header .col-nama { flex: 1; }
-    .khatib-list-header .col-tgl  { width: 200px; text-align: right; }
-    .khatib-list-rows { flex: 1; overflow-y: auto; scrollbar-width: none; }
-    .khatib-list-rows::-webkit-scrollbar { display: none; }
-    .khatib-row {
-      display: flex;
-      align-items: center;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 13px 16px;
-      margin-bottom: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      border-left: 4px solid #e4ede8;
-      transition: border-color .2s;
+
+    /* ── SLIDES ── */
+    .slide { display: none; width: 100%; flex: 1; min-height: 0; animation: fadeEffect 0.5s ease-in-out; }
+    .slide.active { display: flex; flex-direction: column; }
+    @keyframes fadeEffect { from { opacity: 0.2; } to { opacity: 1; } }
+
+    .section-title {
+      font-size: clamp(1.6rem, 2.8vw, 3rem);
+      color: #11422c !important;
+      font-weight: bold;
+      border-bottom: 3px solid #caa43d;
+      padding-bottom: 6px;
+      margin-bottom: clamp(8px,1.2vh,16px);
+      flex-shrink: 0;
     }
-    .khatib-row.next { border-left-color: #caa43d; background: #fffef8; }
-    .khatib-row .k-nama { flex: 1; font-size: 1.05rem; font-weight: 600; color: #11422c; }
-    .khatib-row .k-tgl  { width: 200px; text-align: right; font-size: 0.9rem; font-weight: 500; color: #7f8c8d; }
-    .khatib-row.next .k-tgl { color: #caa43d; font-weight: 700; }
+    .sub-date-title { font-size: clamp(0.9rem,1.2vw,1.3rem); color: #7f8c8d !important; font-weight: 500; margin-top: 2px; display: block; }
 
-    /* ── EVENTS & GALLERY ── */
-    .event-flex { flex: 1; display: flex; gap: 36px; align-items: stretch; }
-    .event-poster { width: 36%; border-radius: 12px; overflow: hidden; background: #eae6db; }
-    .event-poster img { width: 100%; height: 100%; object-fit: cover; }
-    .event-card-details { flex: 1; background: white; padding: 28px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: center; }
-    .event-item { display: flex; margin-bottom: 14px; font-size: 1.2rem; align-items: flex-start; }
-    .event-item strong { width: 130px; color: #7f8c8d; font-weight: 700; font-size: 1rem; text-transform: uppercase; flex-shrink: 0; }
-    .event-item span { color: #1a3322; font-weight: 500; margin-left: 5px; }
-    .monochrome-event-icon { width: 22px; height: 22px; fill: #caa43d; margin-right: 10px; flex-shrink: 0; margin-top: 2px; }
+    /* ── DASHBOARD ── */
+    .welcome-bg { width: 100%; flex: 1; min-height: 0; border-radius: 10px; background-size: cover; background-position: center; position: relative; box-shadow: inset 0 0 100px rgba(0,0,0,0.4); overflow:hidden; }
+    .welcome-overlay { position: absolute; bottom: clamp(12px,2vh,30px); left: clamp(12px,2vw,30px); background: rgba(17,66,44,0.9) !important; padding: clamp(10px,1.5vh,20px) clamp(14px,2vw,30px); border-radius: 8px; border-left: 5px solid #caa43d; color: white !important; }
+    .welcome-overlay h2 { font-size: clamp(1.5rem,2.8vw,2.8rem); margin-bottom: 4px; color: #fff !important; }
+    .welcome-overlay p  { font-size: clamp(1rem,1.5vw,1.5rem); opacity: 0.85; color: #fff !important; }
 
-    .gallery-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; }
-    .gallery-item { border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: #eae6db; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    /* ── KAS ── */
+    .kas-center { text-align: center; margin-bottom: clamp(8px,1.2vh,18px); flex-shrink:0; }
+    .kas-center p { font-size: clamp(1rem,1.2vw,1.4rem); text-transform: uppercase; color: #7f8c8d !important; letter-spacing: 1px; }
+    .kas-center h2 { font-size: clamp(2.8rem,6.5vw,6rem); color: #caa43d !important; font-weight: bold; line-height:1; }
+    .kas-cards-row { display: flex; gap: clamp(8px,1.2vw,20px); flex-shrink:0; }
+    .kas-card { background: #ffffff !important; border-radius: 10px; padding: clamp(10px,1.5vh,22px) clamp(8px,1vw,15px); flex: 1; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.06); }
+    .monochrome-icon { width: clamp(24px,3vw,40px); height: clamp(24px,3vw,40px); fill: #caa43d; margin: 0 auto clamp(4px,0.8vh,10px); display: block; }
+    .kas-card label { font-size: clamp(0.9rem,1.1vw,1.2rem); text-transform: uppercase; font-weight: bold; color: #7f8c8d !important; display: block; }
+    .kas-card span  { font-size: clamp(1.4rem,2.4vw,2.4rem); font-weight: bold; color: #11422c !important; margin-top: 4px; display: block; }
 
-    /* ── SIDEBAR SHOLAT ── */
-    .sidebar-sholat { width: 25%; background: #0d3320; border-left: 2px solid #0a2818; display: flex; flex-direction: column; }
-    .sholat-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; background: transparent; transition: all 0.5s ease; border-bottom: 1px solid rgba(255,255,255,0.07); flex: 1; }
+    /* ── TABLES ── */
+    .table-container { flex: 1; min-height: 0; background: #ffffff !important; border-radius: 10px; overflow: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+    .app-table { width: 100%; border-collapse: collapse; font-size: clamp(1rem,1.5vw,1.6rem); }
+    .app-table th { background: #11422c !important; color: #ffffff !important; padding: clamp(12px,1.6vh,20px) clamp(12px,1.4vw,20px); text-align: left; font-weight: 600; position: sticky; top: 0; z-index: 10; }
+    .app-table td { padding: clamp(12px,1.6vh,20px) clamp(12px,1.4vw,20px); border-bottom: 1px solid #f1f1f1; font-weight: 500; color: #1a3322 !important; }
+    .app-table tr:nth-child(even) { background: #fdfdfb !important; }
+
+    /* ══ PENGURUS ══ */
+    .pengurus-slide-wrap {
+      flex: 1; min-height: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: clamp(12px,2vh,28px);
+      overflow: hidden;
+      padding: clamp(4px,1vh,16px) 0;
+    }
+    .pengurus-jabatan-title {
+      font-size: clamp(1.8rem, 3.2vw, 3.5rem);
+      font-weight: 900; color: #11422c !important;
+      text-align: center; text-transform: uppercase;
+      letter-spacing: clamp(1px,0.4vw,4px); width: 100%; flex-shrink: 0;
+    }
+    .pengurus-members-row {
+      display: flex; justify-content: center;
+      flex-wrap: wrap; gap: clamp(10px,1.5vh,24px) clamp(16px,2.5vw,36px);
+      width: 100%; overflow: hidden;
+    }
+    .pengurus-member-card {
+      display: flex; flex-direction: column; align-items: center;
+      gap: clamp(4px,0.8vh,10px);
+      min-width: clamp(100px,12vw,175px); max-width: clamp(130px,17vw,240px);
+    }
+    .member-avatar, .member-avatar-placeholder {
+      width:  clamp(70px,10vw,130px);
+      height: clamp(70px,10vw,130px);
+      border-radius: 50%; border: 3px solid #caa43d;
+      background: #11422c !important; flex-shrink: 0;
+    }
+    .member-avatar { object-fit: cover; display: block; }
+    .member-avatar-placeholder { display: flex; align-items: center; justify-content: center; }
+    .member-avatar-placeholder svg { width: 55%; height: 55%; fill: rgba(202,164,61,0.85); }
+    .member-name {
+      font-size: clamp(1rem,1.6vw,1.8rem);
+      font-weight: 800; color: #11422c !important;
+      text-align: center; line-height: 1.25;
+    }
+    .member-jabatan {
+      font-size: clamp(0.9rem,1.2vw,1.3rem);
+      font-weight: 600; color: #7f8c8d !important;
+      text-align: center; text-transform: uppercase;
+      letter-spacing: 0.5px; margin-top: -4px;
+    }
+    .pengurus-members-row.compact .member-avatar,
+    .pengurus-members-row.compact .member-avatar-placeholder {
+      width: clamp(56px,7.5vw,96px); height: clamp(56px,7.5vw,96px);
+    }
+    .pengurus-members-row.compact .member-name    { font-size: clamp(0.85rem,1.3vw,1.4rem); }
+    .pengurus-members-row.compact .member-jabatan { font-size: clamp(0.7rem,0.9vw,0.95rem); }
+    .pengurus-members-row.compact .pengurus-member-card { min-width: clamp(80px,9vw,130px); max-width: clamp(100px,13vw,190px); }
+
+    /* ══ KHATIB JUM'AT ══ */
+    .khatib-layout { flex: 1; min-height: 0; display: flex; gap: clamp(12px,1.5vw,28px); }
+    .khatib-featured {
+      width: clamp(200px,24vw,340px); flex-shrink: 0;
+      background: #11422c !important; border-radius: 14px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 6px 24px rgba(17,66,44,0.25); overflow: hidden;
+    }
+    .khatib-featured-image { width:100%; height:42%; flex-shrink:0; object-fit:cover; display:block; border-radius:14px 14px 0 0; }
+    .khatib-featured-image-placeholder {
+      width:100%; height:42%; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(202,164,61,0.10); border-radius:14px 14px 0 0;
+      border-bottom:1px solid rgba(202,164,61,0.2);
+    }
+    .khatib-featured-image-placeholder svg { width:clamp(32px,4vw,60px); height:clamp(32px,4vw,60px); fill:rgba(202,164,61,0.3); }
+    .khatib-featured-info { flex:1; display:flex; flex-direction:column; justify-content:flex-end; padding:clamp(10px,1.5vh,20px) clamp(12px,1.5vw,24px) clamp(14px,2vh,28px); }
+    .khatib-this-label { font-size:clamp(0.8rem,1vw,1.1rem); font-weight:700; color:#caa43d !important; text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
+    .khatib-this-name  { font-size:clamp(1.2rem,2vw,2.2rem); font-weight:800; color:#ffffff !important; line-height:1.2; margin-bottom:8px; }
+    .khatib-this-date  { font-size:clamp(0.85rem,1.1vw,1.2rem); font-weight:500; color:rgba(255,255,255,0.65) !important; }
+    .khatib-list-panel { flex:1; min-height:0; display:flex; flex-direction:column; }
+    .khatib-list-header { display:flex; padding:0 4px clamp(6px,0.8vh,10px); font-size:clamp(0.85rem,1.1vw,1.1rem); font-weight:700; color:#9aaa9e !important; text-transform:uppercase; letter-spacing:1.5px; border-bottom:1px solid #e4ede8; margin-bottom:8px; flex-shrink:0; }
+    .khatib-list-header .col-nama { flex:1; }
+    .khatib-list-header .col-tgl  { width:clamp(140px,18vw,260px); text-align:right; }
+    .khatib-list-rows { flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; }
+    .khatib-list-rows::-webkit-scrollbar { display:none; }
+    .khatib-row { display:flex; align-items:center; background:#ffffff !important; border-radius:8px; padding:clamp(8px,1vh,13px) clamp(10px,1.2vw,16px); margin-bottom:6px; box-shadow:0 2px 8px rgba(0,0,0,0.04); border-left:4px solid #e4ede8; }
+    .khatib-row.next { border-left-color:#caa43d; background:#fffef8 !important; }
+    .khatib-row .k-nama { flex:1; font-size:clamp(1rem,1.5vw,1.6rem); font-weight:600; color:#11422c !important; }
+    .khatib-row .k-tgl  { width:clamp(140px,18vw,260px); text-align:right; font-size:clamp(0.9rem,1.2vw,1.3rem); font-weight:500; color:#7f8c8d !important; }
+    .khatib-row.next .k-tgl { color:#caa43d !important; font-weight:700; }
+
+    /* ══ EVENTS & GALLERY ══ */
+    .event-flex { flex:1; min-height:0; display:flex; gap:clamp(14px,2vw,36px); align-items:stretch; }
+    .event-poster { width:34%; border-radius:10px; overflow:hidden; background:#eae6db !important; flex-shrink:0; }
+    .event-poster img { width:100%; height:100%; object-fit:cover; }
+    .event-card-details { flex:1; background:#ffffff !important; padding:clamp(14px,2vh,28px); border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.05); display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+    .event-item { display:flex; margin-bottom:clamp(6px,1vh,14px); font-size:clamp(1rem,1.6vw,1.7rem); align-items:flex-start; }
+    .event-item strong { width:clamp(80px,10vw,130px); color:#7f8c8d !important; font-weight:700; font-size:clamp(0.9rem,1.2vw,1.3rem); text-transform:uppercase; flex-shrink:0; }
+    .event-item span { color:#1a3322 !important; font-weight:500; margin-left:5px; }
+    .monochrome-event-icon { width:clamp(14px,1.5vw,22px); height:clamp(14px,1.5vw,22px); fill:#caa43d; margin-right:8px; flex-shrink:0; margin-top:2px; }
+    .gallery-grid { flex:1; min-height:0; display:grid; grid-template-columns:repeat(auto-fit, minmax(clamp(120px,16vw,200px), 1fr)); gap:clamp(8px,1.2vw,18px); }
+    .gallery-item { border-radius:10px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.05); background:#eae6db !important; }
+    .gallery-item img { width:100%; height:100%; object-fit:cover; }
+
+    /* ══ SIDEBAR SHOLAT ══ */
+    .sidebar-sholat {
+      width: clamp(200px, 24vw, 340px);
+      background: #0d3320 !important;
+      border-left: 2px solid #0a2818;
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sholat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: clamp(8px,1.2vh,16px) clamp(10px,1.5vw,24px);
+      background: transparent !important;
+      transition: all 0.5s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex: 1; min-height: 0;
+    }
     .sholat-row:last-child { border-bottom: none; }
-    .sholat-row .label { font-size: 1.15rem; font-weight: 600; color: rgba(255,255,255,0.55); transition: all 0.5s; }
+    .sholat-row .label {
+      font-size: clamp(1rem,1.6vw,1.7rem);
+      font-weight: 600; color: rgba(255,255,255,0.55) !important; transition: all 0.5s;
+    }
     .sholat-row .val-wrap { text-align: right; }
-    .sholat-row .val   { font-size: 1.6rem; font-weight: 700; color: rgba(255,255,255,0.55); display: block; transition: all 0.5s; }
-    /* countdown fade toggle */
-    .sholat-row .val.hidden   { opacity: 0; }
-    .sholat-row .val.visible  { opacity: 1; }
-    .countdown-badge { font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.4); margin-top: 3px; display: none; text-align: right; }
-    /* next prayer highlight */
-    .sholat-row.next-active { background: rgba(202,164,61,0.12); border-left: 4px solid #caa43d; }
-    .sholat-row.next-active .label { color: #caa43d; font-size: 1.3rem; font-weight: 800; }
-    .sholat-row.next-active .val   { color: #ffffff; font-size: 2.2rem; font-weight: 900; }
-    .sholat-row.next-active .countdown-badge { display: block; color: #ffd97d; font-size: 0.9rem; }
+    .sholat-row .val {
+      font-size: clamp(1.3rem,2.1vw,2.2rem);
+      font-weight: 700; color: rgba(255,255,255,0.55) !important;
+      display: block; transition: all 0.5s; white-space: nowrap;
+    }
+    .countdown-badge {
+      font-size: clamp(0.8rem,1.1vw,1.1rem);
+      font-weight: 700; color: rgba(255,255,255,0.4) !important;
+      margin-top: 2px; display: none; text-align: right; white-space: nowrap;
+    }
+    .sholat-row.next-active { background: rgba(202,164,61,0.14) !important; border-left: 4px solid #caa43d; }
+    .sholat-row.next-active .label { color: #caa43d !important; font-size: clamp(1.2rem,1.9vw,2rem); font-weight: 800; }
+    .sholat-row.next-active .val   { color: #ffffff !important; font-size: clamp(1.6rem,2.8vw,3rem); font-weight: 900; }
+    .sholat-row.next-active .countdown-badge { display: block; color: #ffd97d !important; font-size: clamp(0.85rem,1.2vw,1.3rem); }
 
-    /* ── FULLSCREEN TIMER OVERLAY ── */
+    /* ══ FULLSCREEN TIMER OVERLAY ══ */
     #fs-timer-overlay {
       display: none; position: fixed; inset: 0; z-index: 9999;
       flex-direction: column; align-items: center; justify-content: center;
-      background: #0d3320;
+      background: #0d3320 !important;
     }
     #fs-timer-overlay.active { display: flex; }
-    #fs-timer-bg-img {
-      position: absolute; inset: 0; object-fit: cover; width: 100%; height: 100%;
-      opacity: 0.25; display: none;
-    }
-    #fs-timer-bg-img.visible { display: block; }
-    .fs-timer-content { position: relative; z-index: 2; text-align: center; padding: 40px; }
-    .fs-timer-judul {
-      font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 900; color: #ffffff;
-      text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-    }
-    .fs-timer-countdown {
-      font-size: clamp(4rem, 12vw, 10rem); font-weight: 900; color: #caa43d;
-      font-variant-numeric: tabular-nums; letter-spacing: 6px;
-      text-shadow: 0 4px 30px rgba(202,164,61,0.4);
-      animation: pulseTimer 1s ease-in-out infinite;
-    }
-    @keyframes pulseTimer { 0%,100% { opacity:1; } 50% { opacity:0.75; } }
-    .fs-timer-sub {
-      font-size: 1.3rem; color: rgba(255,255,255,0.6); margin-top: 20px; font-weight: 500;
-    }
-    .fs-adzan-icon {
-      font-size: 5rem; margin-bottom: 16px; animation: swingIcon 1.2s ease-in-out infinite;
-    }
-    @keyframes swingIcon { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+    #fs-timer-bg-img { position:absolute; inset:0; object-fit:cover; width:100%; height:100%; opacity:0.25; display:none; }
+    #fs-timer-bg-img.visible { display:block; }
+    .fs-timer-content { position:relative; z-index:2; text-align:center; padding:clamp(20px,4vh,48px); }
+    .fs-timer-judul { font-size:clamp(1.5rem,5vw,4.5rem); font-weight:900; color:#ffffff !important; text-transform:uppercase; letter-spacing:4px; margin-bottom:clamp(10px,2vh,24px); text-shadow:0 2px 20px rgba(0,0,0,0.5); }
+    .fs-timer-countdown { font-size:clamp(3rem,12vw,10rem); font-weight:900; color:#caa43d !important; font-variant-numeric:tabular-nums; letter-spacing:6px; text-shadow:0 4px 30px rgba(202,164,61,0.4); animation:pulseTimer 1s ease-in-out infinite; }
+    @keyframes pulseTimer { 0%,100%{opacity:1} 50%{opacity:0.75} }
+    .fs-timer-sub { font-size:clamp(1.2rem,1.9vw,2rem); color:rgba(255,255,255,0.6) !important; margin-top:clamp(10px,1.5vh,20px); font-weight:500; }
+    .fs-adzan-icon { font-size:clamp(2.5rem,6vw,5rem); margin-bottom:clamp(8px,1.5vh,16px); animation:swingIcon 1.2s ease-in-out infinite; }
+    @keyframes swingIcon { 0%,100%{transform:rotate(-12deg)} 50%{transform:rotate(12deg)} }
 
-    /* ── FOOTER MARQUEE ── */
-    footer { background: #11422c; height: 8%; display: flex; align-items: center; overflow: hidden; white-space: nowrap; border-top: 3px solid #caa43d; }
-    .marquee { display: inline-block; padding-left: 100%; animation: runText 30s linear infinite; font-size: 1.45rem; color: #ffffff; font-weight: 500; }
-    @keyframes runText { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-100%,0,0); } }
+    /* ══ FOOTER MARQUEE ══ */
+    footer {
+      background: #11422c !important;
+      height: clamp(40px, 6vh, 68px);
+      flex-shrink: 0;
+      display: flex; align-items: center;
+      overflow: hidden; white-space: nowrap;
+      border-top: 3px solid #caa43d;
+    }
+    .marquee {
+      display: inline-block; padding-left: 100%;
+      animation: runText 30s linear infinite;
+      font-size: clamp(1.1rem,1.8vw,2rem);
+      color: #ffffff !important; font-weight: 500;
+    }
+    @keyframes runText { 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-100%,0,0)} }
+
+    /* ══ DARK MODE OVERRIDE — paksa semua elemen tetap light ══ */
+    @media (prefers-color-scheme: dark) {
+      html, body { background-color: #fcfbf7 !important; color: #1a3322 !important; }
+      header, .main-content { background: #fcfbf7 !important; }
+      header { background: #ffffff !important; }
+      .kas-card, .table-container, .event-card-details, .khatib-row { background: #ffffff !important; }
+      .app-table td { color: #1a3322 !important; }
+      .app-table tr:nth-child(even) { background: #fdfdfb !important; }
+    }
   </style>
 </head>
 <body>

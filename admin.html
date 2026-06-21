@@ -134,6 +134,8 @@
     <a href="#sec-events">📣 Acara & Pengumuman</a>
     <a href="#sec-galeri">🖼️ Galeri Dokumentasi</a>
     <a href="#sec-geo">🌐 Lokasi & Waktu Sholat</a>
+    <div class="sidebar-section">Integrasi</div>
+    <a href="#sec-github">☁️ GitHub Sync</a>
   </nav>
 
   <div class="content">
@@ -380,9 +382,52 @@
       </div>
     </div>
 
-    <div class="sticky-footer">
-      <button type="button" class="btn btn-generate" onclick="saveAndDownload()">
-        💾 GENERATE & UNDUH data.js
+    <!-- ─── GITHUB SYNC ─── -->
+    <div class="card" id="sec-github">
+      <div class="card-header"><h2>☁️ GitHub Sync</h2></div>
+      <div class="card-body">
+        <p style="font-size:.85rem; color:#4a5a4e; margin-bottom:16px;">
+          Setelah diisi, tombol <strong>☁️ Simpan ke GitHub</strong> akan otomatis push <code>data.js</code>
+          dan file foto ke repo kamu — display akan reload otomatis dalam 30 detik.
+        </p>
+        <div class="row">
+          <div class="field">
+            <label>GitHub Username</label>
+            <input type="text" id="gh_user" placeholder="contoh: username-kamu">
+          </div>
+          <div class="field">
+            <label>Nama Repository</label>
+            <input type="text" id="gh_repo" placeholder="contoh: masjid-digital">
+          </div>
+          <div class="field" style="max-width:160px;">
+            <label>Branch</label>
+            <input type="text" id="gh_branch" placeholder="main" value="main">
+          </div>
+        </div>
+        <div class="field" style="max-width:100%; margin-top:4px;">
+          <label>Personal Access Token (PAT) — <a href="https://github.com/settings/tokens/new?scopes=repo&description=MasjidAdmin" target="_blank" style="color:#11422c; font-weight:600;">Buat Token Baru ↗</a></label>
+          <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+            <input type="password" id="gh_token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="flex:1; font-family:monospace;">
+            <button type="button" class="btn" style="white-space:nowrap; background:#11422c; color:#fff;" onclick="testGithubConnection()">🔌 Test Koneksi</button>
+          </div>
+          <p style="font-size:.75rem; color:#9aaa9e; margin-top:4px;">Token disimpan di localStorage browser, tidak dikirim ke manapun selain GitHub.</p>
+        </div>
+        <div style="background:#f0f7f3; border-radius:8px; padding:12px 14px; margin-top:10px; font-size:.82rem; color:#4a5a4e; line-height:1.8;">
+          <strong>Cara setup (sekali saja):</strong><br>
+          1. Buat repo di GitHub (public/private bebas)<br>
+          2. Upload <code>display.html</code> + <code>admin.html</code> ke repo secara manual<br>
+          3. Aktifkan <strong>GitHub Pages</strong> → Settings → Pages → Branch: <code>main</code>, folder: <code>/ (root)</code><br>
+          4. Isi form di atas → klik Test Koneksi → mulai pakai tombol ☁️ di bawah
+        </div>
+      </div>
+    </div>
+
+    <div class="sticky-footer" style="display:flex; gap:10px;">
+      <button type="button" class="btn btn-generate" onclick="saveAndDownload()" style="flex:1; background:#4a5a4e;">
+        💾 Unduh data.js
+      </button>
+      <button type="button" class="btn btn-generate" onclick="saveToGithub()" style="flex:2;">
+        ☁️ Simpan ke GitHub
       </button>
     </div>
 
@@ -539,14 +584,23 @@ function recalcTotal() {
 }
 
 function addPenasehatRow(nama = '', jabatan = '', foto = '') {
-  const d = document.createElement('div'); d.className = 'dynamic-row';
-  d.innerHTML = `<div class="fields">
-    <input type="text" placeholder="Nama Lengkap Penasehat" value="${esc(nama)}" style="flex:2;">
-    <input type="text" placeholder="Jabatan (mis: Penasehat / Pembina)" value="${esc(jabatan)}" style="flex:1;">
-    <input type="text" placeholder="URL Foto (opsional)" value="${esc(foto)}" style="flex:1.5;">
+  const uid = 'fu_' + Math.random().toString(36).slice(2,8);
+  const d = document.createElement('div'); d.className = 'dynamic-row'; d.style.flexWrap='wrap';
+  d.innerHTML = `<div class="fields" style="flex-wrap:wrap; gap:8px;">
+    <input type="text" placeholder="Nama Lengkap Penasehat" value="${esc(nama)}" style="flex:2; min-width:140px;">
+    <input type="text" placeholder="Jabatan (mis: Penasehat / Pembina)" value="${esc(jabatan)}" style="flex:1; min-width:100px;">
+    <div style="flex:2; min-width:160px;">
+      <div class="file-upload-area" id="area_${uid}" onclick="document.getElementById('file_${uid}').click()">
+        <img class="file-preview" id="prev_${uid}" src="${foto}" ${foto?'style="display:block;"':''}>
+        <div id="label_${uid}" style="${foto?'display:none':''}">📷 Klik untuk upload foto</div>
+        <input type="file" id="file_${uid}" accept="image/*" onchange="handleFotoUpload('${uid}', this)">
+      </div>
+      <input type="text" class="inp-foto-url" placeholder="atau paste URL foto" value="${esc(foto)}" style="margin-top:4px; font-size:.78rem; width:100%;" oninput="syncFotoUrl('${uid}', this.value)">
+    </div>
   </div>
   <button type="button" class="btn btn-del" onclick="this.parentElement.remove()">✕</button>`;
   document.getElementById('wrapper-penasehat').appendChild(d);
+  if (foto) { const area = document.getElementById('area_' + uid); if(area) area.classList.add('has-file'); }
 }
 
 let seksiCount = 0;
@@ -571,12 +625,27 @@ function addAnggotaRow(seksiId, anggota = '') {
   const list = document.querySelector(`#${seksiId} .anggota-list`);
   const nama = typeof anggota === 'object' ? (anggota.nama || '') : anggota;
   const foto = typeof anggota === 'object' ? (anggota.foto || '') : '';
-  const row = document.createElement('div'); row.className = 'anggota-row';
+  const jabatan = typeof anggota === 'object' ? (anggota.jabatan || '') : '';
+  const uid = 'fu_' + Math.random().toString(36).slice(2,8);
+  const row = document.createElement('div'); row.className = 'anggota-row'; row.style.flexWrap='wrap'; row.style.gap='8px';
   row.innerHTML = `
-    <input type="text" placeholder="Nama Anggota" value="${esc(nama)}" style="flex:2;">
-    <input type="text" placeholder="URL Foto (opsional)" value="${esc(foto)}" style="flex:2;">
-    <button type="button" class="btn btn-del" style="padding:6px 10px;" onclick="this.parentElement.remove()">✕</button>`;
+    <input type="text" placeholder="Nama Anggota" value="${esc(nama)}" style="flex:2; min-width:140px;">
+    <input type="text" placeholder="Jabatan di seksi ini (opsional)" value="${esc(jabatan)}" style="flex:1.5; min-width:120px;" class="inp-jabatan">
+    <div style="flex:2; min-width:160px;">
+      <div class="file-upload-area" id="area_${uid}" onclick="document.getElementById('file_${uid}').click()">
+        <img class="file-preview" id="prev_${uid}" src="${foto}" ${foto?'style="display:block;"':''}>
+        <div id="label_${uid}" style="${foto?'display:none':''}">📷 Klik untuk upload foto</div>
+        <input type="file" id="file_${uid}" accept="image/*" onchange="handleFotoUpload('${uid}', this)">
+      </div>
+      <input type="text" class="inp-foto-url" placeholder="atau paste URL foto" value="${esc(foto)}" style="margin-top:4px; font-size:.78rem;" oninput="syncFotoUrl('${uid}', this.value)">
+    </div>
+    <button type="button" class="btn btn-del" style="padding:6px 10px; align-self:flex-start;" onclick="this.parentElement.remove()">✕</button>`;
   list.appendChild(row);
+  // Jika sudah ada URL, set preview
+  if (foto) {
+    const area = document.getElementById('area_' + uid);
+    if (area) area.classList.add('has-file');
+  }
 }
 
 function addArusRow(tgl = '', ket = '', kat = 'Umum', masuk = '', keluar = '') {
@@ -685,8 +754,12 @@ function collectAllData() {
   const st = {};
   st.penasehat = [];
   document.querySelectorAll('#wrapper-penasehat .dynamic-row').forEach(row => {
-    const ins = row.querySelectorAll('input');
-    if (ins[0].value.trim()) st.penasehat.push({ nama: ins[0].value.trim(), jabatan: ins[1].value.trim(), foto: ins[2]?.value.trim() || '' });
+    const textIns = row.querySelectorAll('input[type=text], input[type=password]');
+    const nama    = textIns[0]?.value.trim() || '';
+    const jabatan = textIns[1]?.value.trim() || '';
+    const fotoUrl = row.querySelector('.inp-foto-url')?.value.trim()
+                 || row.querySelector('[data-gh-path]')?.dataset.ghUrl || '';
+    if (nama) st.penasehat.push({ nama, jabatan, foto: fotoUrl });
   });
   st.ketua           = v('inti_ketua');
   st.ketuaFoto       = v('inti_ketuaFoto');
@@ -705,9 +778,10 @@ function collectAllData() {
     const nama = block.querySelector('.seksi-nama-input').value.trim();
     const anggota = [];
     block.querySelectorAll('.anggota-row').forEach(row => {
-      const ins = row.querySelectorAll('input');
-      const nm = ins[0]?.value.trim();
-      if (nm) anggota.push({ nama: nm, foto: ins[1]?.value.trim() || '' });
+      const nm      = row.querySelector('input[placeholder="Nama Anggota"]')?.value.trim();
+      const jabatan = row.querySelector('.inp-jabatan')?.value.trim() || '';
+      const fotoUrl = row.querySelector('.inp-foto-url')?.value.trim() || '';
+      if (nm) anggota.push({ nama: nm, jabatan, foto: fotoUrl });
     });
     if (nama) st.seksi.push({ nama, anggota });
   });
@@ -902,9 +976,7 @@ function saveAndDownload() {
   document.body.removeChild(a);
 
   // 3. Toast notifikasi
-  const toast = document.getElementById('toast');
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  showToast('💾 data.js berhasil diunduh');
 }
 
 // ════════════════════════════════════════════════
@@ -941,9 +1013,255 @@ function loadDefaults() {
 // ════════════════════════════════════════════════
 //  BOOT
 // ════════════════════════════════════════════════
+// ════════════════════════════════════════════════
+//  FOTO UPLOAD HELPER
+// ════════════════════════════════════════════════
+
+// Mapping uid → { file, base64, filename, path }
+const pendingUploads = {};
+
+function handleFotoUpload(uid, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const ext  = file.name.split('.').pop().toLowerCase();
+  const safe = 'foto_' + uid + '.' + ext;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result.split(',')[1];
+    pendingUploads[uid] = { file, base64: b64, filename: safe, path: 'assets/' + safe };
+    // Preview
+    const prev  = document.getElementById('prev_' + uid);
+    const label = document.getElementById('label_' + uid);
+    const area  = document.getElementById('area_' + uid);
+    const urlIn = area?.parentElement?.querySelector('.inp-foto-url');
+    if (prev)  { prev.src = e.target.result; prev.style.display = 'block'; }
+    if (label) label.style.display = 'none';
+    if (area)  area.classList.add('has-file');
+    // Set URL input to future GitHub Pages URL (will be real after push)
+    const ghUser = document.getElementById('gh_user')?.value.trim();
+    const ghRepo = document.getElementById('gh_repo')?.value.trim();
+    const ghBranch = document.getElementById('gh_branch')?.value.trim() || 'main';
+    if (ghUser && ghRepo && urlIn) {
+      urlIn.value = `https://${ghUser}.github.io/${ghRepo}/assets/${safe}`;
+    } else if (urlIn) {
+      urlIn.value = `assets/${safe}`;
+    }
+    markUnsaved();
+  };
+  reader.readAsDataURL(file);
+}
+
+function syncFotoUrl(uid, url) {
+  // Jika user paste URL manual, hapus pending upload untuk uid ini
+  if (pendingUploads[uid]) delete pendingUploads[uid];
+  const area  = document.getElementById('area_' + uid);
+  const prev  = document.getElementById('prev_' + uid);
+  const label = document.getElementById('label_' + uid);
+  if (url) {
+    if (prev)  { prev.src = url; prev.style.display = 'block'; }
+    if (label) label.style.display = 'none';
+    if (area)  area.classList.add('has-file');
+  } else {
+    if (prev)  prev.style.display = 'none';
+    if (label) label.style.display = '';
+    if (area)  area.classList.remove('has-file');
+  }
+}
+
+function markUnsaved() {
+  document.getElementById('save-dot').className = 'save-dot';
+  document.getElementById('save-label').textContent = 'Ada perubahan belum disimpan';
+}
+
+// ════════════════════════════════════════════════
+//  GITHUB API HELPERS
+// ════════════════════════════════════════════════
+
+function getGhConfig() {
+  const user   = document.getElementById('gh_user')?.value.trim();
+  const repo   = document.getElementById('gh_repo')?.value.trim();
+  const branch = document.getElementById('gh_branch')?.value.trim() || 'main';
+  const token  = document.getElementById('gh_token')?.value.trim();
+  return { user, repo, branch, token };
+}
+
+function saveGhConfig() {
+  const c = getGhConfig();
+  localStorage.setItem('gh_config', JSON.stringify(c));
+}
+
+function loadGhConfig() {
+  try {
+    const c = JSON.parse(localStorage.getItem('gh_config') || '{}');
+    if (c.user)   document.getElementById('gh_user').value   = c.user;
+    if (c.repo)   document.getElementById('gh_repo').value   = c.repo;
+    if (c.branch) document.getElementById('gh_branch').value = c.branch;
+    if (c.token)  document.getElementById('gh_token').value  = c.token;
+    if (c.user && c.repo) setGhStatus('ok', `${c.user}/${c.repo}`);
+  } catch(e) {}
+}
+
+function setGhStatus(state, msg) {
+  const dot   = document.getElementById('gh-dot');
+  const label = document.getElementById('gh-status-label');
+  dot.className   = 'gh-dot ' + (state || '');
+  label.textContent = 'GitHub: ' + msg;
+}
+
+async function testGithubConnection() {
+  const { user, repo, branch, token } = getGhConfig();
+  if (!user || !repo || !token) { alert('Isi username, repo, dan token dulu.'); return; }
+  setGhStatus('working', 'Menghubungkan...');
+  try {
+    const res  = await fetch(`https://api.github.com/repos/${user}/${repo}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' }
+    });
+    if (res.ok) {
+      setGhStatus('ok', `${user}/${repo} ✅`);
+      saveGhConfig();
+      showToast('✅ Koneksi GitHub berhasil!');
+    } else {
+      const j = await res.json();
+      setGhStatus('err', 'Gagal: ' + (j.message || res.status));
+    }
+  } catch(e) { setGhStatus('err', 'Error: ' + e.message); }
+}
+
+// Ambil SHA file yang sudah ada di repo (agar bisa update)
+async function getFileSha(user, repo, branch, token, path) {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${user}/${repo}/contents/${path}?ref=${branch}`,
+      { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' } }
+    );
+    if (res.ok) { const j = await res.json(); return j.sha || null; }
+    return null;
+  } catch(e) { return null; }
+}
+
+// Push 1 file ke GitHub
+async function pushFile(user, repo, branch, token, path, content_b64, message) {
+  const sha = await getFileSha(user, repo, branch, token, path);
+  const body = { message, content: content_b64, branch };
+  if (sha) body.sha = sha;
+  const res = await fetch(
+    `https://api.github.com/repos/${user}/${repo}/contents/${path}`,
+    {
+      method: 'PUT',
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }
+  );
+  if (!res.ok) { const j = await res.json(); throw new Error(j.message || res.status); }
+  return true;
+}
+
+// Progress UI helpers
+function showProgress(title) {
+  document.getElementById('gh-prog-title').textContent = title;
+  document.getElementById('gh-prog-list').innerHTML = '';
+  document.getElementById('gh-prog-bar').style.width = '0%';
+  document.getElementById('gh-progress').classList.add('show');
+}
+function addStep(id, label) {
+  const li = document.createElement('div');
+  li.className = 'gh-step active'; li.id = 'step_' + id; li.textContent = label;
+  document.getElementById('gh-prog-list').appendChild(li);
+}
+function doneStep(id) {
+  const el = document.getElementById('step_' + id);
+  if (el) { el.className = 'gh-step done'; }
+}
+function failStep(id, err) {
+  const el = document.getElementById('step_' + id);
+  if (el) { el.className = 'gh-step error'; el.textContent += ' — ' + err; }
+}
+function setProgress(pct) {
+  document.getElementById('gh-prog-bar').style.width = pct + '%';
+}
+function hideProgress(success) {
+  setTimeout(() => {
+    document.getElementById('gh-progress').classList.remove('show');
+    if (success) showToast('☁️ Berhasil disimpan ke GitHub!');
+  }, 1200);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ════════════════════════════════════════════════
+//  MAIN: SIMPAN KE GITHUB
+// ════════════════════════════════════════════════
+async function saveToGithub() {
+  const { user, repo, branch, token } = getGhConfig();
+  if (!user || !repo || !token) {
+    alert('Isi konfigurasi GitHub dulu di bagian ☁️ GitHub Sync.');
+    document.getElementById('sec-github').scrollIntoView({ behavior:'smooth' });
+    return;
+  }
+  saveGhConfig();
+
+  // Hitung total langkah
+  const uploadCount = Object.keys(pendingUploads).length;
+  const totalSteps  = 1 + uploadCount; // data.js + foto-foto
+  let doneCount = 0;
+
+  showProgress('☁️ Menyimpan ke GitHub...');
+  setGhStatus('working', 'Sedang menyimpan...');
+
+  // Simpan ke localStorage juga
+  const data = collectAllData();
+  saveToLocalStorage(data);
+
+  try {
+    // ── STEP: Upload foto-foto pending ──
+    for (const [uid, info] of Object.entries(pendingUploads)) {
+      addStep(uid, `Upload foto: ${info.filename}`);
+      try {
+        await pushFile(user, repo, branch, token, info.path, info.base64, `Upload foto ${info.filename}`);
+        // Update URL di inp-foto-url ke GitHub Pages URL
+        const ghPagesUrl = `https://${user}.github.io/${repo}/${info.path}`;
+        document.querySelectorAll('.inp-foto-url').forEach(el => {
+          if (el.value.includes(info.filename)) el.value = ghPagesUrl;
+        });
+        delete pendingUploads[uid];
+        doneStep(uid);
+      } catch(e) { failStep(uid, e.message); }
+      doneCount++;
+      setProgress(Math.round(doneCount / totalSteps * 85));
+    }
+
+    // ── STEP: Push data.js ──
+    addStep('datajs', 'Push data.js');
+    const freshData    = collectAllData(); // collect lagi setelah URL foto diupdate
+    const dataJsStr    = `var localMosqueData = ${JSON.stringify(freshData, null, 2)};`;
+    const dataJsB64    = btoa(unescape(encodeURIComponent(dataJsStr)));
+    await pushFile(user, repo, branch, token, 'data.js', dataJsB64, 'Update data masjid via Admin Panel');
+    doneStep('datajs');
+    doneCount++;
+    setProgress(100);
+
+    setGhStatus('ok', `${user}/${repo} — tersimpan`);
+    document.getElementById('save-label').textContent = `Tersimpan ke GitHub ${new Date().toLocaleTimeString('id-ID')}`;
+    document.getElementById('save-dot').className = 'save-dot saved';
+    hideProgress(true);
+
+  } catch(e) {
+    setGhStatus('err', 'Gagal: ' + e.message);
+    document.getElementById('gh-prog-title').textContent = '❌ Gagal menyimpan';
+    addStep('err', e.message);
+    setTimeout(() => document.getElementById('gh-progress').classList.remove('show'), 4000);
+  }
+}
+
 window.onload = function () {
   const loaded = loadFromLocalStorage();
   if (!loaded) loadDefaults();
+  loadGhConfig();
 };
 </script>
 </body>
