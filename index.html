@@ -2954,6 +2954,8 @@ async function lfSyncUpload() {
   const p = lfSyncProj;
   if (!p || !lfSyncSelected.size) { toast('Belum ada file/folder yang dipilih', 'error'); return; }
   if (!accessToken) { toast('Login Google Drive dulu', 'error'); return; }
+  if (!p.localSynced) p.localSynced = {};        // {relPath: driveFileId}
+  if (!p.localSyncedFolders) p.localSyncedFolders = {}; // {relPath: {driveId, driveLink, name}}
 
   // Kalau ada folder yang dicentang, skip item lain yang ada DI DALAM folder itu (biar gak diproses dobel — folder-nya sendiri sudah rekursif)
   const folderPaths = [...lfSyncSelected.entries()].filter(([, k]) => k === 'directory').map(([rp]) => rp);
@@ -6346,7 +6348,7 @@ async function ghSilentPull() {
 
 
 // ── PUSH DATA TO GITHUB ──────────────────────────────
-async function ghPushData() {
+async function ghPushData(retryCount = 0) {
   if (!ghConnected()) return;
   const {token, username, repo} = ghCreds();
 
@@ -6374,10 +6376,11 @@ async function ghPushData() {
     );
     if (!res.ok) {
       const err = await res.json();
-      // sha mismatch — refresh sha and retry once
-      if (res.status === 409) {
+      // sha mismatch — refresh sha and retry, tapi maksimal 3x biar gak looping ngirim ulang
+      // data (bisa beberapa MB) tanpa henti kalau konfliknya terus berulang
+      if (res.status === 409 && retryCount < 3) {
         await ghRefreshSha();
-        return ghPushData();
+        return ghPushData(retryCount + 1);
       }
       throw new Error(err.message || 'Gagal menyimpan.');
     }
