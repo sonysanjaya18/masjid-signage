@@ -189,16 +189,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 }
 .task-card { margin-bottom: 6px; }
 .task-card .task-item { margin-bottom: 0; border-radius: 8px 8px 0 0; }
-.task-preview-row {
-  display: flex; align-items: center; gap: 8px; padding: 7px 12px;
-  background: var(--surface3, rgba(0,0,0,.02)); border-radius: 0 0 8px 8px;
-  border: 1px solid var(--border); border-top: none;
-}
-.tpr-unread-dot {
-  display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--red);
-  margin-right: 5px; animation: tpr-pulse 1.4s ease-in-out infinite;
-}
-@keyframes tpr-pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 .task-item:hover { background: var(--surface3); border-color: var(--border); }
 .task-checkbox {
   width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--border);
@@ -979,18 +969,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
   background: var(--surface); color: var(--accent); cursor: pointer; transition: .15s; flex-shrink: 0;
 }
 .portal-btn:hover { background: rgba(108,99,255,.08); border-color: var(--accent); transform: translateY(-1px); }
-.portal-notif-dot {
-  position: absolute; top: -3px; right: -3px; width: 10px; height: 10px; border-radius: 50%;
-  background: var(--red); border: 2px solid var(--surface); display: none;
-}
-.portal-notif-dot.show { display: block; animation: pulse 1.5s infinite; }
-.portal-notif-badge {
-  position: absolute; top: -8px; right: -8px; min-width: 19px; height: 19px; padding: 0 4px;
-  border-radius: 10px; background: var(--red); color: #fff; border: 2px solid var(--surface);
-  font-size: 10.5px; font-weight: 800; display: flex; align-items: center; justify-content: center;
-  animation: pulse 1.5s infinite; line-height: 1;
-}
-.portal-notif-badge.notif-approved { background: var(--green); }
 .pc-portal-wrap { position: relative; display: inline-flex; }
 .project-card .pc-portal-wrap { margin-left: 6px; }
 
@@ -1057,183 +1035,10 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
 .portal-progress-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--accent), #22c55e); transition: width .3s; }
 .portal-progress-pct { font-size: 12px; font-weight: 700; color: var(--text); width: 36px; text-align: right; }
 
-.portal-task-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px;
-}
-.portal-task-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.04); display: flex; flex-direction: column;
-}
-.portal-task-thumb {
-  width: 100%; aspect-ratio: 1/1; background: var(--surface2); cursor: pointer; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.portal-task-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.portal-task-thumb-empty { color: var(--muted); opacity: .5; }
-.portal-task-body { padding: 10px 10px 6px; }
-.portal-task-name { font-size: 12.5px; font-weight: 700; margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.portal-task-status-none { background: rgba(100,116,139,.12); color: #64748b; }
-.portal-task-status-needs_review { background: rgba(59,130,246,.12); color: #3b82f6; }
-.portal-task-status-revision { background: rgba(220,38,38,.12); color: var(--red); }
-.portal-task-status-approved { background: rgba(22,163,74,.15); color: #14532d; }
-.portal-task-btn {
-  margin: 8px 10px 10px; padding: 9px 10px; border-radius: 8px; border: none; cursor: pointer;
-  font-size: 12px; font-weight: 700; color: #fff; text-align: center;
-}
-.portal-task-btn.btn-primary { background: var(--accent); }
-.portal-task-btn.btn-secondary { background: var(--orange, #f97316); }
-.portal-task-btn.btn-approved { background: var(--surface2); color: var(--muted); cursor: pointer; }
 .portal-invoice-wrap { overflow-x: auto; }
 @media (max-width: 480px) {
-  .portal-task-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
   .portal-home-head { flex-direction: column; }
 }
-
-/* ── ANNOTATOR (coret-coret gambar) ─────────────────── */
-.ann-overlay { z-index: 2000; }
-.ann-overlay .ann-modal {
-  background: var(--surface); border-radius: 14px; width: 96vw; max-width: 1160px; height: 90vh;
-  display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 70px rgba(20,22,40,.22);
-}
-.ann-header {
-  display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--surface);
-}
-.ann-title { font-weight: 700; font-size: 13px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text); }
-.ann-hbtn {
-  width: 30px; height: 30px; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; color: var(--muted); flex-shrink: 0; transition: .12s;
-}
-.ann-hbtn:hover { background: rgba(108,99,255,.08); color: var(--accent); border-color: var(--accent); }
-.ann-hbtn:disabled { opacity: .35; cursor: default; pointer-events: none; }
-.ann-zoom-controls { display: flex; align-items: center; gap: 2px; background: var(--surface2); border-radius: 9px; padding: 3px; }
-.ann-zoom-controls .ann-hbtn { border: none; background: transparent; width: 26px; height: 26px; }
-.ann-zoom-controls .ann-hbtn:hover { background: var(--surface); }
-.ann-zoom-pct { font-size: 11px; color: var(--muted); width: 38px; text-align: center; font-variant-numeric: tabular-nums; }
-.ann-close { background: var(--surface2); }
-.ann-close:hover { background: rgba(220,38,38,.1); color: var(--red); border-color: rgba(220,38,38,.3); }
-
-.ann-body { display: flex; flex: 1; min-height: 0; }
-.ann-stage-wrap {
-  flex: 1; overflow: hidden; position: relative;
-  background:
-    linear-gradient(45deg, #f0f1f6 25%, transparent 25%), linear-gradient(-45deg, #f0f1f6 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #f0f1f6 75%), linear-gradient(-45deg, transparent 75%, #f0f1f6 75%);
-  background-size: 22px 22px; background-position: 0 0, 0 11px, 11px -11px, -11px 0px; background-color: #fafafd;
-  display: flex; align-items: center; justify-content: center; cursor: crosshair; touch-action: none; user-select: none;
-}
-.ann-stage-wrap.pan-mode { cursor: grab; }
-.ann-stage-wrap.readonly-mode { cursor: grab; }
-.ann-stage-wrap.panning { cursor: grabbing; }
-.ann-stage-wrap.no-img { cursor: default; }
-.ann-stage { position: relative; transform-origin: 0 0; touch-action: none; }
-.ann-stage img { display: block; max-width: none; user-select: none; -webkit-user-drag: none; box-shadow: 0 2px 24px rgba(0,0,0,.12); }
-.ann-stage svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
-.ann-hint-chip {
-  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 5;
-  background: rgba(26,29,46,.72); color: #fff; font-size: 11px; padding: 6px 12px; border-radius: 20px;
-  display: flex; align-items: center; gap: 6px; white-space: nowrap; pointer-events: none; transition: opacity .3s;
-}
-.ann-hint-chip svg { flex-shrink: 0; opacity: .85; }
-.ann-tool-dock {
-  position: absolute; top: 14px; right: 14px; z-index: 6; display: flex; flex-direction: column; gap: 6px;
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 6px;
-  box-shadow: 0 6px 20px rgba(20,22,40,.14);
-}
-.ann-tbtn {
-  width: 34px; height: 34px; border: none; background: transparent; border-radius: 8px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; color: var(--muted); transition: .12s;
-}
-.ann-tbtn:hover { background: rgba(108,99,255,.08); color: var(--accent); }
-.ann-tbtn.active { background: var(--accent); color: #fff; }
-.ann-tool-sep { height: 1px; background: var(--border); margin: 2px 4px; }
-
-.ann-sidebar {
-  width: 300px; flex-shrink: 0; border-left: 1px solid var(--border); background: var(--surface);
-  display: grid; grid-template-rows: auto minmax(0,1fr) auto auto; min-height: 0;
-}
-.ann-overlay .ann-modal.has-tasknav { max-width: 1320px; }
-.ann-tasknav {
-  width: 190px; flex-shrink: 0; border-right: 1px solid var(--border); background: var(--surface2);
-  display: none; flex-direction: column; min-height: 0;
-}
-.ann-tasknav.show { display: flex; }
-.ann-tasknav-greet { padding: 14px 14px 10px; font-size: 12.5px; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); }
-.ann-tasknav-list { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 5px; }
-.ann-tasknav-item {
-  padding: 9px 10px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: .12s;
-}
-.ann-tasknav-item:hover { background: var(--surface3, rgba(0,0,0,.03)); }
-.ann-tasknav-item.active { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
-.ann-tasknav-item-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ann-tasknav-foot { padding: 10px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px; }
-.ann-tasknav-foot button { width: 100%; }
-@media (max-width: 900px) {
-  .ann-tasknav { width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; max-height: 74px; }
-  .ann-tasknav-greet, .ann-tasknav-foot { display: none; }
-  .ann-tasknav-list { flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 8px; }
-  .ann-tasknav-item { flex-shrink: 0; min-width: 130px; }
-}
-.ann-list-head {
-  display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 8px;
-  font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em;
-}
-.ann-list { overflow-y: auto; min-height: 0; padding: 0 10px; }
-.ann-item { display: flex; gap: 9px; padding: 9px 4px; border-bottom: 1px solid var(--border); }
-.ann-item:last-child { border-bottom: none; }
-.ann-pin {
-  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 10px; font-weight: 800; margin-top: 1px;
-}
-.ann-item-body { flex: 1; min-width: 0; }
-.ann-item-toprow { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-.ann-item-label { font-size: 11px; font-weight: 700; color: var(--text); flex: 1; }
-.ann-item-del {
-  border: none; background: none; color: var(--muted); cursor: pointer; padding: 2px; border-radius: 5px;
-  display: flex; align-items: center; opacity: .6; transition: .12s;
-}
-.ann-item-del:hover { opacity: 1; color: var(--red); background: rgba(220,38,38,.08); }
-.ann-item textarea {
-  width: 100%; font-size: 12.5px; border: 1px solid var(--border); border-radius: 7px; padding: 6px 8px;
-  resize: none; font-family: inherit; background: var(--surface2); color: var(--text); box-sizing: border-box; line-height: 1.4;
-}
-.ann-item textarea:focus { outline: none; border-color: var(--accent); background: var(--surface); }
-.ann-item p { margin: 0; font-size: 12.5px; color: var(--text); line-height: 1.45; }
-.ann-empty-hint { font-size: 12px; color: var(--muted); text-align: center; padding: 22px 10px; line-height: 1.5; }
-.ann-note-wrap { padding: 10px 14px; border-top: 1px solid var(--border); }
-.ann-note-wrap label { display: block; font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
-.ann-note-wrap textarea {
-  width: 100%; font-size: 12.5px; border: 1px solid var(--border); border-radius: 8px; padding: 8px;
-  font-family: inherit; resize: none; box-sizing: border-box; background: var(--surface2); color: var(--text);
-}
-.ann-note-wrap textarea:focus { outline: none; border-color: var(--accent); background: var(--surface); }
-.ann-note-wrap textarea[readonly] { background: var(--surface2); color: var(--muted); }
-.ann-actions { display: flex; gap: 8px; padding: 10px 14px 14px; border-top: 1px solid var(--border); }
-.ann-abtn {
-  flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; border: none; border-radius: 9px;
-  padding: 10px 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; color: #fff; transition: .12s; font-family: inherit;
-}
-.ann-abtn:hover { filter: brightness(1.06); transform: translateY(-1px); }
-.ann-abtn.approve { background: var(--green); }
-.ann-abtn.revise { background: var(--red); }
-.ann-abtn.read { background: var(--accent); width: 100%; }
-.ann-locked-note {
-  width: 100%; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--green);
-  background: rgba(34,197,94,.1); border-radius: 9px; padding: 10px 12px; font-weight: 600;
-}
-
-@media (max-width: 720px) {
-  .ann-overlay .ann-modal { width: 100vw; height: 100vh; border-radius: 0; max-width: none; }
-  .ann-body { flex-direction: column; }
-  .ann-stage-wrap { flex: 0 0 40vh; }
-  .ann-sidebar { width: 100%; flex: 1; border-left: none; border-top: 1px solid var(--border); }
-}
-
-/* ── Kartu feedback klien di detail proyek (owner) ──── */
-.pfc-revision { border-left: 3px solid var(--orange); }
-.pfc-approved { border-left: 3px solid var(--green); }
-.pfc-thumb { width: 100%; border-radius: 8px; margin: 8px 0; border: 1px solid var(--border); max-height: 160px; object-fit: cover; }
-
-.portal-notif-dot.notif-approved { background: var(--green); }
 
 /* ── ISOLASI MODE PORTAL — sembunyikan total UI internal owner ── */
 body.portal-mode .topbar,
@@ -1241,7 +1046,7 @@ body.portal-mode .layout,
 body.portal-mode #gh-login-screen,
 body.portal-mode #mobile-nav,
 body.portal-mode #fab-add,
-body.portal-mode .overlay:not(.ann-overlay) { display: none !important; }
+body.portal-mode .overlay { display: none !important; }
 body.portal-mode { overflow-x: hidden; }
 
 </style>
@@ -2289,47 +2094,6 @@ body.portal-mode { overflow-x: hidden; }
   </div>
 </div>
 
-<!-- OVERLAY: Annotator (coret-coret gambar) — dipakai portal (edit) & owner (view) -->
-<div class="overlay ann-overlay" id="annotatorOverlay">
-  <div class="ann-modal">
-    <div class="ann-header">
-      <div class="ann-title" id="ann-filename">-</div>
-      <div class="ann-zoom-controls" id="ann-zoom-controls">
-        <button class="ann-hbtn" onclick="annZoom(-0.25)" title="Zoom out"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
-        <span class="ann-zoom-pct" id="ann-zoom-pct">100%</span>
-        <button class="ann-hbtn" onclick="annZoom(0.25)" title="Zoom in"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></button>
-        <button class="ann-hbtn" onclick="annResetView()" title="Sesuaikan ke layar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
-      </div>
-      <button class="ann-hbtn ann-close" onclick="closeAnnotator()" title="Tutup"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    </div>
-    <div class="ann-body">
-      <div class="ann-tasknav" id="ann-tasknav"></div>
-      <div class="ann-stage-wrap" id="ann-stage-wrap">
-        <div class="ann-stage" id="ann-stage">
-          <img id="ann-img" src="" draggable="false">
-          <svg id="ann-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
-        <div class="ann-tool-dock" id="ann-tool-dock">
-          <button class="ann-tbtn active" id="ann-tool-draw" onclick="annSetTool('draw')" title="Gambar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg></button>
-          <button class="ann-tbtn" id="ann-tool-pan" onclick="annSetTool('pan')" title="Geser gambar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M6 14v0a6 6 0 0 0 6 6h1a7 7 0 0 0 7-7v-2a2 2 0 0 0-4 0"/></svg></button>
-          <div class="ann-tool-sep"></div>
-          <button class="ann-tbtn" id="ann-tool-undo" onclick="annUndo()" title="Undo coretan terakhir"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg></button>
-        </div>
-        <div class="ann-hint-chip" id="ann-hint-chip"></div>
-      </div>
-      <div class="ann-sidebar">
-        <div class="ann-list-head"><span id="ann-list-label">Coretan</span></div>
-        <div class="ann-list" id="ann-list"></div>
-        <div class="ann-note-wrap" id="ann-note-wrap">
-          <label id="ann-note-label">Catatan Umum</label>
-          <textarea id="ann-general-note" placeholder="Tulis catatan revisi secara umum..." rows="3"></textarea>
-        </div>
-        <div class="ann-actions" id="ann-actions"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- MODAL: Local Folder Browser -->
 <div class="overlay" id="localFolderModal">
   <div class="modal" style="width:440px">
@@ -2348,22 +2112,6 @@ body.portal-mode { overflow-x: hidden; }
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="lfCloseModal()">Tutup</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Link Preview Task (buat dibagikan ke klien) -->
-<div class="overlay" id="taskPreviewLinkModal">
-  <div class="modal" style="width:420px">
-    <div class="modal-title" style="display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Preview Terkirim</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Link ini langsung membuka halaman review task <b id="tpl-task-name">-</b> — klien nggak perlu cari-cari lagi.</div>
-    <div class="portal-link-box" style="margin:10px 0">
-      <input id="tpl-link-input" readonly value="">
-      <button class="btn btn-primary btn-xs" onclick="copyTextToClipboard(document.getElementById('tpl-link-input').value, 'Link disalin ✓')">Salin</button>
-    </div>
-    <button class="btn btn-secondary btn-sm" id="tpl-wa-btn" style="width:100%"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Kirim via WhatsApp</button>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('taskPreviewLinkModal')">Tutup</button>
     </div>
   </div>
 </div>
@@ -2408,6 +2156,8 @@ let quotations = JSON.parse(localStorage.getItem('ssy_qt') || '[]');
 let withdrawals = JSON.parse(localStorage.getItem('ssy_wd') || '[]');
 // Status task yang dianggap "selesai" — dipakai buat progress bar & auto status proyek
 const TASK_DONE_LIKE = ['done', 'invoiced', 'paid'];
+// Status proyek yang dianggap "selesai" — deadline countdown gak relevan lagi buat status ini
+const PROJECT_TERMINAL_STATUSES = ['done', 'paid', 'cancel'];
 
 let curProjId = null;
 let curSubfolderId = '';    // '' = root proj folder, else Drive folder id
@@ -2450,6 +2200,7 @@ window.onload = async () => {
   projects.forEach(p => { if(p.status === 'pending') { p.status = 'need-work'; migrated = true; } });
   if(migrated) saveState();
   updateCounts(); renderDashboard();
+  rehydrateThumbsFromIdb(); // thumbnail gambar disimpen di IndexedDB, bukan localStorage — tempelin balik ke memori
   if (cfg.clientId && cfg.apiKey) {
     initGapi();
     const lb = document.getElementById('loginBtn');
@@ -2698,6 +2449,76 @@ async function idbGet(key) {
   });
 }
 
+// ── THUMBNAIL STORAGE (IndexedDB) ──────────────────────
+// thumb/thumbFull (base64 JPEG) dulu disimpen bareng data lain di localStorage lewat
+// key 'ssy_files' — localStorage cuma muat ~5-10MB, jadi lama-lama numpuk dan bikin
+// QuotaExceededError begitu banyak file/gambar ke-upload. IndexedDB muat jauh lebih
+// besar (ratusan MB), jadi thumbnail dipindah ke sini. localStorage cuma nyimpen
+// data ringan (nama, size, status, dll) — lihat saveLocalOnly().
+function thumbDbOpen() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open('snapsy-thumbs', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('thumbs');
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+async function thumbSet(id, val) {
+  try {
+    const db = await thumbDbOpen();
+    return await new Promise((res, rej) => {
+      const tx = db.transaction('thumbs', 'readwrite');
+      tx.objectStore('thumbs').put(val, id);
+      tx.oncomplete = () => res(true);
+      tx.onerror = () => rej(tx.error);
+    });
+  } catch (e) { console.error('thumbSet gagal untuk', id, e); return false; }
+}
+async function thumbDelete(id) {
+  try {
+    const db = await thumbDbOpen();
+    return await new Promise((res, rej) => {
+      const tx = db.transaction('thumbs', 'readwrite');
+      tx.objectStore('thumbs').delete(id);
+      tx.oncomplete = () => res(true);
+      tx.onerror = () => rej(tx.error);
+    });
+  } catch (e) { console.error('thumbDelete gagal untuk', id, e); return false; }
+}
+async function thumbGetAll() {
+  try {
+    const db = await thumbDbOpen();
+    return await new Promise((res, rej) => {
+      const tx = db.transaction('thumbs', 'readonly');
+      const out = {};
+      const req = tx.objectStore('thumbs').openCursor();
+      req.onsuccess = (e) => {
+        const cur = e.target.result;
+        if (cur) { out[cur.key] = cur.value; cur.continue(); } else res(out);
+      };
+      req.onerror = () => rej(req.error);
+    });
+  } catch (e) { console.error('thumbGetAll gagal:', e); return {}; }
+}
+// Simpen thumbnail 1 file ke IndexedDB (dipanggil tiap kali thumb baru dibuat)
+function persistThumb(f) {
+  if (f && f.id && (f.thumb || f.thumbFull)) thumbSet(f.id, { thumb: f.thumb || null, thumbFull: f.thumbFull || null });
+}
+// Dipanggil sehabis pull data dari GitHub — data dari GitHub masih bawa thumbnail lengkap,
+// simpen ke IndexedDB lokal juga biar bisa dipakai offline tanpa perlu narik ulang dari GitHub
+function persistAllThumbsFromFiles() { files.forEach(persistThumb); }
+// Ambil semua thumbnail dari IndexedDB dan tempelin balik ke array `files` di memori
+// (dipanggil sekali pas app baru kebuka, karena localStorage gak nyimpen thumbnail lagi)
+async function rehydrateThumbsFromIdb() {
+  const all = await thumbGetAll();
+  let changed = false;
+  files.forEach(f => {
+    const t = all[f.id];
+    if (t && (!f.thumb && !f.thumbFull)) { f.thumb = t.thumb; f.thumbFull = t.thumbFull; changed = true; }
+  });
+  if (changed) { renderDashboard(); if (curProjId) renderDetailFiles(curProjId); renderProjects(); }
+}
+
 function sanitizeFolderName(name) {
   return (name || 'Untitled').replace(/[\\/:*?"<>|]/g, '-').trim() || 'Untitled';
 }
@@ -2839,7 +2660,7 @@ async function scanLocalTracking(projId) {
       const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name, size: file.size, type: file.type, status: 'local', progress: 100, driveId: null, driveLink: null, subfolderRef: '', thumb: null, thumbFull: null, _raw: null, localFolder: sub };
       files.push(fObj);
       genThumb(file).then(result => {
-        if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; saveState(); if (curProjId === p.id) renderDetailFiles(p.id); renderProjects(); renderDashboard(); }
+        if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); if (curProjId === p.id) renderDetailFiles(p.id); renderProjects(); renderDashboard(); }
       });
     } catch (e) { console.error('Gagal scan', name, e); }
   }
@@ -3037,7 +2858,7 @@ async function syncDirRecursive(dirHandle, driveParentId, relPath, p, stats, par
         const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name: file.name, size: file.size, type: file.type, status: 'done', progress: 100, driveId: res.id, driveLink: res.webViewLink, subfolderRef: parentSfId || '', thumb: null, thumbFull: null, _raw: null, localFolder: localFolderLabel };
         files.push(fObj);
         genThumb(file).then(result => {
-          if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; saveState(); if (curProjId === p.id) renderDetailFiles(p.id); }
+          if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); if (curProjId === p.id) renderDetailFiles(p.id); }
         });
       }
     } catch (e) {
@@ -3049,7 +2870,7 @@ async function syncDirRecursive(dirHandle, driveParentId, relPath, p, stats, par
 
 // ── Browser folder lokal sederhana (dalam modal) ───────
 let lfStack = []; // [{handle, name}] jalur navigasi dari root folder proyek
-let lfPickTaskId = null; // kalau terisi, browser lagi dalam mode "pilih gambar buat preview task ini"
+let lfPickTaskId = null; // sudah tidak dipakai (fitur pick-preview-per-task sudah dihapus), dibiarkan null
 let lfSyncMode = false;          // true = mode checklist "pilih & sync ke Drive"
 let lfSyncSelected = new Map();  // relPath (dari root proyek) -> 'file' | 'directory'
 let lfSyncProj = null;           // project yang lagi di-browse dalam mode sync
@@ -3058,20 +2879,6 @@ async function openLocalProjectFolder() {
   const p = getProj(curProjId); if (!p) return;
   if (!LOCAL_FS_SUPPORTED || !localRootHandle) { toast('Hubungkan folder lokal dulu di Setup (⚙️)', 'error'); return; }
   lfPickTaskId = null;
-  let projDir = await getLocalProjectDir(p);
-  if (!projDir) projDir = await createLocalProjectFolders(p);
-  if (!projDir) { toast('Gagal membuka folder proyek', 'error'); return; }
-  lfStack = [{ handle: projDir, name: p.name }];
-  await renderLocalFolderList();
-  document.getElementById('localFolderModal').classList.add('show');
-}
-
-// Dipanggil dari tombol "Kirim Preview" di task — buka browser folder lokal dalam mode pilih gambar
-async function openTaskPreviewPicker(taskId) {
-  const t = tasks.find(x => x.id === taskId); if (!t) return;
-  const p = getProj(t.projId); if (!p) return;
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) { toast('Hubungkan folder lokal dulu di Setup (⚙️)', 'error'); return; }
-  lfPickTaskId = taskId;
   let projDir = await getLocalProjectDir(p);
   if (!projDir) projDir = await createLocalProjectFolders(p);
   if (!projDir) { toast('Gagal membuka folder proyek', 'error'); return; }
@@ -3203,7 +3010,7 @@ async function lfSyncUpload() {
           const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name: file.name, size: file.size, type: file.type, status: 'done', progress: 100, driveId: res.id, driveLink: res.webViewLink, subfolderRef: parentChain.sfId || '', thumb: null, thumbFull: null, _raw: null, localFolder: localFolderLabel };
           files.push(fObj);
           genThumb(file).then(result => {
-            if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; saveState(); if (curProjId === p.id) renderDetailFiles(p.id); }
+            if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); if (curProjId === p.id) renderDetailFiles(p.id); }
           });
         }
       }
@@ -3237,11 +3044,7 @@ async function renderLocalFolderList() {
 
   const pickBanner = document.getElementById('lf-pick-banner');
   if (pickBanner) {
-    if (lfPickTaskId) {
-      const t = tasks.find(x => x.id === lfPickTaskId);
-      pickBanner.style.display = 'flex';
-      pickBanner.innerHTML = `${ICO_LINK} Pilih gambar untuk dikirim sebagai preview task <b>"${escHtml(t ? t.name : '')}"</b>`;
-    } else if (lfSyncMode) {
+    if (lfSyncMode) {
       pickBanner.style.display = 'flex';
       pickBanner.innerHTML = `${ICO_UPLOAD} Centang folder/file yang mau di-upload ke Drive — bisa dari folder mana aja, gak harus 03_FINAL.`;
     } else {
@@ -3286,15 +3089,6 @@ async function renderLocalFolderList() {
       : isImg ? `<span id="lf-thumb-${idx}" style="display:inline-flex;width:22px;height:22px;border-radius:4px;overflow:hidden;background:var(--surface2,rgba(0,0,0,.06));flex-shrink:0"></span>`
       : `<span style="display:inline-flex;flex-shrink:0;color:var(--muted)">${ICO_FILE}</span>`;
 
-    // Mode pilih aktif + file gambar → tombol "Pilih" gantiin aksi biasa
-    if (lfPickTaskId && isImg) {
-      const pickBtn = `<button class="btn btn-primary btn-xs" onclick="event.stopPropagation();lfPickThisFile('${safeName}')">Pilih</button>`;
-      return `<div class="subfolder-chip" style="justify-content:space-between;width:100%;box-sizing:border-box">
-        <span style="display:flex;align-items:center;gap:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${iconHtml} ${e.name}</span>
-        ${pickBtn}
-      </div>`;
-    }
-
     // Mode checklist sync — checkbox di kiri, tombol "Buka" khusus buat masuk ke dalam folder
     if (lfSyncMode) {
       const kind = isDir ? 'directory' : 'file';
@@ -3309,9 +3103,9 @@ async function renderLocalFolderList() {
       </div>`;
     }
 
-    const rowAct = isDir ? `onclick="lfEnter('${safeName}')"` : lfPickTaskId ? '' : `onclick="lfOpenFile('${safeName}')"`;
-    const dlBtn  = (isDir || lfPickTaskId) ? '' : `<button onclick="event.stopPropagation();lfDownload('${safeName}')" title="Unduh" style="flex-shrink:0;display:inline-flex;align-items:center;background:none;border:none;color:var(--muted);cursor:pointer;padding:2px 6px;line-height:1">${ICO_DOWNLOAD}</button>`;
-    const delBtn = lfPickTaskId ? '' : `<button onclick="event.stopPropagation();lfDelete('${safeName}','${e.handle.kind}')" title="Hapus" style="flex-shrink:0;display:inline-flex;align-items:center;background:none;border:none;color:var(--danger,#e05555);cursor:pointer;padding:2px 6px;line-height:1">${ICO_TRASH}</button>`;
+    const rowAct = isDir ? `onclick="lfEnter('${safeName}')"` : `onclick="lfOpenFile('${safeName}')"`;
+    const dlBtn  = isDir ? '' : `<button onclick="event.stopPropagation();lfDownload('${safeName}')" title="Unduh" style="flex-shrink:0;display:inline-flex;align-items:center;background:none;border:none;color:var(--muted);cursor:pointer;padding:2px 6px;line-height:1">${ICO_DOWNLOAD}</button>`;
+    const delBtn = `<button onclick="event.stopPropagation();lfDelete('${safeName}','${e.handle.kind}')" title="Hapus" style="flex-shrink:0;display:inline-flex;align-items:center;background:none;border:none;color:var(--danger,#e05555);cursor:pointer;padding:2px 6px;line-height:1">${ICO_TRASH}</button>`;
 
     return `<div class="subfolder-chip" ${rowAct} style="justify-content:space-between;width:100%;box-sizing:border-box;cursor:pointer">
       <span style="display:flex;align-items:center;gap:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${iconHtml} ${e.name}</span>
@@ -3331,81 +3125,6 @@ async function renderLocalFolderList() {
       }).catch(() => {});
     }
   });
-}
-
-// User pilih gambar buat dijadikan preview task: upload ke Drive, buat/isi file entry, kaitkan ke task
-async function lfPickThisFile(name) {
-  const taskId = lfPickTaskId;
-  const t = tasks.find(x => x.id === taskId); if (!t) return;
-  const p = getProj(t.projId); if (!p) return;
-  const cur = lfStack[lfStack.length - 1];
-  closeModal('localFolderModal');
-  lfPickTaskId = null;
-  toast('Menyiapkan preview...', 'info');
-  try {
-    const fh = await cur.handle.getFileHandle(name);
-    const file = await fh.getFile();
-
-    let driveId = null, driveLink = null;
-    if (accessToken) {
-      try {
-        const folderId = await getProjFolder(p);
-        const res = await new Promise((resolve, reject) => {
-          const meta = { name: file.name, parents: [folderId] };
-          const form = new FormData();
-          form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
-          form.append('file', file);
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink');
-          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-          xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve(JSON.parse(xhr.responseText)) : reject(new Error('HTTP ' + xhr.status));
-          xhr.onerror = () => reject(new Error('Network error'));
-          xhr.send(form);
-        });
-        driveId = res.id; driveLink = res.webViewLink;
-      } catch (e) { console.error('Upload preview ke Drive gagal', e); }
-    }
-
-    const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name: file.name, size: file.size, type: file.type, status: driveId ? 'done' : 'local', progress: 100, driveId, driveLink, subfolderRef: '', thumb: null, thumbFull: null, _raw: null, localFolder: 'PREVIEW' };
-    files.push(fObj);
-
-    const result = await genThumb(file);
-    if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; }
-
-    // Kirim preview baru = reset status & anotasi lama (versi baru, coretan lama gak relevan lagi)
-    t.previewFileId = fObj.id;
-    t.previewStatus = 'needs_review';
-    t.previewAnnotations = [];
-    t.previewNote = '';
-    t.previewUnread = false;
-    ensurePortalActive(p);
-    saveState();
-    ghScheduleSync();
-    renderTasks(p.id);
-    if (!driveId) {
-      toast('Preview disimpan (belum login Drive — hubungkan Drive dulu biar klien bisa lihat)', 'error');
-    } else {
-      toast('Preview terkirim ke klien ✓', 'success');
-      openTaskPreviewLinkModal(p, t);
-    }
-  } catch (e) {
-    console.error(e);
-    toast('Gagal menyiapkan preview', 'error');
-  }
-}
-
-// Tampilkan link portal yang langsung ke task ini (biar owner tinggal salin & kirim ke klien)
-function openTaskPreviewLinkModal(p, t) {
-  const url = buildPortalUrl(p, t.id);
-  document.getElementById('tpl-task-name').textContent = t.name;
-  document.getElementById('tpl-link-input').value = url;
-  document.getElementById('tpl-wa-btn').onclick = () => {
-    const phone = (clients.find(c => c.name === p.client) || {}).phone || '';
-    const rawPhone = phone.replace(/\D/g, '');
-    const msg = encodeURIComponent(`Halo, ini preview untuk "${t.name}" — boleh dicek ya:\n${url}`);
-    window.open(`https://wa.me/${rawPhone}?text=${msg}`, '_blank');
-  };
-  document.getElementById('taskPreviewLinkModal').classList.add('show');
 }
 
 // Klik file: gambar → lightbox, PDF → tab baru, lainnya → langsung unduh
@@ -3842,7 +3561,7 @@ function saveProject() {
 
 function confirmDeleteProject() {
   showConfirm('Hapus Proyek?', `Proyek "<b>${getProj(curProjId)?.name}</b>" dan semua task-nya akan dihapus.<br><br>File di Drive <b>tidak</b> otomatis terhapus.`, async () => {
-    tasks = tasks.filter(t=>t.projId!==curProjId); files = files.filter(f=>f.projId!==curProjId); projects = projects.filter(p=>p.id!==curProjId);
+    const _delFileIds = files.filter(f=>f.projId===curProjId).map(f=>f.id); tasks = tasks.filter(t=>t.projId!==curProjId); files = files.filter(f=>f.projId!==curProjId); projects = projects.filter(p=>p.id!==curProjId); _delFileIds.forEach(thumbDelete);
     saveState(); updateCounts(); showView('projects',null); renderProjects(); toast('Proyek dihapus','info');
   });
 }
@@ -4390,6 +4109,16 @@ function genInvNum() {
   return 'SNP-' + rand;
 }
 
+// Format harga khusus invoice — currency-nya dibikin eksplisit biar klien gak bingung ini USD atau IDR
+function fInvPrice(n, curr) {
+  curr = curr || 'IDR';
+  if (!n || n == 0) return '\u2014';
+  if (curr === 'USD') {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n) + ' USD';
+  }
+  return 'Rp ' + parseFloat(n).toLocaleString('id-ID');
+}
+
 function buildInvHTML(d) {
   var isUSD  = d.currency === 'USD';
   var studio = cfg.studio || 'Snapsy Std.';
@@ -4402,8 +4131,8 @@ function buildInvHTML(d) {
     billTo:    isUSD ? 'Bill To'    : 'Tagihan Kepada',
     project:   isUSD ? 'Project'    : 'Proyek',
     desc:      isUSD ? 'DESCRIPTION': 'DESKRIPSI',
-    price:     isUSD ? 'AMOUNT'     : 'HARGA',
-    total:     isUSD ? 'TOTAL'      : 'TOTAL',
+    price:     isUSD ? 'AMOUNT (USD)' : 'HARGA (IDR)',
+    total:     isUSD ? 'TOTAL (USD)'  : 'TOTAL (IDR)',
     date:      isUSD ? 'Date'       : 'Tanggal',
     payment:   isUSD ? 'Payment'    : 'Pembayaran',
     thanks:    isUSD ? 'Thank you for your trust \u2014 ' : 'Terima kasih atas kepercayaan Anda \u2014 '
@@ -4427,7 +4156,7 @@ function buildInvHTML(d) {
       rowsHtml += '<tr>';
       rowsHtml += '<td style="padding:9px 14px;border-bottom:1px solid #ebebeb;font-size:11px;color:#bbb;width:32px;font-family:monospace">' + num + '</td>';
       rowsHtml += '<td style="padding:9px 14px;border-bottom:1px solid #ebebeb;font-size:13px;color:#1a1a1a">' + label + '</td>';
-      rowsHtml += '<td style="padding:9px 14px;border-bottom:1px solid #ebebeb;text-align:right;font-weight:700;font-size:13px;color:#1a1a1a;white-space:nowrap">' + fPrice(price, d.currency) + '</td>';
+      rowsHtml += '<td style="padding:9px 14px;border-bottom:1px solid #ebebeb;text-align:right;font-weight:700;font-size:13px;color:#1a1a1a;white-space:nowrap">' + fInvPrice(price, d.currency) + '</td>';
       rowsHtml += '</tr>';
     });
   });
@@ -4491,7 +4220,7 @@ function buildInvHTML(d) {
   // Total
   html += '<div style="display:flex;justify-content:flex-end;padding:14px 28px;border-top:2px solid #111">';
   html += '<div style="min-width:220px;display:flex;justify-content:space-between;font-size:18px;font-weight:900;color:#111">';
-  html += '<span>' + lang.total + '</span><span>' + fPrice(d.total, d.currency) + '</span>';
+  html += '<span>' + lang.total + '</span><span>' + fInvPrice(d.total, d.currency) + '</span>';
   html += '</div></div>';
 
   // Footer
@@ -4585,11 +4314,11 @@ function buildInvWAMessage(d) {
     projGroups.forEach(g => {
       if(projGroups.length > 1) msg += `*${g.project?.name}*\n`;
       g.tasks.forEach(t => {
-        msg += `* ${t.name} : ${fPrice(parseFloat(t.price)||0, d.currency)}\n`;
+        msg += `* ${t.name} : ${fInvPrice(parseFloat(t.price)||0, d.currency)}\n`;
       });
     });
     msg += `${DIV}\n`;
-    msg += `*Total: ${fPrice(d.total, d.currency)}*\n`;
+    msg += `*Total: ${fInvPrice(d.total, d.currency)}*\n`;
     if(d.payment) msg += `\nPay on : ${d.payment}\n`;
     if(d.note)    msg += `\n${d.note}\n`;
     msg += `\nThank you! \uD83D\uDE4F\n_${studio}_`;
@@ -4601,11 +4330,11 @@ function buildInvWAMessage(d) {
     projGroups.forEach(g => {
       if(projGroups.length > 1) msg += `*${g.project?.name}*\n`;
       g.tasks.forEach(t => {
-        msg += `* ${t.name} : ${fPrice(parseFloat(t.price)||0, d.currency)}\n`;
+        msg += `* ${t.name} : ${fInvPrice(parseFloat(t.price)||0, d.currency)}\n`;
       });
     });
     msg += `${DIV}\n`;
-    msg += `*Total: ${fPrice(d.total, d.currency)}*\n`;
+    msg += `*Total: ${fInvPrice(d.total, d.currency)}*\n`;
     if(d.payment) msg += `\nPembayaran ke : ${d.payment}\n`;
     if(d.note)    msg += `\n${d.note}\n`;
     msg += `\nTerima kasih! \uD83D\uDE4F\n_${studio}_`;
@@ -4674,6 +4403,7 @@ function updateTaskStatus(id, val, selectEl) {
   if(selectEl) { selectEl.className = 'task-status-btn ts-'+val; }
   autoUpdateProjStatus(t.projId);
   renderTasks(curProjId);
+  if(curProjId === t.projId) { const p = getProj(t.projId); if(p) renderDetailStatus(p); }
 }
 
 function toggleTask(id) {
@@ -4683,6 +4413,7 @@ function toggleTask(id) {
   saveState();
   autoUpdateProjStatus(t.projId);
   renderTasks(curProjId);
+  if(curProjId === t.projId) { const p = getProj(t.projId); if(p) renderDetailStatus(p); }
 }
 function renderTaskTotal(projId) { 
   const p = getProj(projId); const list = getProjTasks(projId); const total = list.reduce((s,t)=>s+(parseFloat(t.price)||0),0); 
@@ -4703,49 +4434,9 @@ function renderTasks(projId) {
   el.innerHTML = list.map(t => {
     const st = t.taskStatus || 'todo'; const stObj = TASK_STATUSES.find(s=>s.v===st) || TASK_STATUSES[0];
     const opts = TASK_STATUSES.map(s=> `<option value="${s.v}" ${st===s.v?'selected':''}>${s.l}</option>`).join('');
-    return `<div class="task-card" id="tc_${t.id}"><div class="task-item" id="ti_${t.id}"> <div class="task-name ${t.done?'done':''}" onclick="toggleTask('${t.id}')" contenteditable="false" ondblclick="startEditTask(this,'${t.id}')" onblur="editTaskInline('${t.id}',this)">${t.name}</div> <select class="task-status-btn ts-${st}" onchange="updateTaskStatus('${t.id}',this.value,this)" style="margin-right:4px">${opts}</select> <input class="task-price-input" type="number" placeholder="Harga..." value="${t.price||''}" onchange="updateTaskPrice('${t.id}',this.value)" oninput="updateTaskPrice('${t.id}',this.value)" min="0"> <div class="task-actions"> <button class="btn btn-danger btn-xs" onclick="deleteTask('${t.id}')">✕</button> </div> </div>${renderTaskPreviewRow(t)}</div>`;
+    return `<div class="task-card" id="tc_${t.id}"><div class="task-item" id="ti_${t.id}"> <div class="task-name ${t.done?'done':''}" onclick="toggleTask('${t.id}')" contenteditable="false" ondblclick="startEditTask(this,'${t.id}')" onblur="editTaskInline('${t.id}',this)">${t.name}</div> <select class="task-status-btn ts-${st}" onchange="updateTaskStatus('${t.id}',this.value,this)" style="margin-right:4px">${opts}</select> <input class="task-price-input" type="number" placeholder="Harga..." value="${t.price||''}" onchange="updateTaskPrice('${t.id}',this.value)" oninput="updateTaskPrice('${t.id}',this.value)" min="0"> <div class="task-actions"> <button class="btn btn-danger btn-xs" onclick="deleteTask('${t.id}')">✕</button> </div> </div></div>`;
   }).join('');
   renderTaskTotal(projId);
-}
-
-// Baris kontrol preview/review klien di bawah tiap task
-function renderTaskPreviewRow(t) {
-  const status = t.previewStatus || 'none';
-  const unreadDot = t.previewUnread ? '<span class="tpr-unread-dot"></span>' : '';
-  let badge = '', actions = '';
-
-  if (status === 'none') {
-    actions = `<button class="btn btn-secondary btn-xs" onclick="openTaskPreviewPicker('${t.id}')">${ICO_LINK} Kirim Preview</button>`;
-  } else if (status === 'needs_review') {
-    badge = `<span class="badge b-local">Menunggu Klien</span>`;
-    actions = `<button class="btn btn-ghost btn-xs" onclick="openTaskPreviewPicker('${t.id}')">Ganti Gambar</button>`;
-  } else if (status === 'revision') {
-    badge = `<span class="badge b-cancel">${unreadDot}Revisi Klien</span>`;
-    actions = `<button class="btn btn-secondary btn-xs" onclick="viewTaskFeedback('${t.id}')">Lihat Coretan</button><button class="btn btn-primary btn-xs" onclick="openTaskPreviewPicker('${t.id}')">Kirim Preview Baru</button>`;
-  } else if (status === 'approved') {
-    badge = `<span class="badge b-paid">${unreadDot}Disetujui Klien</span>`;
-    actions = `<button class="btn btn-ghost btn-xs" onclick="viewTaskFeedback('${t.id}')">Lihat</button><button class="btn btn-ghost btn-xs" onclick="openTaskPreviewPicker('${t.id}')">Kirim Ulang</button>`;
-  }
-  return `<div class="task-preview-row">${badge}<div style="margin-left:auto;display:flex;gap:6px">${actions}</div></div>`;
-}
-
-function viewTaskFeedback(taskId) {
-  const t = tasks.find(x => x.id === taskId); if (!t) return;
-  const f = files.find(x => x.id === t.previewFileId);
-  annOpen({
-    readOnly: true,
-    fileId: t.previewFileId,
-    fileName: f ? f.name : 'Preview',
-    imgSrc: f ? (f.thumbFull || f.thumb) : null,
-    annotations: t.previewAnnotations || [],
-    note: t.previewNote || '',
-    onMarkRead: () => {
-      t.previewUnread = false;
-      saveState(); ghScheduleSync();
-      renderTasks(t.projId); renderProjects();
-      toast('Ditandai sudah dibaca', 'info');
-    },
-  });
 }
 
 function startEditTask(el, id) {
@@ -4819,13 +4510,13 @@ function addFiles(rawFiles) {
   // generate thumbnails async (lightweight, non-blocking)
   added.forEach(({fObj, raw}) => {
     genThumb(raw).then(result => {
-      if(result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; saveState(); }
+      if(result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); }
     });
   });
 }
 async function uploadSingleFile(fileId) { if(!accessToken) { if(!gapiReady) { toast('Setup Drive dulu','error'); return; } tokenClient.requestAccessToken({prompt:'consent'}); return; } const f=files.find(x=>x.id===fileId); if(!f||!f._raw) { toast('File tidak ada di memori (mungkin halaman sempat di-refresh) — hapus lalu drag & drop ulang filenya','error'); return; } const proj = getProj(f.projId); f.status='uploading'; f.progress=0; renderDetailFiles(curProjId); try { const savedSf=curSubfolderId; const savedSfName=curSubfolderName; curSubfolderId=f.subfolderRef||''; const sf=(proj.subfolders||[]).find(s=>s.id===curSubfolderId); curSubfolderName=sf?sf.name:'Folder Utama'; const folderId = await getTargetFolderId(proj); curSubfolderId=savedSf; curSubfolderName=savedSfName; const res = await driveUpload(f, folderId, pct=>{ f.progress=pct; const bar=document.getElementById('pf_'+f.id); if(bar) bar.style.width=pct+'%'; }); f.status='done'; f.driveId=res.id; f.driveLink=res.webViewLink; saveState(); renderDetailFiles(curProjId); toast('Upload sukses!','success'); } catch(err) { f.status='error'; saveState(); renderDetailFiles(curProjId); console.error('Upload gagal untuk', f.name, err); toast('Upload gagal: ' + (err && err.message ? err.message : 'cek Console (F12) untuk detail'), 'error'); } }
 async function uploadAllFiles() { const pending=files.filter(f=>f.projId===curProjId&&f.status==='pending'); if(!pending.length) return; toast('Uploading...','info'); for(const f of pending) await uploadSingleFile(f.id); }
-function confirmDeleteFile(fileId) { const f=files.find(x=>x.id===fileId); if(!f) return; const isLocalOnly = f.status==='local'; const sub = isLocalOnly ? `Hapus preview "<b>${f.name}</b>" dari tracking? File aslinya di disk <b>tidak ikut terhapus</b>.` : `Yakin hapus "<b>${f.name}</b>"?`; showConfirm('Hapus File?', sub, async () => { if(f.driveId && accessToken) { try { await driveDelete(f.driveId); } catch(e) {} } files=files.filter(x=>x.id!==fileId); saveState(); renderDetailFiles(curProjId); toast('Dihapus','success'); }); }
+function confirmDeleteFile(fileId) { const f=files.find(x=>x.id===fileId); if(!f) return; const isLocalOnly = f.status==='local'; const sub = isLocalOnly ? `Hapus preview "<b>${f.name}</b>" dari tracking? File aslinya di disk <b>tidak ikut terhapus</b>.` : `Yakin hapus "<b>${f.name}</b>"?`; showConfirm('Hapus File?', sub, async () => { if(f.driveId && accessToken) { try { await driveDelete(f.driveId); } catch(e) {} } files=files.filter(x=>x.id!==fileId); thumbDelete(fileId); saveState(); renderDetailFiles(curProjId); toast('Dihapus','success'); }); }
 function renderDetailFiles(projId) {
   const allFiles=files.filter(f=>f.projId===projId);
   const list = curSubfolderId
@@ -4857,7 +4548,11 @@ function openDetail(id) {
   document.getElementById('dp-client').textContent=p.client; document.getElementById('dp-proj').textContent=p.name; document.getElementById('dp-root').textContent=cfg.root||'Snapsy.Std';
   document.getElementById('dr-cli').textContent=p.client; document.getElementById('dr-proj').textContent=p.name; document.getElementById('dr-root').textContent=cfg.root||'Snapsy.Std';
   if(p.notes) { document.getElementById('d-notes').textContent=p.notes; document.getElementById('d-notes-row').style.display='flex'; } else document.getElementById('d-notes-row').style.display='none';
-  if(p.deadline) {
+  if(PROJECT_TERMINAL_STATUSES.includes(p.status)) {
+    document.getElementById('d-days').textContent='✓';
+    document.getElementById('d-days').style.color='var(--green)';
+    document.getElementById('d-days-lbl').textContent='Selesai';
+  } else if(p.deadline) {
     const days=Math.ceil((new Date(p.deadline)-new Date())/86400000);
     document.getElementById('d-days').textContent=Math.abs(days);
     document.getElementById('d-days').style.color=days<0?'var(--red)':days<=3?'var(--yellow)':'var(--text)';
@@ -5307,7 +5002,7 @@ function projCard(p) {
   const doneTasks=taskList.filter(t=>TASK_DONE_LIKE.includes(t.taskStatus||'todo')).length;
   const projFiles=files.filter(f=>f.projId===p.id);
   const fileCount=projFiles.length;
-  const days=p.deadline?Math.ceil((new Date(p.deadline)-new Date())/86400000):null;
+  const days=(p.deadline && !PROJECT_TERMINAL_STATUSES.includes(p.status))?Math.ceil((new Date(p.deadline)-new Date())/86400000):null;
   const taskTotal=taskList.reduce((s,t)=>s+(parseFloat(t.price)||0),0);
 
   let dpill='';
@@ -5329,8 +5024,6 @@ function projCard(p) {
   // Progress bar based on done tasks
   const pct = taskList.length ? Math.round(doneTasks / taskList.length * 100) : 0;
   const pctClass = pct===100 ? 'pct-100' : pct>=60 ? 'pct-high' : '';
-  const unreadPreviewCount = taskList.filter(t => t.previewUnread).length;
-  const unreadIsApproved = taskList.some(t => t.previewUnread && t.previewStatus === 'approved');
   const progressBar = taskList.length ? `
     <div class="pc-progress-wrap">
       <div class="pc-progress-header">
@@ -5404,7 +5097,6 @@ function projCard(p) {
         ${dpill}
         <span class="pc-portal-wrap" onclick="event.stopPropagation();openPortalModal('${p.id}')" title="Portal Klien">
           <button class="portal-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
-          ${unreadPreviewCount ? `<span class="portal-notif-badge ${unreadIsApproved ? 'notif-approved' : ''}">${unreadPreviewCount}</span>` : ''}
         </span>
       </span>
     </div>
@@ -5469,14 +5161,31 @@ function showConfirm(title, sub, onOk) { document.getElementById('cm-title').inn
 // ── HELPERS ───────────────────────────────────────────
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 function updateCliSuggest() { document.getElementById('cli-suggest').innerHTML=clients.map(c=>`<option value="${c.name}">`).join(''); }
+// Simpan 1 key ke localStorage dengan aman — kalau quota penuh (QuotaExceededError),
+// jangan sampai nge-block key lain yang mau disave sesudahnya.
+// TIDAK menghapus/mengubah data apapun — cuma nahan errornya biar gak nge-crash saveLocalOnly().
+let _storageWarned = false;
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    console.error('safeSetItem gagal untuk key "' + key + '":', e);
+    if (!_storageWarned) {
+      _storageWarned = true; // cuma tampil sekali per sesi biar gak spam toast
+      toast('Penyimpanan lokal penuh (localStorage). Perubahan pada "' + key + '" belum tersimpan — hubungi admin untuk bersihin data lama.', 'error');
+    }
+    return false;
+  }
+}
 function saveLocalOnly() {
-  const sf=files.map(({_raw,...r})=>r);
-  localStorage.setItem('ssy_proj',JSON.stringify(projects));
-  localStorage.setItem('ssy_clients',JSON.stringify(clients));
-  localStorage.setItem('ssy_tasks',JSON.stringify(tasks));
-  localStorage.setItem('ssy_files',JSON.stringify(sf));
-  localStorage.setItem('ssy_qt',JSON.stringify(quotations));
-  localStorage.setItem('ssy_wd',JSON.stringify(withdrawals));
+  const sf=files.map(({_raw,thumb,thumbFull,...r})=>r);
+  safeSetItem('ssy_proj',JSON.stringify(projects));
+  safeSetItem('ssy_clients',JSON.stringify(clients));
+  safeSetItem('ssy_tasks',JSON.stringify(tasks));
+  safeSetItem('ssy_files',JSON.stringify(sf));
+  safeSetItem('ssy_qt',JSON.stringify(quotations));
+  safeSetItem('ssy_wd',JSON.stringify(withdrawals));
 }
 function saveState() {
   saveLocalOnly();
@@ -6404,8 +6113,8 @@ function convertQtToProject() {
         });
       });
 
-      // Mark quotation as accepted
-      qt.status = 'accepted';
+      // Quotation sudah jadi proyek — hapus dari daftar quotation (bukan cuma ganti status)
+      quotations = quotations.filter(q => q.id !== curQtId);
       saveState(); updateCounts();
       closeModal('qtDetailModal');
       renderQuotations();
@@ -6561,6 +6270,7 @@ async function ghLoadData() {
     if (data.quotations) quotations = data.quotations;
     if (data.withdrawals) withdrawals = data.withdrawals;
     if (data.cfg)        Object.assign(cfg, data.cfg);
+    persistAllThumbsFromFiles();
 
     // Sync to localStorage too
     saveLocalOnly();
@@ -6613,6 +6323,7 @@ async function ghSilentPull() {
     if (data.quotations) quotations = data.quotations;
     if (data.withdrawals) withdrawals = data.withdrawals;
     if (data.cfg)        Object.assign(cfg, data.cfg);
+    persistAllThumbsFromFiles();
 
     saveLocalOnly();
     updateCounts();
@@ -6735,14 +6446,6 @@ function generatePortalLink(projId) {
   toast('Link portal dibuat ✓', 'success');
 }
 
-// Pastikan portal proyek aktif — dipanggil otomatis saat owner kirim preview task pertama kali,
-// biar nggak perlu bikin link manual dulu sebelum bisa kirim preview.
-function ensurePortalActive(p) {
-  if (!p.portal || !p.portal.active) {
-    p.portal = { id: (p.portal && p.portal.id) || randSlug(), active: true, unread: false, createdAt: new Date().toISOString() };
-  }
-}
-
 function regeneratePortalLink(projId) {
   showConfirm('Buat Link Baru?', 'Link portal lama akan langsung tidak bisa dipakai lagi.', () => {
     const p = getProj(projId); if (!p) return;
@@ -6764,11 +6467,11 @@ function revokePortalLink(projId) {
   });
 }
 
-function buildPortalUrl(p, taskId) {
+function buildPortalUrl(p) {
   const { username, repo } = ghCreds();
   const token = getPortalToken();
   const base = location.origin + location.pathname;
-  const parts = [username, repo, p.id, p.portal.id, token, taskId || ''].map(x => encodeURIComponent(x || ''));
+  const parts = [username, repo, p.id, p.portal.id, token].map(x => encodeURIComponent(x || ''));
   return base + '#portal~' + parts.join('~');
 }
 
@@ -6787,21 +6490,19 @@ function sharePortalLinkWA() {
   window.open(phone ? `https://wa.me/${phone}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
 }
 
-// ── KLIEN SIDE: render halaman portal (read-only + review) ──
-let portalCreds = null;   // {u, r, pid, sid, token} — dipakai buat baca & tulis balik ke GitHub
+// ── KLIEN SIDE: render halaman portal (read-only) ──
+let portalCreds = null;   // {u, r, pid, sid, token} — dipakai buat baca data dari GitHub
 let portalCurFiles = [];  // cache file proyek yang lagi dibuka di portal
-let portalCurTasks = [];  // cache task proyek (yang menentukan status review per-task)
+let portalCurTasks = [];  // cache task proyek (buat progress bar)
 let portalCurClient = null;
-let portalDeepLinkTaskId = null;
 
 async function initPortalMode() {
   document.body.classList.add('portal-mode');
   document.getElementById('portal-app').classList.add('show');
   const parts = location.hash.slice(1).split('~').map(decodeURIComponent);
-  const [, u, r, pid, sid, token, taskId] = parts;
+  const [, u, r, pid, sid, token] = parts;
   if (!u || !r || !pid || !sid || !token) { renderPortalError('Link portal tidak lengkap atau rusak.'); return; }
   portalCreds = { u, r, pid, sid, token };
-  portalDeepLinkTaskId = taskId || null;
   await portalLoadAndRender();
 }
 
@@ -6827,7 +6528,7 @@ async function portalFetchDataFile() {
   return { data, sha: json.sha };
 }
 
-async function portalLoadAndRender(openTaskId) {
+async function portalLoadAndRender() {
   try {
     const { pid, sid } = portalCreds;
     const { data } = await portalFetchDataFile();
@@ -6842,13 +6543,7 @@ async function portalLoadAndRender(openTaskId) {
     portalCurClient = (data.clients || []).find(c => c.name === proj.client) || { name: proj.client };
     portalCurProj = proj; portalCurCfg = data.cfg || {};
 
-    const jump = openTaskId || portalDeepLinkTaskId;
-    portalDeepLinkTaskId = null;
-    if (jump && portalCurTasks.some(t => t.id === jump && t.previewFileId)) {
-      portalOpenTask(jump);
-    } else {
-      renderPortalView(proj, portalCurFiles, data.cfg || {});
-    }
+    renderPortalView(proj, portalCurFiles, data.cfg || {});
   } catch (e) {
     renderPortalError('Gagal memuat portal: ' + e.message);
   }
@@ -6863,42 +6558,15 @@ function renderPortalError(msg) {
     </div>`;
 }
 
-const PORTAL_STATUS_LABEL = { none: 'Belum Dikirim', needs_review: 'Perlu Review', revision: 'Revisi Terkirim', approved: 'Disetujui' };
-
-// ── HOME: kartu per-task + ringkasan proyek + file final ──
+// ── HOME: ringkasan proyek (progress) + file final + invoice ──
 function renderPortalView(p, projFiles, portalCfg) {
-  closeAnnotator();
   document.getElementById('portal-studio-name').textContent = portalCfg.studio || '';
 
-  const tasksWithPreview = portalCurTasks.filter(t => t.previewFileId);
   const totalTasks = portalCurTasks.length || 1;
   const doneTasks = portalCurTasks.filter(t => TASK_DONE_LIKE.includes(t.taskStatus || 'todo')).length;
   const pct = Math.round(doneTasks / totalTasks * 100);
 
-  const taskCardsHtml = tasksWithPreview.length ? tasksWithPreview.map(t => {
-    const st = t.previewStatus || 'none';
-    const f = portalCurFiles.find(x => x.id === t.previewFileId);
-    const thumbSrc = f ? (f.thumb || f.thumbFull) : null;
-    let btnLabel = 'Review', btnClass = 'primary', locked = false;
-    if (st === 'revision') { btnLabel = 'Update Revisi'; btnClass = 'secondary'; }
-    else if (st === 'approved') { btnLabel = 'Approved!'; btnClass = 'approved'; locked = true; }
-    const clickAction = locked ? `portalApprovedLockedPopup()` : `portalOpenTask('${t.id}')`;
-    return `
-    <div class="portal-task-card">
-      <div class="portal-task-thumb" onclick="${clickAction}">
-        ${thumbSrc ? `<img src="${thumbSrc}">` : `<div class="portal-task-thumb-empty">${fIcon(f ? f.name : '')}</div>`}
-      </div>
-      <div class="portal-task-body">
-        <div class="portal-task-name">${escHtml(t.name)}</div>
-        <span class="badge portal-task-status-${st}">${PORTAL_STATUS_LABEL[st]}</span>
-      </div>
-      <button class="portal-task-btn btn-${btnClass} ${locked ? 'locked' : ''}" onclick="${clickAction}">${btnLabel}</button>
-    </div>`;
-  }).join('') : '<div style="font-size:12.5px;color:var(--muted);text-align:center;padding:16px 0">Belum ada desain yang diajukan untuk direview.</div>';
-
-  // Final files = file selesai yang BUKAN gambar preview review (biar gak dobel sama task card)
-  const previewFileIds = tasksWithPreview.map(t => t.previewFileId);
-  const finalFiles = projFiles.filter(f => (f.status === 'done' || f.status === 'local') && !previewFileIds.includes(f.id));
+  const finalFiles = projFiles.filter(f => f.status === 'done' || f.status === 'local');
   const finalFilesHtml = finalFiles.length ? finalFiles.map(f => `
     <div class="portal-file-item">
       <div style="color:var(--muted)">${fIcon(f.name)}</div>
@@ -6924,7 +6592,6 @@ function renderPortalView(p, projFiles, portalCfg) {
         <span class="portal-progress-pct">${pct}%</span>
       </div>
     </div>
-    <div class="portal-task-grid">${taskCardsHtml}</div>
     <div class="portal-card">
       <div class="card-title" style="margin-bottom:8px">File Final</div>
       ${finalFilesHtml}
@@ -6934,86 +6601,7 @@ function renderPortalView(p, projFiles, portalCfg) {
 }
 
 function portalGoHome() {
-  closeAnnotator();
   renderPortalView(portalCurProj, portalCurFiles, portalCurCfg);
-}
-
-function portalApprovedLockedPopup() {
-  const ownerName = (portalCurCfg && portalCurCfg.owner) || 'kami';
-  toast(`Desain ini sudah disetujui. Kalau mau ada perubahan, hubungi ${ownerName} lewat WhatsApp ya.`, 'info');
-}
-
-// ── REVIEW: buka annotator untuk 1 task spesifik, dengan sidebar navigasi task ──
-function portalOpenTask(taskId) {
-  const t = portalCurTasks.find(x => x.id === taskId); if (!t) return;
-  const st = t.previewStatus || 'none';
-  if (st === 'approved') { portalApprovedLockedPopup(); return; }
-  const f = portalCurFiles.find(x => x.id === t.previewFileId);
-  if (!f) { toast('File preview untuk task ini belum tersedia', 'error'); return; }
-
-  annOpen({
-    readOnly: false,
-    projId: t.projId,
-    fileId: f.id,
-    fileName: t.name,
-    imgSrc: f.thumbFull || f.thumb || null,
-    annotations: t.previewAnnotations || [],
-    note: t.previewNote || '',
-    onApprove: (payload) => portalSubmitTask(taskId, 'approved', payload),
-    onRevision: (payload) => portalSubmitTask(taskId, 'revision', payload),
-    taskNav: {
-      tasks: portalCurTasks.filter(x => x.previewFileId),
-      activeTaskId: taskId,
-      clientName: portalCurClient ? portalCurClient.name : '',
-      onSelect: 'portalOpenTask',
-      onInvoice: 'portalOpenInvoice',
-      onHome: 'portalGoHome',
-    },
-  });
-}
-
-async function portalSubmitTask(taskId, newStatus, payload) {
-  toast(newStatus === 'revision' ? 'Mengirim revisi...' : 'Mengirim approval...', 'info');
-  const { u, r, pid, sid, token } = portalCreds;
-  let lastErr = null;
-  for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const { data, sha } = await portalFetchDataFile();
-      const proj = (data.projects || []).find(x => x.id === pid);
-      if (!proj) throw new Error('Proyek tidak ditemukan.');
-      if (!proj.portal || proj.portal.id !== sid || !proj.portal.active) throw new Error('Portal sudah tidak aktif.');
-      const t = (data.tasks || []).find(x => x.id === taskId);
-      if (!t) throw new Error('Task tidak ditemukan.');
-      if (t.previewStatus === 'approved') throw new Error('Desain ini sudah disetujui sebelumnya.');
-
-      t.previewStatus = newStatus;
-      t.previewAnnotations = payload.annotations || [];
-      t.previewNote = payload.note || '';
-      t.previewUnread = true;
-
-      const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-      const putRes = await fetch(
-        `https://api.github.com/repos/${u}/${r}/contents/${GH_DATA_FILE}`,
-        {
-          method: 'PUT',
-          headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'portal: ' + newStatus + ' — ' + new Date().toLocaleString('id-ID'), content, sha })
-        }
-      );
-      if (putRes.ok) {
-        toast(newStatus === 'revision' ? 'Revisi terkirim ✓' : 'Approve terkirim ✓', 'success');
-        await portalLoadAndRender(taskId);
-        return;
-      }
-      if (putRes.status === 409) { lastErr = new Error('Bentrok data, mencoba lagi...'); continue; }
-      const errBody = await putRes.json().catch(() => ({}));
-      throw new Error(errBody.message || 'Gagal mengirim.');
-    } catch (e) {
-      lastErr = e;
-      break;
-    }
-  }
-  toast('Gagal mengirim: ' + (lastErr ? lastErr.message : 'coba lagi.'), 'error');
 }
 
 // ── INVOICE: reuse buildInvHTML dengan snapshot yang disimpan owner ──
@@ -7041,401 +6629,6 @@ function portalOpenInvoice() {
     </div>
     <div class="portal-invoice-wrap">${invHtml}</div>
   `;
-}
-
-// ══════════════════════════════════════════════════════
-// ── ANNOTATOR ENGINE (coret-coret gambar, zoom-safe) ──
-// dipakai 2 arah: portal klien (edit) & owner (lihat hasil)
-// ══════════════════════════════════════════════════════
-const ANN_PALETTE = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'];
-let annState = null;
-
-const ANN_ICON_CHECK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-const ANN_ICON_FLAG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>';
-const ANN_ICON_TRASH = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>';
-const ANN_ICON_DRAG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>';
-const ANN_ICON_SCROLL = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="14" rx="4"/><line x1="12" y1="6" x2="12" y2="10"/></svg>';
-const ANN_ICON_PINCH = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M6 14v0a6 6 0 0 0 6 6h1a7 7 0 0 0 7-7v-2a2 2 0 0 0-4 0"/></svg>';
-
-function annOpen(opts) {
-  annState = {
-    readOnly: !!opts.readOnly,
-    locked: !!opts.locked,
-    lockedMsg: opts.lockedMsg || '',
-    projId: opts.projId || null,
-    fileId: opts.fileId,
-    fileName: opts.fileName,
-    imgSrc: opts.imgSrc || null,
-    isPdf: !!opts.isPdf,
-    annotations: (opts.annotations || []).map(a => ({ id: a.id, color: a.color, points: a.points, comment: a.comment || '' })),
-    note: opts.note || '',
-    onApprove: opts.onApprove || null,
-    onRevision: opts.onRevision || null,
-    onMarkRead: opts.onMarkRead || null,
-    zoom: 1, panX: 0, panY: 0, tool: 'draw',
-    isDrawing: false, isPanning: false, isPinching: false,
-    curPoints: null, curColor: null,
-    naturalW: 0, naturalH: 0,
-    pointers: new Map(),
-    taskNav: opts.taskNav || null,
-  };
-
-  const modalEl = document.querySelector('#annotatorOverlay .ann-modal');
-  const tasknavEl = document.getElementById('ann-tasknav');
-  if (modalEl) modalEl.classList.toggle('has-tasknav', !!annState.taskNav);
-  if (tasknavEl) tasknavEl.classList.toggle('show', !!annState.taskNav);
-  if (annState.taskNav) annRenderTaskNav();
-
-  document.getElementById('ann-filename').textContent = opts.fileName || '-';
-  document.getElementById('annotatorOverlay').classList.add('show');
-
-  const stageWrap = document.getElementById('ann-stage-wrap');
-  const zoomCtrls = document.getElementById('ann-zoom-controls');
-  const toolDock = document.getElementById('ann-tool-dock');
-  const listHead = document.querySelector('.ann-list-head');
-  const listEl = document.getElementById('ann-list');
-  const actions = document.getElementById('ann-actions');
-  const noteLabel = document.getElementById('ann-note-label');
-  const noteTa = document.getElementById('ann-general-note');
-  const hintChip = document.getElementById('ann-hint-chip');
-
-  const hasImg = !!annState.imgSrc;
-  stageWrap.classList.toggle('no-img', !hasImg);
-  stageWrap.classList.toggle('readonly-mode', !!annState.readOnly);
-  stageWrap.style.display = hasImg ? 'flex' : 'none';
-  zoomCtrls.style.display = hasImg ? 'flex' : 'none';
-  toolDock.style.display = (hasImg && !annState.readOnly && !annState.locked) ? 'flex' : 'none';
-  annSetTool('draw');
-  if (listHead) listHead.style.display = hasImg ? 'flex' : 'none';
-  listEl.style.display = hasImg ? 'block' : 'none';
-
-  noteTa.value = annState.note;
-  if (annState.locked) {
-    noteLabel.textContent = 'Catatan Umum';
-    noteTa.setAttribute('readonly', 'readonly');
-    actions.innerHTML = `<div class="ann-locked-note">${ANN_ICON_CHECK} ${escHtml(annState.lockedMsg || 'Desain ini sudah disetujui.')}</div>`;
-  } else if (annState.readOnly) {
-    noteLabel.textContent = 'Catatan Umum';
-    noteTa.setAttribute('readonly', 'readonly');
-    actions.innerHTML = annState.onMarkRead
-      ? `<button class="ann-abtn read" onclick="annMarkRead()">${ANN_ICON_CHECK} Tandai Sudah Dibaca</button>`
-      : '';
-  } else {
-    noteLabel.textContent = 'Catatan Umum (opsional)';
-    noteTa.removeAttribute('readonly');
-    actions.innerHTML = `
-      <button class="ann-abtn approve" onclick="annSubmitApproval()">${ANN_ICON_CHECK} Approve</button>
-      <button class="ann-abtn revise" onclick="annSubmitRevision()">${ANN_ICON_FLAG} Kirim Revisi</button>`;
-  }
-
-  if (hasImg) {
-    hintChip.innerHTML = (annState.readOnly || annState.locked)
-      ? `${ANN_ICON_PINCH} Cubit / scroll untuk zoom &middot; tahan &amp; geser untuk lihat detail`
-      : `${ANN_ICON_DRAG} Seret untuk menandai &middot; ${ANN_ICON_SCROLL} scroll / cubit untuk zoom &middot; tombol ${ANN_ICON_PINCH} buat geser`;
-    hintChip.style.opacity = '1';
-    clearTimeout(annState._hintTimer);
-    annState._hintTimer = setTimeout(() => { if (hintChip) hintChip.style.opacity = '0'; }, 4500);
-    annLoadImage(annState.imgSrc);
-  } else {
-    annRenderList();
-  }
-}
-
-function annSetTool(tool) {
-  if (!annState) return;
-  annState.tool = tool;
-  const drawBtn = document.getElementById('ann-tool-draw');
-  const panBtn = document.getElementById('ann-tool-pan');
-  if (drawBtn) drawBtn.classList.toggle('active', tool === 'draw');
-  if (panBtn) panBtn.classList.toggle('active', tool === 'pan');
-  const stageWrap = document.getElementById('ann-stage-wrap');
-  if (stageWrap) stageWrap.classList.toggle('pan-mode', tool === 'pan');
-}
-
-function annRenderTaskNav() {
-  const nav = annState && annState.taskNav; if (!nav) return;
-  const el = document.getElementById('ann-tasknav'); if (!el) return;
-  const statusLabel = { none: 'Belum Dikirim', needs_review: 'Perlu Review', revision: 'Revisi', approved: 'Disetujui' };
-  const itemsHtml = nav.tasks.map(t => {
-    const st = t.previewStatus || 'none';
-    const active = t.id === nav.activeTaskId;
-    return `<div class="ann-tasknav-item ${active ? 'active' : ''}" onclick="${nav.onSelect}('${t.id}')">
-      <div class="ann-tasknav-item-name">${escHtml(t.name)}</div>
-      <span class="badge" style="font-size:9.5px;padding:2px 6px">${statusLabel[st] || st}</span>
-    </div>`;
-  }).join('');
-  el.innerHTML = `
-    <div class="ann-tasknav-greet">Hi, ${escHtml(nav.clientName || 'Klien')}</div>
-    <div class="ann-tasknav-list">${itemsHtml}</div>
-    <div class="ann-tasknav-foot">
-      ${nav.onInvoice ? `<button class="btn btn-secondary btn-sm" onclick="${nav.onInvoice}()">Cek Invoice</button>` : ''}
-      ${nav.onHome ? `<button class="btn btn-ghost btn-sm" onclick="${nav.onHome}()">Home</button>` : ''}
-    </div>`;
-}
-
-function annLoadImage(src) {
-  const img = document.getElementById('ann-img');
-  const svg = document.getElementById('ann-svg');
-  img.onload = () => {
-    if (!annState) return;
-    annState.naturalW = img.naturalWidth;
-    annState.naturalH = img.naturalHeight;
-    const stage = document.getElementById('ann-stage');
-    stage.style.width = annState.naturalW + 'px';
-    stage.style.height = annState.naturalH + 'px';
-    img.style.width = annState.naturalW + 'px';
-    img.style.height = annState.naturalH + 'px';
-    svg.setAttribute('viewBox', `0 0 ${annState.naturalW} ${annState.naturalH}`);
-    annFitToView();
-    annRenderStrokes();
-    annRenderList();
-  };
-  img.src = src;
-}
-
-function annFitToView() {
-  if (!annState) return;
-  const wrap = document.getElementById('ann-stage-wrap');
-  const rect = wrap.getBoundingClientRect();
-  const pad = 24;
-  let z = Math.min((rect.width - pad * 2) / annState.naturalW, (rect.height - pad * 2) / annState.naturalH, 1);
-  if (!isFinite(z) || z <= 0) z = 1;
-  annState.zoom = z;
-  annState.panX = (rect.width - annState.naturalW * z) / 2;
-  annState.panY = (rect.height - annState.naturalH * z) / 2;
-  annApplyTransform();
-}
-
-function annApplyTransform() {
-  if (!annState) return;
-  const stage = document.getElementById('ann-stage');
-  stage.style.transform = `translate(${annState.panX}px, ${annState.panY}px) scale(${annState.zoom})`;
-  document.getElementById('ann-zoom-pct').textContent = Math.round(annState.zoom * 100) + '%';
-}
-
-function annZoom(delta, cx, cy) {
-  if (!annState || !annState.naturalW) return;
-  const wrap = document.getElementById('ann-stage-wrap');
-  const rect = wrap.getBoundingClientRect();
-  if (cx == null) { cx = rect.width / 2; cy = rect.height / 2; }
-  const natX = (cx - annState.panX) / annState.zoom;
-  const natY = (cy - annState.panY) / annState.zoom;
-  const newZoom = Math.min(6, Math.max(0.15, annState.zoom + delta));
-  annState.panX = cx - natX * newZoom;
-  annState.panY = cy - natY * newZoom;
-  annState.zoom = newZoom;
-  annApplyTransform();
-}
-function annResetView() { annFitToView(); }
-
-function annClientToLocal(clientX, clientY) {
-  const stage = document.getElementById('ann-stage');
-  const r = stage.getBoundingClientRect();
-  return [(clientX - r.left) / annState.zoom, (clientY - r.top) / annState.zoom];
-}
-function annClientToWrap(clientX, clientY) {
-  const wrap = document.getElementById('ann-stage-wrap');
-  const r = wrap.getBoundingClientRect();
-  return [clientX - r.left, clientY - r.top];
-}
-
-function annNextColor() { return ANN_PALETTE[annState.annotations.length % ANN_PALETTE.length]; }
-
-function annRenderStrokes(includeTemp) {
-  if (!annState) return;
-  const svg = document.getElementById('ann-svg');
-  const sw = Math.max(3, (annState.naturalW || 800) / 280);
-  const pinR = Math.max(11, (annState.naturalW || 800) / 55);
-  let html = '';
-  annState.annotations.forEach((a, i) => {
-    const pts = a.points.map(pt => pt.join(',')).join(' ');
-    html += `<polyline points="${pts}" fill="none" stroke="${a.color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
-    const start = a.points[0];
-    html += `<g><circle cx="${start[0]}" cy="${start[1]}" r="${pinR}" fill="${a.color}" stroke="#fff" stroke-width="${pinR/6}"/><text x="${start[0]}" y="${start[1]}" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="${pinR}" font-weight="700" font-family="sans-serif">${i + 1}</text></g>`;
-  });
-  if (includeTemp && annState.curPoints && annState.curPoints.length > 1) {
-    const pts = annState.curPoints.map(pt => pt.join(',')).join(' ');
-    html += `<polyline points="${pts}" fill="none" stroke="${annState.curColor}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }
-  svg.innerHTML = html;
-}
-
-function annRenderList() {
-  const listEl = document.getElementById('ann-list');
-  if (!annState || !annState.imgSrc) { listEl.innerHTML = ''; return; }
-  if (!annState.annotations.length) {
-    listEl.innerHTML = `<div class="ann-empty-hint">${annState.readOnly ? 'Tidak ada coretan.' : 'Belum ada coretan. Seret langsung di atas foto untuk menandai bagian yang mau direvisi.'}</div>`;
-    return;
-  }
-  listEl.innerHTML = annState.annotations.map((a, i) => `
-    <div class="ann-item">
-      <div class="ann-pin" style="background:${a.color}">${i + 1}</div>
-      <div class="ann-item-body">
-        <div class="ann-item-toprow">
-          <span class="ann-item-label">Coretan ${i + 1}</span>
-          ${annState.readOnly ? '' : `<button class="ann-item-del" onclick="annDeleteAnnotation('${a.id}')" title="Hapus">${ANN_ICON_TRASH}</button>`}
-        </div>
-        ${annState.readOnly
-          ? `<p>${a.comment ? escHtml(a.comment) : '<span style="color:var(--muted)">Tanpa catatan</span>'}</p>`
-          : `<textarea rows="2" placeholder="Catatan untuk coretan ini..." oninput="annUpdateComment('${a.id}', this.value)">${escHtml(a.comment)}</textarea>`}
-      </div>
-    </div>`).join('');
-}
-
-function annUpdateComment(id, val) {
-  const a = annState.annotations.find(x => x.id === id);
-  if (a) a.comment = val;
-}
-function annDeleteAnnotation(id) {
-  annState.annotations = annState.annotations.filter(a => a.id !== id);
-  annRenderStrokes(); annRenderList();
-}
-function annUndo() {
-  if (!annState || !annState.annotations.length) return;
-  annState.annotations.pop();
-  annRenderStrokes(); annRenderList();
-}
-
-// ── Interaksi gestur: gambar (default), geser (Space+drag / tombol tengah / 2 jari), zoom (scroll / cubit) ──
-function annPointerDown(e) {
-  if (!annState || !annState.imgSrc) return;
-  if (e.target.closest('.ann-tool-dock')) return; // biar klik tombol dock (gambar/geser/undo) gak ke-capture jadi gesture kanvas
-  const wrap = document.getElementById('ann-stage-wrap');
-  if (wrap.setPointerCapture && e.pointerId != null) { try { wrap.setPointerCapture(e.pointerId); } catch (_) {} }
-  annState.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-
-  if (annState.pointers.size >= 2) {
-    annState.isDrawing = false; annState.curPoints = null;
-    annState.isPanning = false;
-    annState.isPinching = true;
-    const pts = Array.from(annState.pointers.values());
-    const [p1, p2] = pts;
-    const [wx, wy] = annClientToWrap((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-    annState._pinchDist0 = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
-    annState._pinchZoom0 = annState.zoom;
-    annState._pinchNat0 = [(wx - annState.panX) / annState.zoom, (wy - annState.panY) / annState.zoom];
-    annRenderStrokes();
-    return;
-  }
-
-  // Read-only / locked (POV owner lihat hasil, atau desain sudah approved) → drag selalu geser.
-  // Mode edit: geser hanya kalau tool "pan" lagi aktif (tombol tangan di dock alat), selain itu = gambar.
-  const isPanTrigger = annState.readOnly || annState.locked || annState.tool === 'pan' || e.button === 1 || e.button === 2;
-  if (isPanTrigger) {
-    annState.isPanning = true;
-    annState._panStartX = e.clientX; annState._panStartY = e.clientY;
-    annState._origPanX = annState.panX; annState._origPanY = annState.panY;
-    wrap.classList.add('panning');
-  } else {
-    annState.isDrawing = true;
-    annState.curColor = annNextColor();
-    annState.curPoints = [annClientToLocal(e.clientX, e.clientY)];
-    annRenderStrokes(true);
-  }
-  e.preventDefault();
-}
-function annPointerMove(e) {
-  if (!annState) return;
-  if (annState.pointers.has(e.pointerId)) annState.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-
-  if (annState.isPinching && annState.pointers.size >= 2) {
-    const pts = Array.from(annState.pointers.values());
-    const [p1, p2] = pts;
-    const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y) || 1;
-    const [wx, wy] = annClientToWrap((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-    const newZoom = Math.min(6, Math.max(0.15, annState._pinchZoom0 * (dist / annState._pinchDist0)));
-    annState.zoom = newZoom;
-    annState.panX = wx - annState._pinchNat0[0] * newZoom;
-    annState.panY = wy - annState._pinchNat0[1] * newZoom;
-    annApplyTransform();
-  } else if (annState.isPanning) {
-    annState.panX = annState._origPanX + (e.clientX - annState._panStartX);
-    annState.panY = annState._origPanY + (e.clientY - annState._panStartY);
-    annApplyTransform();
-  } else if (annState.isDrawing) {
-    annState.curPoints.push(annClientToLocal(e.clientX, e.clientY));
-    annRenderStrokes(true);
-  }
-}
-function annPointerUp(e) {
-  if (!annState) return;
-  annState.pointers.delete(e.pointerId);
-  const wrap = document.getElementById('ann-stage-wrap');
-
-  if (annState.isPinching) {
-    if (annState.pointers.size < 2) annState.isPinching = false;
-    return;
-  }
-  wrap.classList.remove('panning');
-  if (annState.isPanning) annState.isPanning = false;
-  if (annState.isDrawing) {
-    annState.isDrawing = false;
-    if (annState.curPoints && annState.curPoints.length > 1) {
-      annState.annotations.push({ id: 'a_' + Date.now() + Math.random().toString(36).slice(2, 6), color: annState.curColor, points: annState.curPoints, comment: '' });
-    }
-    annState.curPoints = null;
-    annRenderStrokes();
-    annRenderList();
-  }
-}
-function annWheel(e) {
-  if (!annState || !annState.imgSrc || !annState.naturalW) return;
-  e.preventDefault();
-  const wrap = document.getElementById('ann-stage-wrap');
-  const rect = wrap.getBoundingClientRect();
-  const cx = e.clientX - rect.left, cy = e.clientY - rect.top;
-  const natX = (cx - annState.panX) / annState.zoom;
-  const natY = (cy - annState.panY) / annState.zoom;
-  const delta = -e.deltaY * 0.0022;
-  const newZoom = Math.min(6, Math.max(0.15, annState.zoom * (1 + delta)));
-  annState.panX = cx - natX * newZoom;
-  annState.panY = cy - natY * newZoom;
-  annState.zoom = newZoom;
-  annApplyTransform();
-}
-(function annInitListeners() {
-  const wrap = document.getElementById('ann-stage-wrap');
-  if (!wrap) return;
-  wrap.addEventListener('pointerdown', annPointerDown);
-  window.addEventListener('pointermove', annPointerMove);
-  window.addEventListener('pointerup', annPointerUp);
-  window.addEventListener('pointercancel', annPointerUp);
-  wrap.addEventListener('wheel', annWheel, { passive: false });
-  wrap.addEventListener('contextmenu', e => { if (annState && annState.imgSrc) e.preventDefault(); });
-})();
-
-function closeAnnotator() {
-  document.getElementById('annotatorOverlay').classList.remove('show');
-  if (annState) clearTimeout(annState._hintTimer);
-  annState = null;
-}
-
-function annSubmitApproval() {
-  if (!annState || !annState.onApprove || annState.locked) return;
-  const note = document.getElementById('ann-general-note').value.trim();
-  annState.onApprove({
-    fileId: annState.fileId, fileName: annState.fileName,
-    annotations: annState.annotations.map(a => ({ id: a.id, color: a.color, points: a.points, comment: a.comment || '' })),
-    note, at: new Date().toISOString(),
-  });
-}
-function annSubmitRevision() {
-  if (!annState || !annState.onRevision || annState.locked) return;
-  const note = document.getElementById('ann-general-note').value.trim();
-  if (!annState.annotations.length && !note) { toast('Tambahkan minimal 1 coretan atau catatan dulu ya', 'error'); return; }
-  annState.onRevision({
-    fileId: annState.fileId,
-    fileName: annState.fileName,
-    imageSrc: annState.imgSrc,
-    annotations: annState.annotations.map(a => ({ id: a.id, color: a.color, points: a.points, comment: a.comment || '' })),
-    note,
-    createdAt: new Date().toISOString(),
-  });
-}
-function annMarkRead() {
-  if (!annState || !annState.onMarkRead) return;
-  annState.onMarkRead();
-  closeAnnotator();
 }
 
 // ── DEBOUNCED SYNC ───────────────────────────────────
