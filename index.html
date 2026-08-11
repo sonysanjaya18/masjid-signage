@@ -962,93 +962,6 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); co
   .nav-label-short { display: none !important; }
 }
 
-/* ── PORTAL KLIEN ──────────────────────────────────── */
-.portal-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 26px; height: 26px; border-radius: 7px; border: 1px solid var(--border);
-  background: var(--surface); color: var(--accent); cursor: pointer; transition: .15s; flex-shrink: 0;
-}
-.portal-btn:hover { background: rgba(108,99,255,.08); border-color: var(--accent); transform: translateY(-1px); }
-.pc-portal-wrap { position: relative; display: inline-flex; }
-.project-card .pc-portal-wrap { margin-left: 6px; }
-
-.portal-link-box {
-  display: flex; align-items: center; gap: 8px; background: var(--surface2);
-  border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin: 12px 0;
-}
-.portal-link-box input {
-  flex: 1; border: none; background: transparent; font-size: 12px; color: var(--text);
-  font-family: monospace; outline: none;
-}
-.portal-warn {
-  font-size: 11.5px; color: var(--muted); background: rgba(217,119,6,.08);
-  border: 1px solid rgba(217,119,6,.2); border-radius: 8px; padding: 9px 11px; line-height: 1.5; margin-top: 10px;
-}
-.portal-warn b { color: var(--yellow); }
-.portal-inactive-box {
-  text-align: center; padding: 18px 10px; color: var(--muted); font-size: 12.5px;
-  background: var(--surface2); border-radius: 8px; margin: 12px 0;
-}
-
-/* ── PORTAL VIEW (halaman klien, tanpa login) ───────── */
-#portal-app { display: none; min-height: 100vh; background: var(--bg); }
-#portal-app.show { display: block; }
-.portal-topbar {
-  display: flex; align-items: center; justify-content: space-between; padding: 14px 20px;
-  background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50;
-  box-shadow: 0 1px 6px rgba(108,99,255,.07);
-}
-.portal-topbar .brand { font-size: 16px; font-weight: 800; }
-.portal-topbar .brand span { color: var(--accent); }
-.portal-wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 60px; }
-.portal-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.04);
-}
-.portal-proj-name { font-size: 19px; font-weight: 800; margin-bottom: 3px; }
-.portal-proj-client { font-size: 13px; color: var(--muted); }
-.portal-status-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
-.portal-file-item {
-  display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border);
-}
-.portal-file-item:last-child { border-bottom: none; }
-.portal-file-name { font-size: 12.5px; font-weight: 600; flex: 1; }
-.portal-file-size { font-size: 11px; color: var(--muted); }
-.portal-center-msg {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 70vh; text-align: center; padding: 20px; color: var(--muted); gap: 10px;
-}
-.portal-loader {
-  width: 26px; height: 26px; border: 3px solid var(--surface3); border-top-color: var(--accent);
-  border-radius: 50%; animation: portal-spin .8s linear infinite;
-}
-@keyframes portal-spin { to { transform: rotate(360deg); } }
-.portal-footer-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 18px; }
-
-.portal-file-actions { display: flex; gap: 6px; }
-
-.portal-home-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.portal-greet { font-size: 18px; font-weight: 800; }
-.portal-greet-sub { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
-.portal-progress-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.portal-progress-track { flex: 1; height: 8px; border-radius: 5px; background: var(--surface2); overflow: hidden; }
-.portal-progress-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--accent), #22c55e); transition: width .3s; }
-.portal-progress-pct { font-size: 12px; font-weight: 700; color: var(--text); width: 36px; text-align: right; }
-
-.portal-invoice-wrap { overflow-x: auto; }
-@media (max-width: 480px) {
-  .portal-home-head { flex-direction: column; }
-}
-
-/* ── ISOLASI MODE PORTAL — sembunyikan total UI internal owner ── */
-body.portal-mode .topbar,
-body.portal-mode .layout,
-body.portal-mode #gh-login-screen,
-body.portal-mode #mobile-nav,
-body.portal-mode #fab-add,
-body.portal-mode .overlay { display: none !important; }
-body.portal-mode { overflow-x: hidden; }
-
 </style>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas-pro@2.2.1/dist/html2canvas-pro.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1056,21 +969,6 @@ body.portal-mode { overflow-x: hidden; }
 <script>if (typeof pdfjsLib !== 'undefined') pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 </head>
 <body>
-<script>if (location.hash.indexOf('#portal~') === 0) document.body.classList.add('portal-mode');</script>
-
-<!-- PORTAL KLIEN — halaman khusus untuk klien, tanpa login -->
-<div id="portal-app">
-  <div class="portal-topbar">
-    <div class="brand">Snapsy<span>.</span>Std</div>
-    <div style="font-size:11px;color:var(--muted)" id="portal-studio-name"></div>
-  </div>
-  <div class="portal-wrap" id="portal-content">
-    <div class="portal-center-msg">
-      <div class="portal-loader"></div>
-      <div>Memuat portal proyek...</div>
-    </div>
-  </div>
-</div>
 
 <!-- GITHUB LOGIN SCREEN -->
 <div id="gh-login-screen" style="display:none">
@@ -1391,7 +1289,6 @@ body.portal-mode { overflow-x: hidden; }
                 <div style="font-size:13px;color:var(--muted);margin-top:3px" id="d-client">-</div>
               </div>
               <div style="display:flex;gap:6px">
-                <button class="btn btn-secondary btn-sm" onclick="openPortalModal(curProjId)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Portal Klien</button>
                 <button class="btn btn-secondary btn-sm" onclick="editProject()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit</button>
                 <button class="btn btn-danger btn-sm" onclick="confirmDeleteProject()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
               </div>
@@ -1430,13 +1327,6 @@ body.portal-mode { overflow-x: hidden; }
             </div>
             <div class="drive-path">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> <b id="dp-root">Snapsy.Std</b> › <b id="dp-client">-</b> › <b id="dp-proj">-</b><span id="dp-sub"></span>
-            </div>
-
-            <div id="local-folder-panel" style="display:none;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.03));border-radius:8px">
-              <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Folder lokal:</span>
-              <button class="btn btn-ghost btn-xs" style="display:inline-flex;align-items:center;gap:6px" onclick="openLocalProjectFolder()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Buka Folder Proyek</button>
-              <button class="btn btn-ghost btn-xs" style="display:inline-flex;align-items:center;gap:6px" onclick="syncFinalToDrive(curProjId)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Sync 03_FINAL ke Drive</button>
-              <button class="btn btn-ghost btn-xs" style="display:inline-flex;align-items:center;gap:6px" onclick="openLocalSyncPicker(curProjId)" title="Pilih sendiri folder/file mana aja yang mau di-upload"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Pilih & Sync...</button>
             </div>
 
             <!-- Subfolder manager -->
@@ -1490,7 +1380,6 @@ body.portal-mode { overflow-x: hidden; }
             <button class="btn btn-ghost btn-sm" style="margin-top:12px;width:100%" onclick="openDriveFolder()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Buka di Drive</button>
             <button class="btn btn-danger btn-sm" style="margin-top:6px;width:100%" onclick="confirmDeleteDriveFolder()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg> Hapus Folder di Drive</button>
           </div>
-          <!-- Feedback dari klien (portal) -->
           <!-- Invoice button -->
           <div id="detail-invoice-btn" style="display:none">
             <div class="card">
@@ -1591,15 +1480,6 @@ body.portal-mode { overflow-x: hidden; }
     <div class="fg"><label class="fl">Client ID</label><input class="fi2" id="s-cid" placeholder="xxxx.apps.googleusercontent.com"></div>
     <div class="fg"><label class="fl">API Key</label><input class="fi2" id="s-key" placeholder="AIzaSy..."></div>
     <div style="font-size:12px;color:var(--muted)">Tersimpan di browser saja, tidak dikirim ke server.</div>
-    <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 10px">🔗 Portal Klien</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Token khusus buat link portal klien (tanpa login). Terpisah dari token sync utama kamu, jadi bisa dicabut kapan saja tanpa ganggu sync app ini.</div>
-    <div class="fg"><label class="fl">Portal Access Token</label><input class="fi2" id="s-portal-token" type="password" placeholder="github_pat_..." autocomplete="off"></div>
-    <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:4px">
-      Buat di <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com → Settings → Fine-grained tokens</a>, khusus untuk repo <b id="s-portal-repo-hint">data</b> kamu saja, permission <b>Contents: Read and Write</b>.
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 10px">Folder Lokal (Disk Komputer)</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:10px">Hubungkan folder <b>SNAPSY</b> di komputermu. Setiap bikin proyek baru, app otomatis bikin struktur <code>Klien/Proyek/01_WORKING, 02_EXPORT, 03_FINAL, 04_ARCHIVE</code> di dalamnya. Fitur ini cuma jalan di Chrome/Edge versi laptop-PC.</div>
-    <div id="local-root-status" style="margin-bottom:6px"></div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('setupModal')">Batal</button>
       <button class="btn btn-primary" onclick="saveSetup()">Simpan</button>
@@ -2051,93 +1931,6 @@ body.portal-mode { overflow-x: hidden; }
   </div>
 </div>
 
-<!-- MODAL: Portal Klien -->
-<div class="overlay" id="portalModal">
-  <div class="modal">
-    <div class="modal-title" style="display:flex;align-items:center;gap:10px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Portal Klien</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:4px" id="portal-modal-projname">-</div>
-
-    <div id="portal-no-token" style="display:none">
-      <div class="portal-inactive-box">
-        Kamu belum mengatur <b>Portal Access Token</b> di Setup. Token ini dibutuhkan supaya link portal bisa diakses klien tanpa login.
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="closeModal('portalModal')">Tutup</button>
-        <button class="btn btn-primary" onclick="closeModal('portalModal');openSetup()">Atur di Setup</button>
-      </div>
-    </div>
-
-    <div id="portal-has-token" style="display:none">
-      <div id="portal-inactive-state" style="display:none">
-        <div class="portal-inactive-box">Belum ada link portal aktif untuk proyek ini.</div>
-        <div class="modal-footer">
-          <button class="btn btn-ghost" onclick="closeModal('portalModal')">Batal</button>
-          <button class="btn btn-primary" onclick="generatePortalLink(curPortalProjId)">🔗 Buat Link Portal</button>
-        </div>
-      </div>
-
-      <div id="portal-active-state" style="display:none">
-        <div style="font-size:12px;color:var(--muted)">Klien bisa buka link ini tanpa login untuk lihat progres, status, dan file proyek.</div>
-        <div class="portal-link-box">
-          <input id="portal-link-input" readonly value="">
-          <button class="btn btn-primary btn-xs" onclick="copyPortalLink()">Salin</button>
-        </div>
-        <button class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:6px" onclick="sharePortalLinkWA()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Kirim via WhatsApp</button>
-        <div class="portal-warn"><b>Catatan:</b> siapa pun yang punya link ini bisa membuka portal proyek. Kalau link ke-share ke orang salah, klik "Buat Link Baru" di bawah untuk otomatis menonaktifkan link lama.</div>
-        <div class="modal-footer">
-          <button class="btn btn-ghost" onclick="closeModal('portalModal')">Tutup</button>
-          <button class="btn btn-secondary btn-sm" onclick="regeneratePortalLink(curPortalProjId)">Buat Link Baru</button>
-          <button class="btn btn-danger btn-sm" onclick="revokePortalLink(curPortalProjId)">Nonaktifkan</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Local Folder Browser -->
-<div class="overlay" id="localFolderModal">
-  <div class="modal" style="width:440px">
-    <div class="modal-title" style="display:flex;justify-content:space-between;align-items:center">
-      <span style="display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> Folder Lokal</span>
-      <button class="btn btn-primary btn-xs" onclick="promptAddLocalFolder()">＋ Folder Baru</button>
-    </div>
-    <div id="lf-pick-banner" style="display:none;align-items:center;gap:6px;font-size:12px;background:rgba(108,99,255,.08);color:var(--accent);padding:8px 10px;border-radius:8px;margin-bottom:10px"></div>
-    <div id="lf-breadcrumb" style="font-size:12px;color:var(--muted);margin-bottom:10px"></div>
-    <div id="lf-list" style="max-height:320px;min-height:80px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;border-radius:8px;transition:background .15s"
-      ondragover="lfDragOver(event)" ondragleave="lfDragLeave(event)" ondrop="lfDrop(event)"></div>
-    <div style="font-size:11px;color:var(--muted);margin-top:8px">Tip: drag & drop file dari komputer langsung ke sini buat nambahin ke folder ini.</div>
-    <div id="lf-sync-bar" style="display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:8px 10px;background:var(--surface2,rgba(0,0,0,.03));border-radius:8px">
-      <span id="lf-sync-count" style="font-size:12px;color:var(--muted)">Belum ada yang dipilih</span>
-      <button class="btn btn-primary btn-xs" id="lf-sync-upload-btn" onclick="lfSyncUpload()" disabled>Upload ke Drive</button>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="lfCloseModal()">Tutup</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: Nama Folder Lokal Baru -->
-<div class="overlay" id="localNewFolderModal" style="z-index:601">
-  <div class="confirm-modal" style="width:360px">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-      <div style="width:38px;height:38px;border-radius:9px;background:rgba(108,99,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
-      <div>
-        <div class="confirm-title" style="margin-bottom:2px">Folder Baru</div>
-        <div style="font-size:12px;color:var(--muted)" id="lfnf-location-hint">Akan dibuat di folder ini</div>
-      </div>
-    </div>
-    <div class="fg">
-      <label class="fl">Nama Folder</label>
-      <input class="fi2" id="lfnf-name-input" placeholder="misal: Behind The Scenes"
-        onkeydown="if(event.key==='Enter')confirmAddLocalFolder();if(event.key==='Escape')closeModal('localNewFolderModal')">
-    </div>
-    <div class="confirm-footer">
-      <button class="btn btn-ghost" onclick="closeModal('localNewFolderModal')">Batal</button>
-      <button class="btn btn-primary" onclick="confirmAddLocalFolder()">＋ Buat Folder</button>
-    </div>
-  </div>
-</div>
-
 <!-- Hidden iframe for PDF generation -->
 <iframe id="inv-pdf-frame" style="display:none;width:0;height:0;border:0"></iframe>
 
@@ -2184,12 +1977,6 @@ const STATUSES = [
 
 // ── INIT ──────────────────────────────────────────────
 window.onload = async () => {
-  // ── Mode Portal Klien: kalau URL mengandung #portal~..., render halaman klien saja ──
-  if (location.hash.startsWith('#portal~')) {
-    initPortalMode();
-    return;
-  }
-
   document.getElementById('f-start').value = today();
   document.getElementById('dp-root').textContent = cfg.root || 'Snapsy.Std';
   document.getElementById('dr-root').textContent = cfg.root || 'Snapsy.Std';
@@ -2208,10 +1995,6 @@ window.onload = async () => {
     lb.disabled = true; lb.style.opacity = '.6';
     lb.querySelector('.login-label') && (lb.querySelector('.login-label').textContent = 'Menyiapkan… ');
   }
-  restoreLocalRoot().then(() => {
-    if (LOCAL_FS_SUPPORTED && localRootHandle) scanAllLocalTracking();
-  });
-
   // GitHub sync init — tunggu sampai selesai supaya ghFileSha sudah terisi
   await ghInit();
 
@@ -2404,51 +2187,6 @@ async function driveUpload(fileObj, folderId, onProgress) {
 }
 async function driveDelete(fileId) { return gapi.client.drive.files.delete({fileId}); }
 
-// ── LOCAL FILE SYSTEM (File System Access API) ────────
-// Cuma jalan di Chrome/Edge/Opera desktop. Browser lain (Safari/Firefox/mobile)
-// tidak mendukung showDirectoryPicker, jadi seluruh fitur ini auto nonaktif di sana.
-const LOCAL_FS_SUPPORTED = typeof window.showDirectoryPicker === 'function';
-const LOCAL_SUBDIRS = ['01_WORKING', '02_EXPORT', '03_FINAL', '04_ARCHIVE'];
-
-// Ikon flat 1 warna (gaya sama kayak ikon lain di app ini), dipakai ganti emoji
-const ICO_FOLDER  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
-const ICO_LINK    = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
-const ICO_WARN    = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-const ICO_REFRESH = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
-const ICO_TRASH   = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
-const ICO_DOWNLOAD = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-const ICO_FILE    = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-const ICO_UPLOAD  = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>';
-let localRootHandle = null;      // FileSystemDirectoryHandle folder SNAPSY yang aktif
-let localRootPending = null;     // handle tersimpan tapi izinnya perlu dikonfirmasi ulang
-
-function idbOpen() {
-  return new Promise((res, rej) => {
-    const req = indexedDB.open('snapsy-fs', 1);
-    req.onupgradeneeded = () => req.result.createObjectStore('handles');
-    req.onsuccess = () => res(req.result);
-    req.onerror = () => rej(req.error);
-  });
-}
-async function idbSet(key, val) {
-  const db = await idbOpen();
-  return new Promise((res, rej) => {
-    const tx = db.transaction('handles', 'readwrite');
-    tx.objectStore('handles').put(val, key);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
-  });
-}
-async function idbGet(key) {
-  const db = await idbOpen();
-  return new Promise((res, rej) => {
-    const tx = db.transaction('handles', 'readonly');
-    const req = tx.objectStore('handles').get(key);
-    req.onsuccess = () => res(req.result);
-    req.onerror = () => rej(req.error);
-  });
-}
-
 // ── THUMBNAIL STORAGE (IndexedDB) ──────────────────────
 // thumb/thumbFull (base64 JPEG) dulu disimpen bareng data lain di localStorage lewat
 // key 'ssy_files' — localStorage cuma muat ~5-10MB, jadi lama-lama numpuk dan bikin
@@ -2517,729 +2255,6 @@ async function rehydrateThumbsFromIdb() {
     if (t && (!f.thumb && !f.thumbFull)) { f.thumb = t.thumb; f.thumbFull = t.thumbFull; changed = true; }
   });
   if (changed) { renderDashboard(); if (curProjId) renderDetailFiles(curProjId); renderProjects(); }
-}
-
-function sanitizeFolderName(name) {
-  return (name || 'Untitled').replace(/[\\/:*?"<>|]/g, '-').trim() || 'Untitled';
-}
-
-function renderLocalRootStatus() {
-  const el = document.getElementById('local-root-status');
-  if (!el) return;
-  if (!LOCAL_FS_SUPPORTED) {
-    el.innerHTML = `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--danger,#e05)">${ICO_WARN} Browser ini tidak mendukung akses folder lokal. Buka Snapsy pakai Chrome/Edge di laptop untuk fitur ini.</div>`;
-  } else if (localRootHandle) {
-    el.innerHTML = `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span style="display:flex;align-items:center;gap:6px;font-size:12px">${ICO_FOLDER} Terhubung: <b>${localRootHandle.name}</b></span>
-      <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="connectLocalRoot()">Ganti Folder</button>
-    </div>`;
-  } else if (localRootPending) {
-    el.innerHTML = `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--danger,#e05)">${ICO_WARN} Folder lokal perlu diizinkan ulang</span>
-      <button class="btn btn-primary" style="padding:4px 10px;font-size:11px" onclick="reconnectLocalRoot()">Izinkan Lagi</button>
-    </div>`;
-  } else {
-    el.innerHTML = `<button class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;font-size:12px" onclick="connectLocalRoot()">${ICO_LINK} Hubungkan Folder SNAPSY</button>`;
-  }
-}
-
-async function connectLocalRoot() {
-  if (!LOCAL_FS_SUPPORTED) { toast('Browser ini tidak mendukung akses folder lokal. Pakai Chrome/Edge di laptop.', 'error'); return; }
-  try {
-    const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
-    localRootHandle = handle;
-    localRootPending = null;
-    await idbSet('localRoot', handle);
-    toast('Folder lokal "' + handle.name + '" terhubung ✓', 'success');
-  } catch (e) {
-    if (e.name !== 'AbortError') toast('Gagal menghubungkan folder', 'error');
-  }
-  renderLocalRootStatus();
-}
-
-async function reconnectLocalRoot() {
-  if (!localRootPending) return connectLocalRoot();
-  try {
-    const perm = await localRootPending.requestPermission({ mode: 'readwrite' });
-    if (perm === 'granted') {
-      localRootHandle = localRootPending;
-      localRootPending = null;
-      toast('Akses folder lokal diizinkan ✓', 'success');
-    } else {
-      toast('Izin ditolak', 'error');
-    }
-  } catch (e) { toast('Gagal minta izin', 'error'); }
-  renderLocalRootStatus();
-}
-
-async function restoreLocalRoot() {
-  if (!LOCAL_FS_SUPPORTED) return;
-  try {
-    const handle = await idbGet('localRoot');
-    if (!handle) return;
-    const perm = await handle.queryPermission({ mode: 'readwrite' });
-    if (perm === 'granted') { localRootHandle = handle; }
-    else { localRootPending = handle; }
-  } catch (e) { /* belum pernah connect, biarin */ }
-  renderLocalRootStatus();
-}
-
-async function ensureLocalDir(parentHandle, name) {
-  return parentHandle.getDirectoryHandle(sanitizeFolderName(name), { create: true });
-}
-
-// Dipanggil otomatis tiap ada proyek baru — bikin SNAPSY/Klien/Proyek/01-04
-// Pastikan folder Klien/Proyek/01-04 ada di disk — silent, aman dipanggil berkali-kali (idempotent)
-async function ensureLocalProjectFolders(proj) {
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) return null;
-  const cliDir  = await ensureLocalDir(localRootHandle, proj.client);
-  const projDir = await ensureLocalDir(cliDir, proj.name);
-  for (const sub of LOCAL_SUBDIRS) { await ensureLocalDir(projDir, sub); }
-  return projDir;
-}
-
-// Versi dengan toast — dipakai pas user SENGAJA bikin proyek baru / klik tombol
-async function createLocalProjectFolders(proj) {
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) return null;
-  try {
-    const projDir = await ensureLocalProjectFolders(proj);
-    toast('Folder lokal proyek dibuat ✓', 'success');
-    return projDir;
-  } catch (e) {
-    console.error(e);
-    toast('Gagal bikin folder lokal (izin folder mungkin lepas)', 'error');
-    return null;
-  }
-}
-
-// Ambil handle folder proyek lokal yang sudah ada (tanpa create baru kalau belum ada)
-async function getLocalProjectDir(proj) {
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) return null;
-  try {
-    const cliDir  = await localRootHandle.getDirectoryHandle(sanitizeFolderName(proj.client));
-    const projDir = await cliDir.getDirectoryHandle(sanitizeFolderName(proj.name));
-    return projDir;
-  } catch (e) { return null; }
-}
-
-// Scan isi folder 03_FINAL lokal, lalu upload file yang belum pernah disync ke Drive
-// Scan SEMUA folder lokal (01-04) buat nyari gambar/PDF yang belum pernah "dikenal" app,
-// terus bikin thumbnail-nya buat kebutuhan tracking — TANPA upload ke Drive.
-// Ini yang bikin cover proyek & preview file tetep muncul walau file cuma ditaruh manual
-// (misal langsung dipindah ke 04_ARCHIVE pas proyek kelar, tanpa lewat Sync).
-// Scan semua proyek di background (dipanggil sekali pas app dibuka), biar thumbnail cover
-// kartu proyek keisi otomatis tanpa perlu buka detail proyeknya satu-satu dulu.
-async function scanAllLocalTracking() {
-  for (const proj of projects) {
-    await scanLocalTracking(proj.id);
-  }
-}
-
-// Scan folder lokal 03_FINAL doang buat nyari gambar/PDF, terus bikin thumbnail-nya buat
-// kebutuhan tracking (cover proyek & preview) — TANPA upload ke Drive.
-async function scanLocalTracking(projId) {
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) return;
-  const p = getProj(projId); if (!p) return;
-  let projDir;
-  try { projDir = await ensureLocalProjectFolders(p); } catch (e) { console.error('Gagal siapin folder lokal', p.name, e); return; }
-  if (!projDir) return;
-
-  const sub = '03_FINAL';
-  let dirH;
-  try { dirH = await projDir.getDirectoryHandle(sub); } catch (e) { return; }
-
-  for await (const [name, handle] of dirH.entries()) {
-    if (handle.kind !== 'file') continue;
-    const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
-    if (!['jpg','jpeg','png','gif','webp','pdf'].includes(ext)) continue;
-    // sudah pernah ditrack dari folder yang sama? skip
-    if (files.find(x => x.projId === p.id && x.name === name && x.localFolder === sub)) continue;
-
-    try {
-      const file = await handle.getFile();
-      const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name, size: file.size, type: file.type, status: 'local', progress: 100, driveId: null, driveLink: null, subfolderRef: '', thumb: null, thumbFull: null, _raw: null, localFolder: sub };
-      files.push(fObj);
-      genThumb(file).then(result => {
-        if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); if (curProjId === p.id) renderDetailFiles(p.id); renderProjects(); renderDashboard(); }
-      });
-    } catch (e) { console.error('Gagal scan', name, e); }
-  }
-  saveState();
-  if (curProjId === p.id) renderDetailFiles(p.id);
-}
-
-let folderLinkCache = {};
-
-// Sama kayak ensureFolder(), tapi juga ambil/simpan webViewLink-nya (buat link folder yang bisa dibagikan)
-async function ensureDriveFolderWithLink(name, parentId) {
-  const key = (parentId || 'root') + '/' + name;
-  if (folderLinkCache[key] && await driveIdExists(folderLinkCache[key].id)) return folderLinkCache[key];
-  if (folderLinkCache[key]) { delete folderLinkCache[key]; delete folderCache[key]; }
-  const q = `mimeType='application/vnd.google-apps.folder' and name='${name.replace(/'/g,"\\'")}' and '${parentId||'root'}' in parents and trashed=false`;
-  const res = await gapi.client.drive.files.list({ q, fields: 'files(id,webViewLink)' });
-  let result;
-  if (res.result.files.length) {
-    result = { id: res.result.files[0].id, webViewLink: res.result.files[0].webViewLink };
-  } else {
-    const body = { name, mimeType: 'application/vnd.google-apps.folder' };
-    if (parentId) body.parents = [parentId];
-    const created = await gapi.client.drive.files.create({ resource: body, fields: 'id,webViewLink' });
-    result = { id: created.result.id, webViewLink: created.result.webViewLink };
-  }
-  folderLinkCache[key] = result;
-  folderCache[key] = result.id; // biar ensureFolder() lain yang manggil path sama nggak bikin folder duplikat
-  return result;
-}
-
-// Gabungkan semua folder hasil "Sync 03_FINAL ke Drive" (p.localSyncedFolders, key = relPath
-// bertingkat spt "Folder A/Folder B") ke p.subfolders, supaya otomatis muncul sebagai chip
-// yang bisa diklik/dinavigasi — bukan cuma lewat modal "Link Folder Drive".
-function mergeSyncedFoldersIntoSubfolders(p) {
-  if (!p.subfolders) p.subfolders = [];
-  if (!p.localSyncedFolders) return;
-  const paths = Object.keys(p.localSyncedFolders).sort((a, b) => a.split('/').length - b.split('/').length);
-  paths.forEach(relPath => {
-    const info = p.localSyncedFolders[relPath];
-    const segs = relPath.split('/');
-    let parentId = null;
-    segs.forEach((segName, idx) => {
-      const isLast = idx === segs.length - 1;
-      let sf = p.subfolders.find(s => s.name.toLowerCase() === segName.toLowerCase() && (s.parentId || null) === parentId);
-      if (!sf) {
-        sf = { id: 'sf_' + Date.now() + Math.random().toString(36).slice(2, 6), name: segName, driveId: null, driveLink: null, parentId, source: 'synced' };
-        p.subfolders.push(sf);
-      }
-      if (isLast) {
-        sf.driveId = info.driveId;
-        sf.driveLink = info.driveLink || (info.driveId ? `https://drive.google.com/drive/folders/${info.driveId}` : sf.driveLink);
-      }
-      parentId = sf.id;
-    });
-  });
-}
-
-async function syncFinalToDrive(projId) {
-  const p = getProj(projId); if (!p) return;
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) { toast('Hubungkan folder lokal dulu di Setup', 'error'); return; }
-  if (!accessToken) { toast('Login Google Drive dulu', 'error'); return; }
-  const projDir = await getLocalProjectDir(p);
-  if (!projDir) { toast('Folder lokal proyek ini belum ada', 'error'); return; }
-
-  let finalDir;
-  try { finalDir = await projDir.getDirectoryHandle('03_FINAL'); }
-  catch (e) { toast('Folder 03_FINAL belum ada', 'error'); return; }
-
-  if (!p.localSynced) p.localSynced = {};        // {relPath: driveFileId}
-  if (!p.localSyncedFolders) p.localSyncedFolders = {}; // {relPath: {driveId, driveLink, name}}
-
-  let rootFolderId;
-  try {
-    rootFolderId = await getProjFolder(p);
-  } catch (e) {
-    console.error('Gagal siapkan folder Drive', e);
-    toast('Gagal terhubung ke Drive — coba klik tombol Login Google Drive lagi (token mungkin kadaluarsa)', 'error');
-    return;
-  }
-
-  const stats = { uploaded: 0, skipped: 0, failed: 0, folders: 0 };
-  try {
-    await syncDirRecursive(finalDir, rootFolderId, '', p, stats, null);
-  } catch (e) {
-    console.error('Sync rekursif gagal', e);
-  }
-  mergeSyncedFoldersIntoSubfolders(p);
-  repairSyncedFileSubfolderRefs(p);
-  saveState();
-  if (curProjId === p.id) { renderDetailFiles(p.id); renderSubfolderBar(p.id); updateFolderLinkButtons(); }
-
-  if (stats.failed && !stats.uploaded) {
-    toast(`Gagal sync ${stats.failed} file — coba login ulang Google Drive (token mungkin kadaluarsa)`, 'error');
-  } else if (stats.failed) {
-    toast(`${stats.uploaded} file ter-sync, ${stats.failed} gagal. Cek Console (F12) untuk detail error.`, 'error');
-  } else if (stats.uploaded || stats.folders) {
-    toast(`${stats.uploaded} file & ${stats.folders} folder baru di-sync ke Drive ✓`, 'success');
-  } else {
-    toast('Semua file & folder sudah ter-sync sebelumnya', 'success');
-  }
-}
-
-// Pastikan ada entri p.subfolders yang cocok utk folder hasil sync ini, dan kembalikan id internalnya
-// supaya bisa dipakai sbg subfolderRef file2 di dalamnya (bukan cuma tersimpan di localSyncedFolders).
-function ensureSyncedSubfolderEntry(p, name, parentSfId, driveId, driveLink) {
-  if (!p.subfolders) p.subfolders = [];
-  let sf = p.subfolders.find(s => s.name.toLowerCase() === name.toLowerCase() && (s.parentId || null) === (parentSfId || null));
-  if (!sf) {
-    sf = { id: 'sf_' + Date.now() + Math.random().toString(36).slice(2, 6), name, driveId: null, driveLink: null, parentId: parentSfId || null, source: 'synced' };
-    p.subfolders.push(sf);
-  }
-  sf.driveId = driveId;
-  sf.driveLink = driveLink;
-  return sf;
-}
-
-// Perbaikan buat file yang SEBELUMNYA sudah ke-sync dengan subfolderRef salah (selalu '' / Folder
-// Utama walau sebenarnya nested). Dicocokkan lewat field localFolder ("03_FINAL/A/B") ke chain subfolder.
-function repairSyncedFileSubfolderRefs(p) {
-  files.filter(f => f.projId === p.id && f.localFolder && f.localFolder !== '03_FINAL').forEach(f => {
-    const relPath = f.localFolder.replace(/^03_FINAL\//, '');
-    if (!relPath || relPath === f.localFolder) return; // gak ada subfolder di path-nya
-    const segs = relPath.split('/');
-    let parentId = null, sf = null;
-    for (const segName of segs) {
-      sf = (p.subfolders || []).find(s => s.name.toLowerCase() === segName.toLowerCase() && (s.parentId || null) === parentId);
-      if (!sf) return; // gak ketemu chain-nya, biarin apa adanya
-      parentId = sf.id;
-    }
-    if (sf && f.subfolderRef !== sf.id) f.subfolderRef = sf.id;
-  });
-}
-
-// Susuri folder lokal secara rekursif: subfolder dibikinin folder Drive yang sepadan (+link-nya
-// disimpan), file diupload ke folder Drive yang benar sesuai posisi nested-nya.
-// baseLabel = label folder induk yang dipakai buat field files[].localFolder ('03_FINAL' secara default,
-// dipakai buat tombol "Sync 03_FINAL ke Drive"). Fitur picker manual lewat baseLabel lain (path folder
-// yang dipilih user) supaya file-nya kelompokkan terpisah dan gak collide sama cache sync 03_FINAL.
-async function syncDirRecursive(dirHandle, driveParentId, relPath, p, stats, parentSfId, baseLabel = '03_FINAL') {
-  const keyPrefix = baseLabel === '03_FINAL' ? '' : (baseLabel + '::');
-  for await (const [name, handle] of dirHandle.entries()) {
-    if (['.ds_store', 'thumbs.db', 'desktop.ini'].includes(name.toLowerCase())) continue;
-    const childRelPath = relPath ? relPath + '/' + name : name;
-    const cacheKey = keyPrefix + childRelPath;
-
-    if (handle.kind === 'directory') {
-      let folderId, folderLink;
-      const cached = p.localSyncedFolders[cacheKey];
-      if (cached && await driveIdExists(cached.driveId)) {
-        folderId = cached.driveId; folderLink = cached.driveLink;
-      } else {
-        try {
-          const res = await ensureDriveFolderWithLink(name, driveParentId);
-          folderId = res.id; folderLink = res.webViewLink || `https://drive.google.com/drive/folders/${res.id}`;
-          p.localSyncedFolders[cacheKey] = { driveId: folderId, driveLink: folderLink, name };
-          stats.folders++;
-        } catch (e) {
-          console.error('Gagal bikin folder Drive untuk', childRelPath, e);
-          continue;
-        }
-      }
-      const sf = ensureSyncedSubfolderEntry(p, name, parentSfId, folderId, folderLink);
-      await syncDirRecursive(handle, folderId, childRelPath, p, stats, sf.id, baseLabel);
-      continue;
-    }
-
-    if (p.localSynced[cacheKey] && await driveIdExists(p.localSynced[cacheKey])) { stats.skipped++; continue; }
-    try {
-      const file = await handle.getFile();
-      const res = await new Promise((resolve, reject) => {
-        const meta = { name: file.name, parents: [driveParentId] };
-        const form = new FormData();
-        form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
-        form.append('file', file);
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink');
-        xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve(JSON.parse(xhr.responseText)) : reject(new Error('HTTP ' + xhr.status + ': ' + xhr.responseText));
-        xhr.onerror = () => reject(new Error('Network error'));
-        xhr.send(form);
-      });
-      p.localSynced[cacheKey] = res.id;
-      stats.uploaded++;
-
-      // Munculkan/perbarui juga di daftar "File Proyek". Kalau sebelumnya udah ada entrinya
-      // (misal krn file lamanya kehapus manual di Drive lalu di-upload ulang), update driveId/link-nya
-      // biar gak nyangkut ke link mati — bukan bikin duplikat baru.
-      const localFolderLabel = relPath ? baseLabel + '/' + relPath : baseLabel;
-      const existingF = files.find(x => x.projId === p.id && x.name === file.name && x.localFolder === localFolderLabel);
-      if (existingF) {
-        existingF.driveId = res.id; existingF.driveLink = res.webViewLink; existingF.status = 'done';
-        existingF.subfolderRef = parentSfId || ''; existingF.size = file.size;
-        saveState();
-      } else {
-        const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name: file.name, size: file.size, type: file.type, status: 'done', progress: 100, driveId: res.id, driveLink: res.webViewLink, subfolderRef: parentSfId || '', thumb: null, thumbFull: null, _raw: null, localFolder: localFolderLabel };
-        files.push(fObj);
-        genThumb(file).then(result => {
-          if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); if (curProjId === p.id) renderDetailFiles(p.id); }
-        });
-      }
-    } catch (e) {
-      console.error('Sync gagal untuk', childRelPath, e);
-      stats.failed++;
-    }
-  }
-}
-
-// ── Browser folder lokal sederhana (dalam modal) ───────
-let lfStack = []; // [{handle, name}] jalur navigasi dari root folder proyek
-let lfPickTaskId = null; // sudah tidak dipakai (fitur pick-preview-per-task sudah dihapus), dibiarkan null
-let lfSyncMode = false;          // true = mode checklist "pilih & sync ke Drive"
-let lfSyncSelected = new Map();  // relPath (dari root proyek) -> 'file' | 'directory'
-let lfSyncProj = null;           // project yang lagi di-browse dalam mode sync
-
-async function openLocalProjectFolder() {
-  const p = getProj(curProjId); if (!p) return;
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) { toast('Hubungkan folder lokal dulu di Setup (⚙️)', 'error'); return; }
-  lfPickTaskId = null;
-  let projDir = await getLocalProjectDir(p);
-  if (!projDir) projDir = await createLocalProjectFolders(p);
-  if (!projDir) { toast('Gagal membuka folder proyek', 'error'); return; }
-  lfStack = [{ handle: projDir, name: p.name }];
-  await renderLocalFolderList();
-  document.getElementById('localFolderModal').classList.add('show');
-}
-
-// Buka browser folder lokal dalam mode "checklist" — user bisa centang folder/file mana aja
-// (gak harus 03_FINAL) buat di-upload manual ke Google Drive.
-async function openLocalSyncPicker(projId) {
-  const p = getProj(projId); if (!p) return;
-  if (!LOCAL_FS_SUPPORTED || !localRootHandle) { toast('Hubungkan folder lokal dulu di Setup (⚙️)', 'error'); return; }
-  if (!accessToken) { toast('Login Google Drive dulu', 'error'); return; }
-  lfPickTaskId = null;
-  lfSyncMode = true;
-  lfSyncSelected = new Map();
-  lfSyncProj = p;
-  let projDir = await getLocalProjectDir(p);
-  if (!projDir) projDir = await createLocalProjectFolders(p);
-  if (!projDir) { toast('Gagal membuka folder proyek', 'error'); return; }
-  lfStack = [{ handle: projDir, name: p.name }];
-  await renderLocalFolderList();
-  document.getElementById('localFolderModal').classList.add('show');
-}
-
-// relPath entry saat ini (folder yang lagi dibuka), dihitung dari nama-nama di lfStack (skip root proyek)
-function lfCurrentRelPath() {
-  return lfStack.slice(1).map(s => s.name).join('/');
-}
-
-function lfToggleSelect(relPath, kind) {
-  if (lfSyncSelected.has(relPath)) lfSyncSelected.delete(relPath);
-  else lfSyncSelected.set(relPath, kind);
-  renderLocalFolderList();
-}
-
-// Tutup modal + reset semua mode (checklist / pick preview) biar gak nyangkut ke sesi berikutnya
-function lfCloseModal() {
-  lfSyncMode = false;
-  lfSyncSelected = new Map();
-  lfSyncProj = null;
-  lfPickTaskId = null;
-  closeModal('localFolderModal');
-}
-
-// Pastikan chain folder Drive (+ entri subfolder UI + local dir handle) utk sebuah path relatif
-// dari root folder proyek. Ngembaliin folder di UJUNG path (folder itu sendiri, bukan parent-nya).
-async function ensureDrivePathChain(p, projDir, rootDriveId, relPath) {
-  const segs = relPath.split('/').filter(Boolean);
-  let curDriveId = rootDriveId, curSfId = null, curLocalHandle = projDir, curKeyPath = '';
-  for (const seg of segs) {
-    curKeyPath = curKeyPath ? curKeyPath + '/' + seg : seg;
-    curLocalHandle = await curLocalHandle.getDirectoryHandle(seg);
-    const cacheKey = 'MANUAL::' + curKeyPath;
-    const cached = p.localSyncedFolders[cacheKey];
-    let folderId, folderLink;
-    if (cached && await driveIdExists(cached.driveId)) {
-      folderId = cached.driveId; folderLink = cached.driveLink;
-    } else {
-      const res = await ensureDriveFolderWithLink(seg, curDriveId);
-      folderId = res.id; folderLink = res.webViewLink || `https://drive.google.com/drive/folders/${res.id}`;
-      p.localSyncedFolders[cacheKey] = { driveId: folderId, driveLink: folderLink, name: seg };
-    }
-    const sf = ensureSyncedSubfolderEntry(p, seg, curSfId, folderId, folderLink);
-    curDriveId = folderId; curSfId = sf.id;
-  }
-  return { driveId: curDriveId, sfId: curSfId, localHandle: curLocalHandle };
-}
-
-// Proses upload semua item yang dicentang user di mode checklist
-async function lfSyncUpload() {
-  const p = lfSyncProj;
-  if (!p || !lfSyncSelected.size) { toast('Belum ada file/folder yang dipilih', 'error'); return; }
-  if (!accessToken) { toast('Login Google Drive dulu', 'error'); return; }
-  if (!p.localSynced) p.localSynced = {};        // {relPath: driveFileId}
-  if (!p.localSyncedFolders) p.localSyncedFolders = {}; // {relPath: {driveId, driveLink, name}}
-
-  // Kalau ada folder yang dicentang, skip item lain yang ada DI DALAM folder itu (biar gak diproses dobel — folder-nya sendiri sudah rekursif)
-  const folderPaths = [...lfSyncSelected.entries()].filter(([, k]) => k === 'directory').map(([rp]) => rp);
-  const targets = [...lfSyncSelected.entries()].filter(([rp]) =>
-    !folderPaths.some(fp => rp !== fp && rp.startsWith(fp + '/'))
-  );
-
-  closeModal('localFolderModal');
-  toast('Menyiapkan sinkronisasi...', 'info');
-
-  let projDir = await getLocalProjectDir(p);
-  if (!projDir) { toast('Gagal membuka folder proyek', 'error'); return; }
-
-  let rootFolderId;
-  try { rootFolderId = await getProjFolder(p); }
-  catch (e) { toast('Gagal terhubung ke Drive — coba login ulang', 'error'); return; }
-
-  const stats = { uploaded: 0, skipped: 0, failed: 0, folders: 0 };
-
-  for (const [relPath, kind] of targets) {
-    const segs = relPath.split('/');
-    const parentPath = segs.slice(0, -1).join('/');
-    try {
-      if (kind === 'directory') {
-        const chain = await ensureDrivePathChain(p, projDir, rootFolderId, relPath);
-        await syncDirRecursive(chain.localHandle, chain.driveId, '', p, stats, chain.sfId, relPath);
-      } else {
-        const parentChain = await ensureDrivePathChain(p, projDir, rootFolderId, parentPath);
-        const fh = await parentChain.localHandle.getFileHandle(segs[segs.length - 1]);
-        const cacheKey = 'MANUAL::' + relPath;
-        if (p.localSynced[cacheKey] && await driveIdExists(p.localSynced[cacheKey])) { stats.skipped++; continue; }
-        const file = await fh.getFile();
-        const res = await new Promise((resolve, reject) => {
-          const meta = { name: file.name, parents: [parentChain.driveId] };
-          const form = new FormData();
-          form.append('metadata', new Blob([JSON.stringify(meta)], { type: 'application/json' }));
-          form.append('file', file);
-          const xhr = new XMLHttpRequest();
-          xhr.open('POST', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink');
-          xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-          xhr.onload = () => (xhr.status >= 200 && xhr.status < 300) ? resolve(JSON.parse(xhr.responseText)) : reject(new Error('HTTP ' + xhr.status));
-          xhr.onerror = () => reject(new Error('Network error'));
-          xhr.send(form);
-        });
-        p.localSynced[cacheKey] = res.id;
-        stats.uploaded++;
-
-        const localFolderLabel = parentPath ? 'MANUAL/' + parentPath : 'MANUAL';
-        const existingF = files.find(x => x.projId === p.id && x.name === file.name && x.localFolder === localFolderLabel);
-        if (existingF) {
-          existingF.driveId = res.id; existingF.driveLink = res.webViewLink; existingF.status = 'done';
-          existingF.subfolderRef = parentChain.sfId || ''; existingF.size = file.size;
-        } else {
-          const fObj = { id: 'f_' + Date.now() + Math.random().toString(36).slice(2), projId: p.id, name: file.name, size: file.size, type: file.type, status: 'done', progress: 100, driveId: res.id, driveLink: res.webViewLink, subfolderRef: parentChain.sfId || '', thumb: null, thumbFull: null, _raw: null, localFolder: localFolderLabel };
-          files.push(fObj);
-          genThumb(file).then(result => {
-            if (result) { fObj.thumb = result.thumb; fObj.thumbFull = result.thumbFull; persistThumb(fObj); saveState(); if (curProjId === p.id) renderDetailFiles(p.id); }
-          });
-        }
-      }
-    } catch (e) {
-      console.error('Sync manual gagal untuk', relPath, e);
-      stats.failed++;
-    }
-  }
-
-  saveState();
-  if (curProjId === p.id) { renderDetailFiles(p.id); renderSubfolderBar(p.id); updateFolderLinkButtons(); }
-  ghScheduleSync();
-
-  lfSyncMode = false; lfSyncSelected = new Map(); lfSyncProj = null;
-
-  if (stats.failed && !stats.uploaded) {
-    toast(`Gagal sync ${stats.failed} item — cek Console (F12)`, 'error');
-  } else if (stats.failed) {
-    toast(`${stats.uploaded} item ter-sync, ${stats.failed} gagal.`, 'error');
-  } else {
-    toast(`${stats.uploaded} file & ${stats.folders} folder ter-sync ke Drive ✓`, 'success');
-  }
-}
-
-async function renderLocalFolderList() {
-  const cur = lfStack[lfStack.length - 1];
-  const bc = document.getElementById('lf-breadcrumb');
-  bc.innerHTML = lfStack.map((s, i) =>
-    `<span style="cursor:pointer;${i === lfStack.length - 1 ? 'font-weight:700;color:var(--text)' : 'text-decoration:underline'}" onclick="lfGoTo(${i})">${s.name}</span>`
-  ).join(' › ');
-
-  const pickBanner = document.getElementById('lf-pick-banner');
-  if (pickBanner) {
-    if (lfSyncMode) {
-      pickBanner.style.display = 'flex';
-      pickBanner.innerHTML = `${ICO_UPLOAD} Centang folder/file yang mau di-upload ke Drive — bisa dari folder mana aja, gak harus 03_FINAL.`;
-    } else {
-      pickBanner.style.display = 'none';
-      pickBanner.innerHTML = '';
-    }
-  }
-
-  const syncBar = document.getElementById('lf-sync-bar');
-  if (syncBar) {
-    if (lfSyncMode) {
-      syncBar.style.display = 'flex';
-      const n = lfSyncSelected.size;
-      document.getElementById('lf-sync-count').textContent = n ? `${n} item dipilih` : 'Belum ada yang dipilih';
-      document.getElementById('lf-sync-upload-btn').disabled = !n;
-    } else {
-      syncBar.style.display = 'none';
-    }
-  }
-
-  const relBase = lfCurrentRelPath();
-  const list = document.getElementById('lf-list');
-  list.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px 0">Memuat…</div>';
-
-  const entries = [];
-  for await (const [name, handle] of cur.handle.entries()) entries.push({ name, handle });
-  entries.sort((a, b) => a.handle.kind === b.handle.kind ? a.name.localeCompare(b.name) : (a.handle.kind === 'directory' ? -1 : 1));
-
-  if (!entries.length) {
-    list.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px 0">Folder ini masih kosong. Drag & drop file ke sini buat nambahin.</div>';
-    return;
-  }
-  list.innerHTML = entries.map((e, idx) => {
-    const isDir = e.handle.kind === 'directory';
-    const ext = e.name.includes('.') ? e.name.split('.').pop().toLowerCase() : '';
-    const isImg = !isDir && ['jpg','jpeg','png','gif','webp'].includes(ext);
-    const safeName = e.name.replace(/'/g, "\\'");
-    const relPath = relBase ? relBase + '/' + e.name : e.name;
-    const safeRelPath = relPath.replace(/'/g, "\\'");
-
-    const iconHtml = isDir ? `<span style="display:inline-flex;flex-shrink:0;color:var(--muted)">${ICO_FOLDER}</span>`
-      : isImg ? `<span id="lf-thumb-${idx}" style="display:inline-flex;width:22px;height:22px;border-radius:4px;overflow:hidden;background:var(--surface2,rgba(0,0,0,.06));flex-shrink:0"></span>`
-      : `<span style="display:inline-flex;flex-shrink:0;color:var(--muted)">${ICO_FILE}</span>`;
-
-    // Mode checklist sync — checkbox di kiri, tombol "Buka" khusus buat masuk ke dalam folder
-    if (lfSyncMode) {
-      const kind = isDir ? 'directory' : 'file';
-      const checked = lfSyncSelected.has(relPath) ? 'checked' : '';
-      const openBtn = isDir ? `<button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();lfEnter('${safeName}')">Buka ›</button>` : '';
-      return `<div class="subfolder-chip" onclick="lfToggleSelect('${safeRelPath}','${kind}')" style="justify-content:space-between;width:100%;box-sizing:border-box;cursor:pointer">
-        <span style="display:flex;align-items:center;gap:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-          <input type="checkbox" ${checked} onclick="event.stopPropagation();lfToggleSelect('${safeRelPath}','${kind}')" style="flex-shrink:0;cursor:pointer">
-          ${iconHtml} ${e.name}
-        </span>
-        ${openBtn}
-      </div>`;
-    }
-
-    const rowAct = isDir ? `onclick="lfEnter('${safeName}')"` : `onclick="lfOpenFile('${safeName}')"`;
-    const dlBtn  = isDir ? '' : `<button onclick="event.stopPropagation();lfDownload('${safeName}')" title="Unduh" style="flex-shrink:0;display:inline-flex;align-items:center;background:none;border:none;color:var(--muted);cursor:pointer;padding:2px 6px;line-height:1">${ICO_DOWNLOAD}</button>`;
-    const delBtn = `<button onclick="event.stopPropagation();lfDelete('${safeName}','${e.handle.kind}')" title="Hapus" style="flex-shrink:0;display:inline-flex;align-items:center;background:none;border:none;color:var(--danger,#e05555);cursor:pointer;padding:2px 6px;line-height:1">${ICO_TRASH}</button>`;
-
-    return `<div class="subfolder-chip" ${rowAct} style="justify-content:space-between;width:100%;box-sizing:border-box;cursor:pointer">
-      <span style="display:flex;align-items:center;gap:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${iconHtml} ${e.name}</span>
-      <span style="display:flex;align-items:center;gap:2px">${dlBtn}${delBtn}</span>
-    </div>`;
-  }).join('');
-
-  // Isi thumbnail gambar secara async (biar list-nya nggak nunggu lama sebelum muncul)
-  entries.forEach((e, idx) => {
-    const ext = e.name.includes('.') ? e.name.split('.').pop().toLowerCase() : '';
-    if (e.handle.kind === 'file' && ['jpg','jpeg','png','gif','webp'].includes(ext)) {
-      e.handle.getFile().then(file => {
-        const el = document.getElementById('lf-thumb-' + idx);
-        if (!el) return; // modal udah pindah folder/ketutup
-        const url = URL.createObjectURL(file);
-        el.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover">`;
-      }).catch(() => {});
-    }
-  });
-}
-
-// Klik file: gambar → lightbox, PDF → tab baru, lainnya → langsung unduh
-async function lfOpenFile(name) {
-  const cur = lfStack[lfStack.length - 1];
-  try {
-    const fh = await cur.handle.getFileHandle(name);
-    const file = await fh.getFile();
-    const ext = name.includes('.') ? name.split('.').pop().toLowerCase() : '';
-    const isImg = ['jpg','jpeg','png','gif','webp','svg'].includes(ext);
-    const isPdf = ext === 'pdf';
-    const url = URL.createObjectURL(file);
-    if (isImg) {
-      openGallery([{ src: url, name, isObjUrl: true }], 0);
-    } else if (isPdf) {
-      window.open(url, '_blank');
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-    } else {
-      lfTriggerDownload(url, name);
-      setTimeout(() => URL.revokeObjectURL(url), 5000);
-    }
-  } catch (e) { toast('Gagal membuka file', 'error'); }
-}
-
-async function lfDownload(name) {
-  const cur = lfStack[lfStack.length - 1];
-  try {
-    const fh = await cur.handle.getFileHandle(name);
-    const file = await fh.getFile();
-    const url = URL.createObjectURL(file);
-    lfTriggerDownload(url, name);
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-  } catch (e) { toast('Gagal mengunduh file', 'error'); }
-}
-
-function lfTriggerDownload(url, name) {
-  const a = document.createElement('a');
-  a.href = url; a.download = name;
-  document.body.appendChild(a); a.click(); a.remove();
-}
-
-async function lfDelete(name, kind) {
-  const isDir = kind === 'directory';
-  const sub = isDir
-    ? `Folder "<b>${name}</b>" beserta <b>semua isinya</b> akan dihapus permanen dari disk. Yakin lanjut?`
-    : `File "<b>${name}</b>" akan dihapus permanen dari disk. Yakin lanjut?`;
-  showConfirm(isDir ? 'Hapus Folder?' : 'Hapus File?', sub, async () => {
-    const cur = lfStack[lfStack.length - 1];
-    try {
-      await cur.handle.removeEntry(name, { recursive: true });
-      toast(`"${name}" dihapus`, 'success');
-      renderLocalFolderList();
-    } catch (e) { toast('Gagal menghapus (mungkin file sedang dipakai aplikasi lain)', 'error'); }
-  });
-}
-
-async function lfEnter(name) {
-  const cur = lfStack[lfStack.length - 1];
-  try {
-    const sub = await cur.handle.getDirectoryHandle(name);
-    lfStack.push({ handle: sub, name });
-    renderLocalFolderList();
-  } catch (e) { toast('Gagal membuka folder', 'error'); }
-}
-
-function lfGoTo(index) {
-  lfStack = lfStack.slice(0, index + 1);
-  renderLocalFolderList();
-}
-
-// Drag & drop file dari desktop langsung ke folder yang lagi dibuka
-function lfDragOver(e) { e.preventDefault(); e.currentTarget.style.background = 'rgba(108,99,255,.08)'; e.currentTarget.style.outline = '2px dashed var(--accent)'; }
-function lfDragLeave(e) { e.currentTarget.style.background = ''; e.currentTarget.style.outline = ''; }
-async function lfDrop(e) {
-  e.preventDefault();
-  e.currentTarget.style.background = ''; e.currentTarget.style.outline = '';
-  const dtFiles = [...(e.dataTransfer?.files || [])];
-  if (!dtFiles.length) return;
-  const cur = lfStack[lfStack.length - 1];
-  let count = 0;
-  for (const file of dtFiles) {
-    try {
-      const fh = await cur.handle.getFileHandle(file.name, { create: true });
-      const writable = await fh.createWritable();
-      await writable.write(file);
-      await writable.close();
-      count++;
-    } catch (err) { console.error('Gagal simpan', file.name, err); }
-  }
-  toast(count ? `${count} file ditambahkan ke folder ini` : 'Gagal menambahkan file', count ? 'success' : 'error');
-  renderLocalFolderList();
-}
-
-function promptAddLocalFolder() {
-  const cur = lfStack[lfStack.length - 1];
-  const hint = document.getElementById('lfnf-location-hint');
-  if (hint) hint.innerHTML = 'Akan dibuat di dalam <b>' + cur.name + '</b>';
-  const input = document.getElementById('lfnf-name-input');
-  input.value = '';
-  document.getElementById('localNewFolderModal').classList.add('show');
-  setTimeout(() => input.focus(), 50);
-}
-
-function confirmAddLocalFolder() {
-  const input = document.getElementById('lfnf-name-input');
-  const name = input.value.trim();
-  if (!name) { toast('Nama folder wajib diisi', 'error'); return; }
-  const cur = lfStack[lfStack.length - 1];
-  ensureLocalDir(cur.handle, name).then(() => {
-    closeModal('localNewFolderModal');
-    toast('Folder "' + name + '" dibuat ✓', 'success');
-    renderLocalFolderList();
-  }).catch(() => toast('Gagal bikin folder', 'error'));
 }
 
 
@@ -3555,7 +2570,6 @@ function saveProject() {
   } else {
     projects.unshift({id:'p_'+Date.now(), client: clientName, name, price:document.getElementById('f-price').value, currency: projCurrency, status:document.getElementById('f-status').value, startDate:document.getElementById('f-start').value, deadline:document.getElementById('f-deadline').value, notes:document.getElementById('f-notes').value, driveRootId:null, driveCliId:null, driveProjId:null, createdAt:new Date().toISOString()});
     toast('Proyek "'+name+'" ditambahkan!','success');
-    createLocalProjectFolders(projects[0]); // fire-and-forget, bikin 01-04 di disk lokal kalau sudah terhubung
   }
   saveState(); closeModal('projModal'); updateCounts(); renderDashboard();
   if(curProjId===editProjId) openDetail(editProjId); else renderProjects();
@@ -3977,9 +2991,9 @@ function renderMultiProjPicker() {
     updateMultiTotal(); return;
   }
 
-  const clientProjs = projects.filter(function(p){ return p.client === clientName; });
+  const clientProjs = projects.filter(function(p){ return p.client === clientName && p.status !== 'paid'; });
   if(!clientProjs.length) {
-    el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:10px 0">Tidak ada proyek untuk klien ini.</div>';
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:10px 0">Tidak ada proyek aktif untuk klien ini (semua sudah paid/lunas).</div>';
     updateMultiTotal(); return;
   }
 
@@ -3988,7 +3002,7 @@ function renderMultiProjPicker() {
 
   let html = '';
   clientProjs.forEach(function(p) {
-    const taskList  = getProjTasks(p.id);
+    const taskList  = getProjTasks(p.id).filter(function(t){ return (t.taskStatus||'todo') !== 'paid'; });
     const doneCnt   = taskList.filter(function(t){ return ['done','invoiced'].includes(t.taskStatus||'todo'); }).length;
     if(!taskList.length) return;
 
@@ -4019,7 +3033,7 @@ function renderMultiProjPicker() {
     html += '</div>';
   });
 
-  el.innerHTML = html;
+  el.innerHTML = html || '<div style="color:var(--muted);font-size:12px;padding:10px 0">Semua task klien ini sudah paid — tidak ada yang perlu ditagih.</div>';
   updateMultiTotal();
 }
 
@@ -4569,9 +3583,6 @@ function openDetail(id) {
   const dpSub = document.getElementById('dp-sub');
   if(dpSub) dpSub.innerHTML = '';
   updateFolderLinkButtons();
-  const lfPanel = document.getElementById('local-folder-panel');
-  if(lfPanel) lfPanel.style.display = (LOCAL_FS_SUPPORTED && localRootHandle) ? 'flex' : 'none';
-  if (LOCAL_FS_SUPPORTED && localRootHandle) scanLocalTracking(id); // fire-and-forget, isi thumbnail dari folder lokal
   showView('detail',null);
 }
 function renderDetailStatus(p) {
@@ -5097,9 +4108,6 @@ function projCard(p) {
       <span style="display:flex;align-items:center;gap:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>${fileCount} file</span>
       <span style="display:flex;align-items:center;gap:6px">
         ${dpill}
-        <span class="pc-portal-wrap" onclick="event.stopPropagation();openPortalModal('${p.id}')" title="Portal Klien">
-          <button class="portal-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
-        </span>
       </span>
     </div>
     ${invFab}
@@ -5133,9 +4141,6 @@ function openSetup() {
   document.getElementById('s-root').value    = cfg.root    || 'Snapsy.Std';
   document.getElementById('s-cid').value     = cfg.clientId|| '';
   document.getElementById('s-key').value     = cfg.apiKey  || '';
-  document.getElementById('s-portal-token').value = localStorage.getItem('gh_portal_token') || '';
-  const repoHint = document.getElementById('s-portal-repo-hint'); if (repoHint) repoHint.textContent = ghCreds().repo || 'data';
-  renderLocalRootStatus();
   document.getElementById('setupModal').classList.add('show');
 }
 function saveSetup() {
@@ -5149,9 +4154,6 @@ function saveSetup() {
   cfg.clientId    = document.getElementById('s-cid').value.trim();
   cfg.apiKey      = document.getElementById('s-key').value.trim();
   localStorage.setItem('ssy_cfg',JSON.stringify(cfg));
-  const portalToken = document.getElementById('s-portal-token').value.trim();
-  if (portalToken) localStorage.setItem('gh_portal_token', portalToken);
-  else localStorage.removeItem('gh_portal_token');
   closeModal('setupModal');
   document.getElementById('loginBtn').style.display='inline-flex';
   if(cfg.clientId && cfg.apiKey) initGapi();
@@ -6348,7 +5350,7 @@ async function ghSilentPull() {
 
 
 // ── PUSH DATA TO GITHUB ──────────────────────────────
-async function ghPushData(retryCount = 0) {
+async function ghPushData() {
   if (!ghConnected()) return;
   const {token, username, repo} = ghCreds();
 
@@ -6376,11 +5378,10 @@ async function ghPushData(retryCount = 0) {
     );
     if (!res.ok) {
       const err = await res.json();
-      // sha mismatch — refresh sha and retry, tapi maksimal 3x biar gak looping ngirim ulang
-      // data (bisa beberapa MB) tanpa henti kalau konfliknya terus berulang
-      if (res.status === 409 && retryCount < 3) {
+      // sha mismatch — refresh sha and retry once
+      if (res.status === 409) {
         await ghRefreshSha();
-        return ghPushData(retryCount + 1);
+        return ghPushData();
       }
       throw new Error(err.message || 'Gagal menyimpan.');
     }
@@ -6402,236 +5403,6 @@ async function ghRefreshSha() {
     );
     if (res.ok) { const j = await res.json(); ghFileSha = j.sha; }
   } catch(e) {}
-}
-
-// ══════════════════════════════════════════════════════
-// ── PORTAL KLIEN ──────────────────────────────────────
-// ══════════════════════════════════════════════════════
-let curPortalProjId = null;
-
-function getPortalToken() { return localStorage.getItem('gh_portal_token') || ''; }
-function hasPortalToken() { return !!getPortalToken(); }
-function randSlug() { return 'sp_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4); }
-
-// ── OWNER SIDE: buka modal, generate/kelola link ─────
-function openPortalModal(projId) {
-  curPortalProjId = projId;
-  const p = getProj(projId); if (!p) return;
-  document.getElementById('portal-modal-projname').textContent = p.name + ' — ' + p.client;
-
-  const noToken = document.getElementById('portal-no-token');
-  const hasToken = document.getElementById('portal-has-token');
-  if (!hasPortalToken()) {
-    noToken.style.display = 'block';
-    hasToken.style.display = 'none';
-    document.getElementById('portalModal').classList.add('show');
-    return;
-  }
-  noToken.style.display = 'none';
-  hasToken.style.display = 'block';
-  renderPortalModalState(p);
-  document.getElementById('portalModal').classList.add('show');
-}
-
-function renderPortalModalState(p) {
-  const active = p.portal && p.portal.active;
-  document.getElementById('portal-inactive-state').style.display = active ? 'none' : 'block';
-  document.getElementById('portal-active-state').style.display = active ? 'block' : 'none';
-  if (active) document.getElementById('portal-link-input').value = buildPortalUrl(p);
-}
-
-function generatePortalLink(projId) {
-  const p = getProj(projId); if (!p) return;
-  p.portal = { id: randSlug(), active: true, unread: false, createdAt: new Date().toISOString() };
-  saveState();
-  renderPortalModalState(p);
-  renderProjects();
-  toast('Link portal dibuat ✓', 'success');
-}
-
-function regeneratePortalLink(projId) {
-  showConfirm('Buat Link Baru?', 'Link portal lama akan langsung tidak bisa dipakai lagi.', () => {
-    const p = getProj(projId); if (!p) return;
-    p.portal = { id: randSlug(), active: true, unread: false, createdAt: new Date().toISOString() };
-    saveState();
-    renderPortalModalState(p);
-    toast('Link portal baru dibuat, link lama sudah nonaktif ✓', 'success');
-  });
-}
-
-function revokePortalLink(projId) {
-  showConfirm('Nonaktifkan Portal?', 'Klien tidak akan bisa lagi membuka link portal untuk proyek ini.', () => {
-    const p = getProj(projId); if (!p || !p.portal) return;
-    p.portal.active = false;
-    saveState();
-    renderPortalModalState(p);
-    renderProjects();
-    toast('Portal dinonaktifkan', 'info');
-  });
-}
-
-function buildPortalUrl(p) {
-  const { username, repo } = ghCreds();
-  const token = getPortalToken();
-  const base = location.origin + location.pathname;
-  const parts = [username, repo, p.id, p.portal.id, token].map(x => encodeURIComponent(x || ''));
-  return base + '#portal~' + parts.join('~');
-}
-
-function copyPortalLink() {
-  const val = document.getElementById('portal-link-input').value;
-  if (!val) return;
-  copyTextToClipboard(val, 'Link portal disalin ✓');
-}
-
-function sharePortalLinkWA() {
-  const p = getProj(curPortalProjId); if (!p || !p.portal) return;
-  const url = document.getElementById('portal-link-input').value;
-  const client = clients.find(c => c.name === p.client);
-  const msg = encodeURIComponent(`Halo ${p.client}, berikut link portal untuk proyek "${p.name}". Kamu bisa lihat progres dan file di sini:\n${url}`);
-  const phone = client && client.phone ? client.phone.replace(/[^0-9]/g, '').replace(/^0/, '62') : '';
-  window.open(phone ? `https://wa.me/${phone}?text=${msg}` : `https://wa.me/?text=${msg}`, '_blank');
-}
-
-// ── KLIEN SIDE: render halaman portal (read-only) ──
-let portalCreds = null;   // {u, r, pid, sid, token} — dipakai buat baca data dari GitHub
-let portalCurFiles = [];  // cache file proyek yang lagi dibuka di portal
-let portalCurTasks = [];  // cache task proyek (buat progress bar)
-let portalCurClient = null;
-
-async function initPortalMode() {
-  document.body.classList.add('portal-mode');
-  document.getElementById('portal-app').classList.add('show');
-  const parts = location.hash.slice(1).split('~').map(decodeURIComponent);
-  const [, u, r, pid, sid, token] = parts;
-  if (!u || !r || !pid || !sid || !token) { renderPortalError('Link portal tidak lengkap atau rusak.'); return; }
-  portalCreds = { u, r, pid, sid, token };
-  await portalLoadAndRender();
-}
-
-async function portalFetchDataFile() {
-  const { u, r, token } = portalCreds;
-  const res = await fetch(
-    `https://api.github.com/repos/${u}/${r}/contents/${GH_DATA_FILE}?t=${Date.now()}`,
-    { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github+json' } }
-  );
-  if (!res.ok) throw new Error('Portal tidak bisa diakses. Link mungkin sudah tidak berlaku.');
-  const json = await res.json();
-  let data;
-  if (json.content) {
-    data = JSON.parse(decodeURIComponent(escape(atob(json.content.replace(/\n/g, '')))));
-  } else if (json.download_url) {
-    // File data sudah cukup besar sehingga GitHub tidak mengirim isinya langsung — ambil via download_url
-    const raw = await fetch(json.download_url + '?t=' + Date.now());
-    if (!raw.ok) throw new Error('Gagal memuat data proyek (file besar).');
-    data = await raw.json();
-  } else {
-    throw new Error('Format data tidak dikenali.');
-  }
-  return { data, sha: json.sha };
-}
-
-async function portalLoadAndRender() {
-  try {
-    const { pid, sid } = portalCreds;
-    const { data } = await portalFetchDataFile();
-
-    const proj = (data.projects || []).find(x => x.id === pid);
-    if (!proj || !proj.portal || !proj.portal.active || proj.portal.id !== sid) {
-      renderPortalError('Link portal ini sudah tidak aktif. Hubungi ' + ((data.cfg && data.cfg.studio) || 'studio') + ' untuk link terbaru.');
-      return;
-    }
-    portalCurFiles = (data.files || []).filter(f => f.projId === pid);
-    portalCurTasks = (data.tasks || []).filter(t => t.projId === pid);
-    portalCurClient = (data.clients || []).find(c => c.name === proj.client) || { name: proj.client };
-    portalCurProj = proj; portalCurCfg = data.cfg || {};
-
-    renderPortalView(proj, portalCurFiles, data.cfg || {});
-  } catch (e) {
-    renderPortalError('Gagal memuat portal: ' + e.message);
-  }
-}
-let portalCurProj = null, portalCurCfg = {};
-
-function renderPortalError(msg) {
-  document.getElementById('portal-content').innerHTML = `
-    <div class="portal-center-msg">
-      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <div style="font-weight:600;color:var(--text)">${msg}</div>
-    </div>`;
-}
-
-// ── HOME: ringkasan proyek (progress) + file final + invoice ──
-function renderPortalView(p, projFiles, portalCfg) {
-  document.getElementById('portal-studio-name').textContent = portalCfg.studio || '';
-
-  const totalTasks = portalCurTasks.length || 1;
-  const doneTasks = portalCurTasks.filter(t => TASK_DONE_LIKE.includes(t.taskStatus || 'todo')).length;
-  const pct = Math.round(doneTasks / totalTasks * 100);
-
-  const finalFiles = projFiles.filter(f => f.status === 'done' || f.status === 'local');
-  const finalFilesHtml = finalFiles.length ? finalFiles.map(f => `
-    <div class="portal-file-item">
-      <div style="color:var(--muted)">${fIcon(f.name)}</div>
-      <div class="portal-file-name">${f.name}</div>
-      <div class="portal-file-size">${fSize(f.size)}</div>
-      <div class="portal-file-actions">
-        ${f.driveLink ? `<a href="${f.driveLink}" target="_blank" class="btn btn-ghost btn-xs">Buka</a>` : ''}
-      </div>
-    </div>`).join('') : '<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px 0">Belum ada file final yang dibagikan</div>';
-
-  document.getElementById('portal-content').innerHTML = `
-    <div class="portal-card portal-home-head">
-      <div>
-        <div class="portal-greet">Hi, ${escHtml(portalCurClient ? portalCurClient.name : '')}</div>
-        <div class="portal-greet-sub">Ini portal kamu untuk lihat progres task, invoice, dan file proyek.</div>
-      </div>
-      <button class="btn btn-secondary btn-sm" onclick="portalOpenInvoice()">Lihat Invoice</button>
-    </div>
-    <div class="portal-card">
-      <div class="portal-proj-name">${escHtml(p.name)}</div>
-      <div class="portal-progress-row">
-        <div class="portal-progress-track"><div class="portal-progress-fill" style="width:${pct}%"></div></div>
-        <span class="portal-progress-pct">${pct}%</span>
-      </div>
-    </div>
-    <div class="portal-card">
-      <div class="card-title" style="margin-bottom:8px">File Final</div>
-      ${finalFilesHtml}
-    </div>
-    <div class="portal-footer-note">Portal ini dibuat oleh ${portalCfg.studio || 'studio'} — hanya untuk proyek ini.</div>
-  `;
-}
-
-function portalGoHome() {
-  renderPortalView(portalCurProj, portalCurFiles, portalCurCfg);
-}
-
-// ── INVOICE: reuse buildInvHTML dengan snapshot yang disimpan owner ──
-function portalOpenInvoice() {
-  const p = portalCurProj;
-  if (!p || !p.lastInvoice) { toast('Belum ada invoice yang dibagikan untuk proyek ini', 'info'); return; }
-  const inv = p.lastInvoice;
-  const cl = portalCurClient || { name: p.client };
-  const taskRows = (inv.taskIds || []).map(tid => portalCurTasks.find(t => t.id === tid)).filter(Boolean);
-  const invoiceData = {
-    invNum: inv.invNum, invDate: inv.invDate, payment: inv.payment, note: inv.note,
-    project: p, client: cl, currency: inv.currency, tasks: taskRows, total: inv.total,
-  };
-  // buildInvHTML baca dari variabel global `cfg` (info studio) — di browser klien itu kosong,
-  // jadi sementara dipinjam dari cfg milik owner yang ikut tersinkron (portalCurCfg).
-  const savedCfg = cfg;
-  cfg = Object.assign({}, portalCurCfg);
-  const invHtml = buildInvHTML(invoiceData);
-  cfg = savedCfg;
-
-  document.getElementById('portal-content').innerHTML = `
-    <div class="portal-card" style="display:flex;align-items:center;gap:10px">
-      <button class="btn btn-ghost btn-sm" onclick="portalGoHome()">← Kembali</button>
-      <div style="font-weight:700;font-size:13px">Invoice ${escHtml(inv.invNum || '')}</div>
-    </div>
-    <div class="portal-invoice-wrap">${invHtml}</div>
-  `;
 }
 
 // ── DEBOUNCED SYNC ───────────────────────────────────
